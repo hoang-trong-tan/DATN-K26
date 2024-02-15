@@ -42,6 +42,8 @@ jobs:
           --deployment-group-name dev \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
+
+          
         env:
             AWS_REGION: ap-southeast-2
             AWS_DEFAULT_REGION: ap-southeast-2
