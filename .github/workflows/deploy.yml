@@ -25,7 +25,7 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v1.7.0
         with:
-          role-to-assume: arn:aws:iam::730335646049:role/GitHubAction-AssumeRoleWithAction. #change to reflect your IAM role’s ARN
+          role-to-assume: arn:aws:iam::730335646049:role/GitHubAction 
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
       # Hello from AWS: WhoAmI
@@ -34,7 +34,7 @@ jobs:
           aws sts get-caller-identity
 
       # Step 3 - check the application-name and deployment group name
-      - name: Create CodeDeploy Deployment
+      - name: Create CodeDeploy Deployment 1
         id: deploy
         run: |
           aws deploy create-deployment \
