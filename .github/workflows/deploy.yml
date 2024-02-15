@@ -10,7 +10,7 @@ on:
 
 env:
   
-  AWS_REGION : "ap-southeast-1" #Change to reflect your Region
+  AWS_REGION : "ap-southeast-2" #Change to reflect your Region
 
 # Permission can be added at job level or workflow level    
 permissions:
@@ -42,7 +42,3 @@ jobs:
           --deployment-group-name dev \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
-       env: 
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_DEPLOY_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_DEPLOY_SECRET }}
-        AWS_DEFAULT_REGION: ap-southeast-1
