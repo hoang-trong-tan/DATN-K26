@@ -37,8 +37,8 @@ jobs:
       - name: Create CodeDeploy Deployment 1
         id: deploy
         run: |
-          aws deploy create-deployment \
-          --application-name nodejs \ 
+      aws deploy create-deployment \
+          --application-name nodejs \
           --deployment-group-name dev \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --github-location repository=${{ github.repository }},commitId=${{ github.sha }}
