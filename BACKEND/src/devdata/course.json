@@ -1,0 +1,18 @@
+[
+  {
+    "course_name": "Node.js, Express, MongoDB và hơn thế nữa: Bootcamp hoàn chỉnh 2024",
+    "course_categories": "Web Devlopment",
+    "course_description": "Bạn có muốn xây dựng các ứng dụng back-end nhanh và mạnh mẽ bằng JavaScript không? Bạn có muốn trở thành một nhà phát triển hoàn thiện hơn và có nhu cầu cao hơn không? Vậy thì Node.js là công nghệ hấp dẫn để bạn học ngay bây giờ và bạn đã đến đúng nơi để học điều đó! Chào mừng bạn đến với Complete Node.js, Express và MongoDB Bootcamp, con đường nhanh chóng để bạn phát triển back-end hiện đại.",
+    "course_thumnail": "https://res.cloudinary.com/dpxghnhpx/image/upload/v1706949762/course/8409/sjavxfxe5vy548cb13tz.jpg",
+    "course_demoVideo": "https://res.cloudinary.com/dpxghnhpx/video/upload/v1706956394/videos/vodfic0ispiiuers4kp1.mp4",
+    "course_benefits": [
+      "Đang xây dựng các ứng dụng web hoặc API RESTful Node.js nhanh, có thể mở rộng và mạnh mẽ của riêng bạn;",
+      "Thực sự hiểu cách Node.js hoạt động ở backend;"
+    ],
+    "course_lessonContent": [
+      "Nắm vững toàn bộ back-end hiện đại: Node, Express, MongoDB và Mongoose (trình điều khiển MongoDB JS)",
+      "Xây dựng API RESTful nhanh, có thể mở rộng, giàu tính năng (bao gồm các bộ lọc, sắp xếp, phân trang và hơn thế nữa)",
+      "Hoạt động CRUD với MongoDB và Mongoose"
+    ]
+  }
+]
