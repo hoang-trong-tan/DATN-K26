@@ -15,7 +15,7 @@ const videoShema = new Schema(
       type: Number,
       required: true,
     },
-    courseDataShema_id: {
+    courseDataShema: {
       type: Schema.Types.ObjectId,
       ref: "CourseData",
     },
@@ -32,7 +32,7 @@ const courseDataShema = new Schema(
       type: String,
       required: true,
     },
-    courseShema_id: {
+    courseShema: {
       type: Schema.Types.ObjectId,
       ref: "Course",
     },
@@ -43,14 +43,29 @@ const courseDataShema = new Schema(
   }
 );
 
+const courseTypeShema = new Schema(
+  {
+    type_name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+  },
+  {
+    collection: "CourseTypes",
+    timestamps: true,
+  }
+);
+
 const courseShema = new Schema(
   {
     course_name: {
       type: String,
       required: true,
     },
-    course_categories: {
-      type: String,
+    course_type: {
+      type: Schema.Types.ObjectId,
+      ref: "CourseType",
       required: true,
     },
     course_description: {
@@ -67,19 +82,21 @@ const courseShema = new Schema(
     },
     course_benefits: [String],
     course_lessonContent: [String],
-
-    // course_rivews: {
-    //   type: String,
-    //   required: true,
-    // },
-    // course_ratings: {
-    //   type: String,
-    //   required: true,
-    // },
-    // course_purchased: {
-    //   type: String,
-    //   required: true,
-    // },
+    course_price: {
+      type: Number,
+      required: true,
+    },
+    course_purchased: {
+      type: Number,
+      default: 0,
+    },
+    course_ratingsAverage: {
+      type: Number,
+      default: 4.5,
+      min: [1, "Rating must be above 1.0"],
+      max: [5, "Rating must be above 5.0"],
+      set: (val) => Math.round(val * 10) / 10,
+    },
   },
   {
     collection: COLLECTION_NAME,
@@ -91,4 +108,5 @@ module.exports = {
   course: model(DOCUMENT_NAME, courseShema),
   courseData: model("CourseData", courseDataShema),
   courseDataVideo: model("CourseDataVideo", videoShema),
+  courseType: model("CourseType", courseTypeShema),
 };

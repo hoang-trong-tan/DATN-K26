@@ -1,12 +1,20 @@
 "use strict";
 
-const { NotFoundError } = require("../core/error.response");
+const {
+  NotFoundError,
+  ConflictRequestError,
+  BadRequestError,
+} = require("../core/error.response");
 const {
   course,
   courseData,
   courseDataVideo,
+  courseType,
 } = require("../model/course.model");
-const { findOneCourseId } = require("../model/repositories/course.repo");
+const {
+  findOneCourseId,
+  findAllCourseType,
+} = require("../model/repositories/course.repo");
 
 const createCourse = async (payload) => {
   const newCourse = await course.create(payload);
@@ -43,10 +51,38 @@ const createCourseVideo = async (coureId, payload) => {
   return newCourseVideo;
 };
 
-// lay ra mot khoa hoc
+// tao the loai khoa học
 
+const createCourseType = async (payload) => {
+  const existingType = await courseType.findOne({ name: payload.type_name });
+
+  if (existingType) {
+    throw new ConflictRequestError("Type is Exist");
+  }
+
+  const data = await courseType.create(payload);
+
+  if (!data) {
+    throw new BadRequestError("Create course type is error!!");
+  }
+  return data;
+};
+
+// lay ra mot khoa hoc
 const findOneCourse = async (courseId) => {
-  return await findOneCourseId(courseId);
+  return await findOneCourseId(courseId, [
+    "courseDataShema_id",
+    "courseShema_id",
+    "__v",
+    "createdAt",
+    "updatedAt",
+  ]);
+};
+
+// lay ra toan bo danh muc
+
+const getCourseType = async () => {
+  return await findAllCourseType(["__v", "createdAt", "updatedAt"]);
 };
 
 module.exports = {
@@ -54,4 +90,6 @@ module.exports = {
   createCourseData,
   createCourseVideo,
   findOneCourse,
+  createCourseType,
+  getCourseType,
 };
