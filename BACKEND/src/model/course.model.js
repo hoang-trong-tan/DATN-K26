@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const slugify = require("slugify");
 
 const DOCUMENT_NAME = "Course";
 
@@ -72,6 +73,7 @@ const courseShema = new Schema(
       type: String,
       required: true,
     },
+    course_slug: String,
     course_thumnail: {
       type: String,
       required: true,
@@ -103,6 +105,16 @@ const courseShema = new Schema(
     timestamps: true,
   }
 );
+
+// create index for search
+
+courseShema.index({ course_name: "text" });
+
+// tao slug
+courseShema.pre("save", function (next) {
+  this.course_slug = slugify(this.course_name, { lower: true });
+  next();
+});
 
 module.exports = {
   course: model(DOCUMENT_NAME, courseShema),
