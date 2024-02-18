@@ -133,10 +133,12 @@ const getCourseType = async () => {
 
 // tim kiem khoa hoc
 
-const getListSearchCourses = async ({ type, keySearch }) => {
+const getListSearchCourses = async ({ type, keySearch, limit, page }) => {
   return await search({
     type,
     keySearch,
+    limit,
+    page,
     select: [
       "course_name",
       "course_thumnail",
