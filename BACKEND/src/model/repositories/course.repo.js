@@ -56,14 +56,18 @@ const queryCourseByType = async ({ courseTypeId, limit, page, select }) => {
 };
 
 // tim kiem san pham theo ten
-const search = async ({ type, keySearch, select }) => {
+const search = async ({ type, keySearch, select, limit, page }) => {
   const regexSearch = new RegExp(keySearch);
+
+  const skip = (page - 1) * limit;
 
   const searchCourse = await course
     .find(
       { $text: { $search: regexSearch } }
       // { score: { $meta: "textScore" } }
     )
+    .skip(skip)
+    .limit(limit)
     // .sort({ score: { $meta: "textScore" } })
     .select(select)
     .lean();
