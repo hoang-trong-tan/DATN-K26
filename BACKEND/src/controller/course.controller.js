@@ -82,6 +82,9 @@ exports.getListSearchCourses = catchAsync(async (req, res, next) => {
   console.log("type::", req.query.type);
   new Ok({
     message: "Get List Search Course Success!!",
-    data: await getListSearchCourses(req.query.type, req.query.keySearch),
+    data: await getListSearchCourses({
+      type: req.query.type,
+      keySearch: req.query.keySearch,
+    }),
   }).send(res);
 });
