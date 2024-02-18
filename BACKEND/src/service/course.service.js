@@ -1,5 +1,6 @@
 "use strict";
 
+const { Types } = require("mongoose");
 const {
   NotFoundError,
   ConflictRequestError,
@@ -14,10 +15,23 @@ const {
 const {
   findOneCourseId,
   findAllCourseType,
+  findAllCourses,
+  queryCourseByType,
+  searchCourseByUser,
 } = require("../model/repositories/course.repo");
+const { query } = require("express");
 
-const createCourse = async (payload) => {
-  const newCourse = await course.create(payload);
+const createCourse = async (payload, courseTypeId) => {
+  const existingType = await courseType.findOne({ _id: courseTypeId });
+
+  if (!existingType) {
+    throw new NotFoundError("Not Found Course Type!!");
+  }
+
+  const newCourse = await course.create({
+    ...payload,
+    courseTypeId: existingType._id,
+  });
   return newCourse;
 };
 
@@ -30,7 +44,7 @@ const createCourseData = async (coureId, payload) => {
 
   const newCourseData = await courseData.create({
     ...payload,
-    courseShema_id: coureId,
+    courseShema: coureId,
   });
 
   return newCourseData;
@@ -45,7 +59,7 @@ const createCourseVideo = async (coureId, payload) => {
 
   const newCourseVideo = await courseDataVideo.create({
     ...payload,
-    courseDataShema_id: coureId,
+    courseDataShema: coureId,
   });
 
   return newCourseVideo;
@@ -71,18 +85,57 @@ const createCourseType = async (payload) => {
 // lay ra mot khoa hoc
 const findOneCourse = async (courseId) => {
   return await findOneCourseId(courseId, [
-    "courseDataShema_id",
-    "courseShema_id",
+    "courseDataShema",
+    "courseShema",
     "__v",
     "createdAt",
     "updatedAt",
   ]);
 };
 
-// lay ra toan bo danh muc
+// lay ra toan bo khoa hoc
+const getAllCourses = async ({ limit, sort = "ctime", page }) => {
+  return await findAllCourses({
+    limit,
+    sort,
+    //filter,
+    page,
+    select: [
+      "course_name",
+      "course_thumnail",
+      "course_price",
+      "course_ratingsAverage",
+      "course_slug",
+    ],
+  });
+};
 
+// lay ra khoa hoc theo danh muc loai
+const getCourseByType = async ({ limit, page, query }) => {
+  console.log("query1::", query);
+  return await queryCourseByType({
+    limit,
+    page,
+    query,
+    select: [
+      "course_name",
+      "course_thumnail",
+      "course_price",
+      "course_ratingsAverage",
+      "course_slug",
+    ],
+  });
+};
+
+// lay ra toan bo danh muc
 const getCourseType = async () => {
   return await findAllCourseType(["__v", "createdAt", "updatedAt"]);
+};
+
+// tim kiem khoa hoc
+
+const getListSearchCourses = async (keySearch) => {
+  return await searchCourseByUser(keySearch);
 };
 
 module.exports = {
@@ -92,4 +145,7 @@ module.exports = {
   findOneCourse,
   createCourseType,
   getCourseType,
+  getAllCourses,
+  getCourseByType,
+  getListSearchCourses,
 };

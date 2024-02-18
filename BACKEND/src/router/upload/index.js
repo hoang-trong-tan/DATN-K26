@@ -13,7 +13,7 @@ router.post(
 
 // router upload video
 router.post(
-  "/upload-video/",
+  "/upload-video",
   parser.single("video"),
   uploadController.uploadVideo
 );

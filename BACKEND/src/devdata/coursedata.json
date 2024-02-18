@@ -1,7 +1,6 @@
 [
   {
-    "courseData_title": "Welcome,Welcome,Welcome!!! 123",
-    "courseShema_id": "id truyền trên params.id"
+    "courseData_title": "Welcome,Welcome,Welcome!!! 123"
   },
 
   {
@@ -10,5 +9,23 @@
 
   {
     "courseData_title": "Giới thiệu về nhà phát triển Backend"
+  },
+
+  {
+    "courseData_title": "Giới thiệu về lập trình hướng đối tượng trong JavaScript "
+  },
+
+  {
+    "courseData_title": "Nguyễn tắc thiết kế SOLID"
+  },
+
+  {
+    "courseData_title": "Builder"
+  },
+  {
+    "courseData_title": "Factory"
+  },
+  {
+    "courseData_title": "Prototype"
   }
 ]

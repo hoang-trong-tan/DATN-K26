@@ -8,13 +8,16 @@ const {
   createCourseType,
   findOneCourse,
   getCourseType,
+  getAllCourses,
+  getCourseByType,
+  getListSearchCourses,
 } = require("../service/course.service");
 
 // tao khoa hoc
 exports.createCourse = catchAsync(async (req, res, next) => {
   new CreatedResponse({
     message: "Create new course success",
-    data: await createCourse(req.body),
+    data: await createCourse(req.body, req.body.course_type),
   }).send(res);
 });
 
@@ -55,5 +58,29 @@ exports.findAllCourseType = catchAsync(async (req, res, next) => {
   new Ok({
     message: "find course type is sucess",
     data: await getCourseType(),
+  }).send(res);
+});
+
+// lay ra toan bo khoa hoc
+exports.findAllCourses = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "find courses is sucess",
+    data: await getAllCourses(req.query),
+  }).send(res);
+});
+
+// lay ra cac khoa hoc theo danh muc loai
+exports.findCoursesByType = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "find courses by type is sucess",
+    data: await getCourseByType({ ...req.query, query: req.params.id }),
+  }).send(res);
+});
+
+// tim kiem khoa hoc
+exports.getListSearchCourses = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "Get List Search Course Success!!",
+    data: await getListSearchCourses(req.params.keySearch),
   }).send(res);
 });

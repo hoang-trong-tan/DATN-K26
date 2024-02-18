@@ -4,7 +4,7 @@ const express = require("express");
 
 const router = express.Router();
 
-router.use("/course", require("./upload/index"));
-router.use("/course", require("../router/course/index"));
+router.use("/v1/api/course", require("./upload/index"));
+router.use("/v1/api/course", require("../router/course/index"));
 
 module.exports = router;

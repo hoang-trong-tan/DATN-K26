@@ -8,6 +8,7 @@ const {
   courseType,
 } = require("../course.model");
 
+// chi tiet khoa hoc
 const findOneCourseId = async (courseId, unSelect) => {
   const courseData = await getCourseData(courseId, unSelect);
   const totalLength = await calculateTotalLength(courseData, unSelect);
@@ -18,14 +19,60 @@ const findOneCourseId = async (courseId, unSelect) => {
   return { ...fullCourse, courseData };
 };
 
+// lay ra toan bo danh muc
 const findAllCourseType = async (unSelect) => {
   return await courseType.find().select(getUnSelect(unSelect)).lean();
+};
+
+// lay ra toan bo khoa hoc
+const findAllCourses = async ({ sort, limit, page, select }) => {
+  const skip = (page - 1) * limit;
+  const sortBy = sort === "ctime" ? { _id: -1 } : { _id: 1 };
+
+  const courses = await course
+    .find()
+    .sort(sortBy)
+    .skip(skip)
+    .limit(limit)
+    .select(select)
+    .lean();
+
+  return courses;
+};
+
+// lấy ra toàn bộ khóa học theo danh mục loại
+const queryCourseByType = async ({ query, limit, page, select }) => {
+  const skip = (page - 1) * limit;
+  console.log("query2::", query);
+  return await course
+    .find({ course_type: query })
+    .sort({ updateAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .select(select)
+    .lean()
+    .exec();
+};
+
+// tim kiem san pham theo ten
+const searchCourseByUser = async (keySearch) => {
+  const regexSearch = new RegExp(keySearch);
+
+  const result = await course
+    .find(
+      { $text: { $search: regexSearch } },
+      { score: { $meta: "textScore" } }
+    )
+    .sort({ score: { $meta: "textScore" } })
+    .lean();
+
+  return result;
 };
 
 const getCourseData = async (courseId, unSelect) => {
   const getcourseData = await courseData
     .find({ courseShema: courseId })
-    .populate("courseShema_id")
+    .populate("courseShema")
     .select(getUnSelect(unSelect))
     .lean();
   for (const data of getcourseData) {
@@ -60,4 +107,10 @@ const getFullCourse = async (courseId, unSelect) => {
     .lean();
 };
 
-module.exports = { findOneCourseId, findAllCourseType };
+module.exports = {
+  findOneCourseId,
+  findAllCourseType,
+  findAllCourses,
+  queryCourseByType,
+  searchCourseByUser,
+};
