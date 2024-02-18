@@ -73,14 +73,15 @@ exports.findAllCourses = catchAsync(async (req, res, next) => {
 exports.findCoursesByType = catchAsync(async (req, res, next) => {
   new Ok({
     message: "find courses by type is sucess",
-    data: await getCourseByType({ ...req.query, query: req.params.id }),
+    data: await getCourseByType({ ...req.query, courseTypeId: req.params.id }),
   }).send(res);
 });
 
 // tim kiem khoa hoc
 exports.getListSearchCourses = catchAsync(async (req, res, next) => {
+  console.log("type::", req.query.type);
   new Ok({
     message: "Get List Search Course Success!!",
-    data: await getListSearchCourses(req.params.keySearch),
+    data: await getListSearchCourses(req.query.type, req.query.keySearch),
   }).send(res);
 });
