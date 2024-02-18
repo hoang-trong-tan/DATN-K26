@@ -8,6 +8,8 @@ const {
   courseType,
 } = require("../course.model");
 
+const Types = { COURSE: "course", MENTOR: "mentor" };
+
 // chi tiet khoa hoc
 const findOneCourseId = async (courseId, unSelect) => {
   const courseData = await getCourseData(courseId, unSelect);
@@ -41,11 +43,10 @@ const findAllCourses = async ({ sort, limit, page, select }) => {
 };
 
 // lấy ra toàn bộ khóa học theo danh mục loại
-const queryCourseByType = async ({ query, limit, page, select }) => {
+const queryCourseByType = async ({ courseTypeId, limit, page, select }) => {
   const skip = (page - 1) * limit;
-  console.log("query2::", query);
   return await course
-    .find({ course_type: query })
+    .find({ course_type: courseTypeId })
     .sort({ updateAt: -1 })
     .skip(skip)
     .limit(limit)
@@ -55,10 +56,10 @@ const queryCourseByType = async ({ query, limit, page, select }) => {
 };
 
 // tim kiem san pham theo ten
-const searchCourseByUser = async (keySearch) => {
+const search = async (type, keySearch) => {
   const regexSearch = new RegExp(keySearch);
 
-  const result = await course
+  const searchCourse = await course
     .find(
       { $text: { $search: regexSearch } },
       { score: { $meta: "textScore" } }
@@ -66,7 +67,11 @@ const searchCourseByUser = async (keySearch) => {
     .sort({ score: { $meta: "textScore" } })
     .lean();
 
-  return result;
+  if (type === Types.COURSE) {
+    return searchCourse;
+  } else if (type === Types.MENTOR) {
+    return [];
+  }
 };
 
 const getCourseData = async (courseId, unSelect) => {
@@ -112,5 +117,5 @@ module.exports = {
   findAllCourseType,
   findAllCourses,
   queryCourseByType,
-  searchCourseByUser,
+  search,
 };

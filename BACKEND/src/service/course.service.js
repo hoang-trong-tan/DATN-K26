@@ -17,7 +17,7 @@ const {
   findAllCourseType,
   findAllCourses,
   queryCourseByType,
-  searchCourseByUser,
+  search,
 } = require("../model/repositories/course.repo");
 const { query } = require("express");
 
@@ -111,12 +111,11 @@ const getAllCourses = async ({ limit, sort = "ctime", page }) => {
 };
 
 // lay ra khoa hoc theo danh muc loai
-const getCourseByType = async ({ limit, page, query }) => {
-  console.log("query1::", query);
+const getCourseByType = async ({ limit, page, courseTypeId }) => {
   return await queryCourseByType({
     limit,
     page,
-    query,
+    courseTypeId,
     select: [
       "course_name",
       "course_thumnail",
@@ -134,8 +133,8 @@ const getCourseType = async () => {
 
 // tim kiem khoa hoc
 
-const getListSearchCourses = async (keySearch) => {
-  return await searchCourseByUser(keySearch);
+const getListSearchCourses = async (type, keySearch) => {
+  return await search(type, keySearch);
 };
 
 module.exports = {
