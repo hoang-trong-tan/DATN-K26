@@ -133,8 +133,18 @@ const getCourseType = async () => {
 
 // tim kiem khoa hoc
 
-const getListSearchCourses = async (type, keySearch) => {
-  return await search(type, keySearch);
+const getListSearchCourses = async ({ type, keySearch }) => {
+  return await search({
+    type,
+    keySearch,
+    select: [
+      "course_name",
+      "course_thumnail",
+      "course_price",
+      "course_ratingsAverage",
+      "course_slug",
+    ],
+  });
 };
 
 module.exports = {
