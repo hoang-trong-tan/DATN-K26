@@ -1,6 +1,5 @@
 "use strict";
 
-const { Types } = require("mongoose");
 const {
   NotFoundError,
   ConflictRequestError,
@@ -19,7 +18,6 @@ const {
   queryCourseByType,
   search,
 } = require("../model/repositories/course.repo");
-const { query } = require("express");
 
 const createCourse = async (payload, courseTypeId) => {
   const existingType = await courseType.findOne({ _id: courseTypeId });

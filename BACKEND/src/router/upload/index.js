@@ -1,20 +1,20 @@
 const express = require("express");
 const uploadController = require("../../controller/upload.controller");
-const parser = require("../../config/multer.cloudinary");
+const upload = require("../../config/multer.cloudinary");
 
 const router = express.Router();
 
 // router upload images
 router.post(
   "/upload-images",
-  parser.single("imgaes"),
+  upload.single("imgaes"),
   uploadController.uploadImages
 );
 
 // router upload video
 router.post(
   "/upload-video",
-  parser.single("video"),
+  upload.single("video"),
   uploadController.uploadVideo
 );
 module.exports = router;

@@ -1,52 +1,49 @@
-const cloudinary = require("../config/config.cloudinary");
-const uploadImages = async ({ path, folderName = "course/8409" }) => {
+const crypto = require("crypto");
+
+const {
+  s3,
+  PutObjectCommand,
+  DeleteBucketCommand,
+} = require("../config/config.awsS3");
+
+// upload file use S3client ///
+
+const uploadImages = async (file) => {
   try {
-    const result = await cloudinary.uploader.upload(path, {
-      resource_type: "image",
-      folder: folderName,
+    const randomImageName = `${crypto.randomBytes(16).toString("hex")}.png`;
+    const urlName = `${process.env.AWS_CLOUDFRONT_LINK}Images/${randomImageName}`;
+    const command = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: "Images/" + randomImageName,
+      Body: file.buffer,
+      ContentType: "image/jpeg",
     });
 
-    console.log("a::", result.secure_url);
-    return {
-      images_id: result.public_id,
-      images_url: result.secure_url,
-    };
+    await s3.send(command);
+
+    return urlName;
   } catch (error) {
-    console.log("Error update images::", error);
+    console.log("Error uploading image use S3Client::", error);
   }
 };
 
+//// END S3 Service///
+
 // Hàm upload video
-const uploadVideo = async ({ path, folderName = "videos/" }) => {
+const uploadVideo = async (file) => {
   try {
-    const result = await cloudinary.uploader.upload(path, {
-      resource_type: "video",
-      folder: folderName,
-      eager: [
-        { width: 300, height: 300, crop: "pad", audio_codec: "none" },
-        {
-          width: 160,
-          height: 100,
-          crop: "crop",
-          gravity: "south",
-          audio_codec: "none",
-        },
-      ],
-      eager_async: true,
-      format: "mp4",
+    const randomVideoName = `${crypto.randomBytes(16).toString("hex")}.mp4`;
+    const urlName = `${process.env.AWS_CLOUDFRONT_LINK}Video/${randomVideoName}`;
+    const command = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: "Video/" + randomVideoName,
+      Body: file.buffer,
+      ContentType: "video/mp4",
     });
 
-    // lấy thông tin video
-    const videoInfo = await cloudinary.api.resource(result.public_id, {
-      resource_type: "video",
-      image_metadata: true,
-    });
-    console.log("infor::", result);
-    // Trả về URL của video
-    return {
-      video_url: result.secure_url,
-      video_duration: videoInfo.video_duration,
-    };
+    await s3.send(command);
+
+    return urlName;
   } catch (error) {
     console.error("Error uploading video:", error);
     throw error; // Ném ra lỗi để xử lý ở nơi gọi hàm

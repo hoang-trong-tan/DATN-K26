@@ -12,9 +12,7 @@ exports.uploadVideo = catchAsync(async (req, res, next) => {
 
   new CreatedResponse({
     message: "upload video successfully!!",
-    data: await uploadVideo({
-      path: file.path,
-    }),
+    data: await uploadVideo(file),
   }).send(res);
 });
 
@@ -26,8 +24,6 @@ exports.uploadImages = catchAsync(async (req, res, next) => {
 
   new CreatedResponse({
     message: "upload images successfully!!",
-    data: await uploadImages({
-      path: file.path,
-    }),
+    data: await uploadImages(file),
   }).send(res);
 });

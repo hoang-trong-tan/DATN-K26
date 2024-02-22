@@ -79,8 +79,6 @@ exports.findCoursesByType = catchAsync(async (req, res, next) => {
 
 // tim kiem khoa hoc
 exports.getListSearchCourses = catchAsync(async (req, res, next) => {
-  console.log("type::", req.query.type);
-  console.log("query::", req.query);
   new Ok({
     message: "Get List Search Course Success!!",
     data: await getListSearchCourses({
