@@ -1,0 +1,44 @@
+header {
+    width: 100%;  
+}
+nav {
+    width: 100%;
+    height: 5rem; 
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #EAEAEB;
+}
+.header-nav-logo {
+    margin-top: 25px;
+}
+.header-nav-menu {
+    width: 75%;
+    justify-content: center;
+    align-items: center;
+
+}
+.header-nav-menu-items {
+    display: flex;
+    margin-top: 30px;
+    justify-content: center;
+
+}
+.header-nav-menu-details-items {
+    margin: 0 20px;
+    font-weight: 500;
+    font-size: 16px;
+}
+.header-nav-menu-details-items :hover {
+    color: blue;
+    border-bottom: 2px solid blue;
+}
+.header-nav-login {
+    margin-top: 25px;
+}
+.header-nav-login-wte {
+    font-size: 18px;
+}
+.header-nav-login-il {
+    color: blue;
+    border-bottom: 1px solid blue;
+}

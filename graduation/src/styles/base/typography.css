@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Sen:wght@400..800&display=swap");
+
+@font-face {
+  font-family: "Sen";
+  src: url("../../assets/fonts/Sen-Bold.ttf")
+    format("truetype");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Sen";
+  src: url("../../assets/fonts/Sen-Regular.ttf")
+    format("truetype");
+  font-weight: 400;
+}
