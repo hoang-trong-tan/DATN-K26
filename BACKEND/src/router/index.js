@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.use("/v1/api/", require("./upload/index"));
 router.use("/v1/api/course", require("../router/course/index"));
+router.use("/v1/api/user", require("../router/access/index"));
 
 module.exports = router;

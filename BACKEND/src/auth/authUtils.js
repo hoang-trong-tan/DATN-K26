@@ -2,25 +2,46 @@
 
 const JWT = require("jsonwebtoken");
 
-// Tao Token
-const createTokenPair = async ({ payload, publicKey, privateKey }) => {
+// Tao Token OTP
+const createTokenOtp = async (payload) => {
   /**
    * 1- tao mot ma code otp ngau nhien
    * 2- tao token gom access va refresh
    * 3- tra ve token va ma otp
    */
 
-  const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
+  try {
+    const otpCode = Math.floor(1000 + Math.random() * 9000).toString();
 
-  const accessToken = JWT.sign(payload, publicKey, otpCode, {
-    expiresIn: "2 days",
-  });
+    const activationToken = await JWT.sign(
+      { payload, otpCode },
+      process.env.PUBLICKEY,
+      {
+        expiresIn: "5m",
+      }
+    );
 
-  const refreshToken = JWT.sign(payload, privateKey, otpCode, {
-    expiresIn: "7 days",
-  });
-
-  return { accessToken, refreshToken, otpCode };
+    return { activationToken, otpCode };
+  } catch (error) {}
 };
 
-module.exports = { createTokenPair };
+// Tao AccessToken
+const createTokenPair = async (payload) => {
+  try {
+    const accessToken = await JWT.sign(payload, process.env.PUBLICKEY, {
+      expiresIn: "3 days",
+    });
+
+    JWT.verify(accessToken, process.env.PUBLICKEY, (err, decode) => {
+      if (err) {
+        console.error("error verify::", err);
+      } else {
+        console.error("Verify decode::", decode);
+      }
+    });
+
+    return accessToken;
+  } catch (error) {}
+};
+
+module.exports = { createTokenOtp, createTokenPair };

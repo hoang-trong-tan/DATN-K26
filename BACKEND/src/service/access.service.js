@@ -1,10 +1,15 @@
 "use strict";
 
 const userModel = require("../model/user.model");
-const { BadRequestError } = require("../core/error.response");
+const { BadRequestError, AuthFailureError } = require("../core/error.response");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto");
-const { createTokenPair } = require("../auth/authUtils");
+const ejs = require("ejs");
+const path = require("path");
+const { findByEmail } = require("../model/repositories/user.repo");
+const { createTokenOtp, createTokenPair } = require("../auth/authUtils");
+const sendMail = require("../util/sendMail");
+const JWT = require("jsonwebtoken");
+const { getinFoData } = require("../util");
 const RoleUser = {
   STUDENT: "student",
   TEACHER: "teacher",
@@ -15,42 +20,105 @@ const RoleUser = {
 const signUp = async ({ name, email, password }) => {
   /**
    * 1- Kiem tra email da ton tai hay chua
-   * 2-Ma hoa password
-   * 3-Tao tai khoan user
-   * 4-kiem tra tai khoan da duoc tao thanh cong hay chua
-   * 5-Neu thanh cong thi tao 2 privateKey dung de de sign refeshtoken to va publicKey sign cho accesstoken
-   * 6- tao token
+   * 2- tao mot cai publickey
+   * 3-Tao mot token de kich hoat
+   * 4- tra ve mot token de duoc kich hoat
+   * 5- nguoi dung check mail de xem ma otp
    */
 
-  const isEmailExist = await userModel.findOne({ email });
-
+  const isEmailExist = await findByEmail(email);
   if (isEmailExist) {
     throw new BadRequestError("User Is Already Registered");
   }
+  const payload = { name, email, password };
 
-  //const passwordHash = await bcrypt.hash(password, 10);
+  const token = await createTokenOtp(payload);
 
-  //   const newUser = await userModel.create({
-  //     name,
-  //     email,
-  //     password: passwordHash,
-  //     role: RoleUser.STUDENT,
-  //   });
+  const otpCode = token.otpCode;
 
-  if (!newUser) {
-    throw new BadRequestError("Registered Is Fail");
-  }
+  const data = { name, otpCode };
 
-  const publicKey = crypto.randomBytes(64).toString("hex");
-  const privateKey = crypto.randomBytes(64).toString("hex");
-
-  const tokens = await createTokenPair(
-    { userId: newUser._id, email },
-    publicKey,
-    privateKey
+  const html = await ejs.renderFile(
+    path.join(__dirname, "../mails/activation-mail.ejs"),
+    data
   );
 
-  const otpCode = tokens.otpCode;
+  try {
+    await sendMail({
+      email: payload.email,
+      subject: "Activate your account",
+      template: "activation-mail.ejs",
+      data,
+    });
+  } catch (error) {
+    console.error("Goi mail that bai::", error);
+  }
 
-  const data = { name: newUser.name, otpCode };
+  return { activationToken: token.activationToken };
 };
+
+// Kích hoạt tài khoản user
+const activateUser = async (payload) => {
+  const { activationToken, otpCode } = payload;
+  const decodeUser = await JWT.verify(activationToken, process.env.PUBLICKEY);
+
+  if (decodeUser.otpCode !== otpCode) {
+    throw new BadRequestError("Invalid activation code");
+  }
+
+  const { name, email, password } = decodeUser.payload;
+
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const newUser = await userModel.create({
+    user_name: name,
+    user_email: email,
+    user_password: passwordHash,
+    user_role: RoleUser.STUDENT,
+  });
+
+  return getinFoData(["_id", "user_name", "user_email"], newUser);
+};
+
+// Đăng Nhập
+const login = async (payload) => {
+  /**
+   * 1 - kiem tra su ton tai cua email
+   * 2 - so sanh password cua req voi password cua database
+   * 3 - tao mot accesstoken
+   * 4 - tra du lieu
+   */
+
+  const { user_email, user_password } = payload;
+
+  const foundUser = await findByEmail(user_email);
+
+  if (!foundUser) {
+    throw new BadRequestError("User not registered");
+  }
+  console.log("ok1");
+  const macthPassword = await bcrypt.compare(
+    user_password,
+    foundUser.user_password
+  );
+
+  if (!macthPassword) {
+    throw new AuthFailureError("Authentication Error");
+  }
+  const { _id: userId } = foundUser;
+
+  const userInFor = { userId, user_email };
+  const token = await createTokenPair(userInFor);
+  console.log("token::", token);
+  console.log("0k2");
+  console.log(
+    "he::",
+    getinFoData(["_id", "user_name", "user_email"], foundUser),
+    token
+  );
+  return {
+    metaData: getinFoData(["_id", "user_name", "user_email"], foundUser),
+    accessToken: token,
+  };
+};
+module.exports = { signUp, activateUser, login };
