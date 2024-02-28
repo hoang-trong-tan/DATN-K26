@@ -3,8 +3,8 @@
     "course_name": "Node.js, Express, MongoDB và hơn thế nữa: Bootcamp hoàn chỉnh 2024",
     "course_type": "Web Devlopment",
     "course_description": "Bạn có muốn xây dựng các ứng dụng back-end nhanh và mạnh mẽ bằng JavaScript không? Bạn có muốn trở thành một nhà phát triển hoàn thiện hơn và có nhu cầu cao hơn không? Vậy thì Node.js là công nghệ hấp dẫn để bạn học ngay bây giờ và bạn đã đến đúng nơi để học điều đó! Chào mừng bạn đến với Complete Node.js, Express và MongoDB Bootcamp, con đường nhanh chóng để bạn phát triển back-end hiện đại.",
-    "course_thumnail": "https://res.cloudinary.com/dpxghnhpx/image/upload/v1706949762/course/8409/sjavxfxe5vy548cb13tz.jpg",
-    "course_demoVideo": "https://res.cloudinary.com/dpxghnhpx/video/upload/v1706956394/videos/vodfic0ispiiuers4kp1.mp4",
+    "course_thumnail": "https://d3vtabhqvgxulr.cloudfront.net/Images/8210337e169eed23118c8d9bed28981c.png",
+    "course_demoVideo": "https://d3vtabhqvgxulr.cloudfront.net/Video/d7318c51aa6c6e7bb5a7a38067b9af98.mp4",
     "course_benefits": [
       "Đang xây dựng các ứng dụng web hoặc API RESTful Node.js nhanh, có thể mở rộng và mạnh mẽ của riêng bạn;",
       "Thực sự hiểu cách Node.js hoạt động ở backend;"
@@ -21,8 +21,8 @@
     "course_name": "Design Patterns in JavaScript",
     "course_type": "bốc id danh mục bỏ vô",
     "course_description": "Mẫu thiết kế là giải pháp có thể tái sử dụng cho các vấn đề lập trình phổ biến. Chúng được phổ biến rộng rãi với cuốn sách năm 1994  Các mẫu thiết kế: Các yếu tố của phần mềm hướng đối tượng có thể tái sử dụng  của  Erich Gamma, John Vlissides, Ralph Johnson và Richard Helm  (những người thường được gọi là Gang of Four, do đó là từ viết tắt của GoF).Cuốn sách gốc của GoF đã sử dụng C++ và Smalltalk làm ví dụ, nhưng kể từ đó, các mẫu thiết kế đã được điều chỉnh cho phù hợp với mọi ngôn ngữ lập trình có thể tưởng tượng được: C#, Java, Swift, Python và bây giờ - JavaScript!Sức hấp dẫn của các mẫu thiết kế là bất diệt: chúng ta thấy chúng trong các thư viện, một số trong số chúng có sẵn trong các ngôn ngữ lập trình và bạn có thể sử dụng chúng hàng ngày ngay cả khi bạn không nhận ra chúng ở đó.",
-    "course_thumnail": "https://res.cloudinary.com/dpxghnhpx/image/upload/v1708082256/course/8409/ovsmaevatl4k21htknsd.png",
-    "course_demoVideo": "https://res.cloudinary.com/dpxghnhpx/video/upload/v1708082419/videos/fgkxcgj54bsugqaere0m.mp4",
+    "course_thumnail": "https://d3vtabhqvgxulr.cloudfront.net/Images/3c5237c471ec4f60ee028e34b74524b1.png",
+    "course_demoVideo": "https://d3vtabhqvgxulr.cloudfront.net/Video/1c3f3f1231d892b18236bb9f12f626cb.mp4",
     "course_benefits": [
       "Thành thạo các mẫu patterns",
       "Biết cách áp dụng các mẫu patterns vào thực thế"

@@ -66,7 +66,9 @@ const createCourseVideo = async (coureId, payload) => {
 // tao the loai khoa học
 
 const createCourseType = async (payload) => {
-  const existingType = await courseType.findOne({ name: payload.type_name });
+  const existingType = await courseType.findOne({
+    type_name: payload.type_name,
+  });
 
   if (existingType) {
     throw new ConflictRequestError("Type is Exist");

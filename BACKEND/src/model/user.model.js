@@ -6,6 +6,7 @@ const DOCUMENT_NAME = "User";
 
 const COLLECTION_NAME = "Users";
 
+const emailRegexPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // Declare the Schema of the Mongo model
 const userSchema = new Schema(
   {
@@ -16,6 +17,12 @@ const userSchema = new Schema(
     user_email: {
       type: String,
       required: true,
+      validate: {
+        validator: function (value) {
+          return emailRegexPattern.test(value);
+        },
+        message: "please enter a valid email",
+      },
       unique: true,
     },
     user_password: {
@@ -24,12 +31,12 @@ const userSchema = new Schema(
     },
     user_avatar: {
       type: String,
-      required: true,
+      //required: true,
     },
     user_role: {
       type: String,
     },
-    user_isVerified: {
+    user_isBlocked: {
       type: Boolean,
       default: false,
     },

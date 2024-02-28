@@ -1,5 +1,11 @@
 "use strict";
 
+const _ = require("lodash");
+
+const getinFoData = (fileds = [], object = {}) => {
+  return _.pick(object, fileds);
+};
+
 // ['a', 'b'] => {a:0, b: 0}
 const getUnSelect = (select = []) => {
   const unSelect = {};
@@ -9,4 +15,4 @@ const getUnSelect = (select = []) => {
   return unSelect;
 };
 
-module.exports = getUnSelect;
+module.exports = { getUnSelect, getinFoData };
