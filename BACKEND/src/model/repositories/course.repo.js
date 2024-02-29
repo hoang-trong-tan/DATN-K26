@@ -1,6 +1,6 @@
 "use strict";
 
-const getUnSelect = require("../../util");
+const { getUnSelect } = require("../../util");
 const {
   course,
   courseData,
@@ -13,7 +13,9 @@ const Types = { COURSE: "course", MENTOR: "mentor" };
 // chi tiet khoa hoc
 const findOneCourseId = async (courseId, unSelect) => {
   const courseData = await getCourseData(courseId, unSelect);
+
   const totalLength = await calculateTotalLength(courseData, unSelect);
+
   const fullCourse = await getFullCourse(courseId, unSelect);
 
   fullCourse.totalLength = totalLength;
@@ -89,6 +91,7 @@ const getCourseData = async (courseId, unSelect) => {
     const courseDataVideo = await getCourseDataVideo(data._id, unSelect);
     data.courseDataVideo = courseDataVideo;
   }
+
   return getcourseData;
 };
 
