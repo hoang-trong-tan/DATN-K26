@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const compression = require("compression");
 const cors = require("cors");
+const { NotFoundError } = require("./core/error.response");
 const app = express();
 
 // Implement CORS
@@ -26,9 +27,9 @@ require("./dbs/init.mongodb");
 
 app.use("/", require("./router/index"));
 
-// handling error
-app.use((req, res, next) => {
-  const error = new Error("Not Found");
+//handling error
+app.all("*", (req, res, next) => {
+  const error = new Error(`Can't find ${req.originalUrl} on this server!`);
   error.status = 404;
   next(error);
 });
