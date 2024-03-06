@@ -31,7 +31,7 @@ const userSchema = new Schema(
     },
     user_avatar: {
       type: String,
-      //required: true,
+      default: "",
     },
     user_role: {
       type: String,

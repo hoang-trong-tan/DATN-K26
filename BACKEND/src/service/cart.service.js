@@ -4,11 +4,25 @@ const { BadRequestError } = require("../core/error.response");
 const cartModel = require("../model/cart.model");
 const { getCartByUser } = require("../model/repositories/cart.repo");
 
-const addCart = async (coureId, userId) => {
-  const existCourse = await cartModel.findOne({ courseShema: coureId });
+const checkIdCourse = async (coureId, userId) => {
+  const findCourse = await cartModel
+    .find({ userShema: userId })
+    .populate("courseShema");
 
-  if (existCourse) {
-    throw new BadRequestError("Course is exist in cart ");
+  for (let i = 0; i < findCourse.length; i++) {
+    if (findCourse[i].courseShema._id == coureId) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const addCart = async (coureId, userId) => {
+  const exitsCourse = await checkIdCourse(coureId, userId);
+
+  if (exitsCourse) {
+    throw new BadRequestError("Course is exits in cart");
   }
 
   const newCart = await cartModel.create({
