@@ -1,6 +1,12 @@
 "use strict";
 
 const JWT = require("jsonwebtoken");
+const catchAsync = require("../helper/catchAsync");
+const userModel = require("../model/user.model");
+const { AuthFailureError } = require("../core/error.response");
+const { findOneCourseId } = require("../model/repositories/course.repo");
+const { findOneCourse } = require("../service/course.service");
+const { getCourseIsNotPurchased } = require("../controller/course.controller");
 
 // Tao Token OTP
 const createTokenOtp = async (payload) => {

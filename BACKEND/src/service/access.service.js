@@ -38,7 +38,7 @@ const signUp = async ({ name, email, password }) => {
 
   const data = { name, otpCode };
 
-  const html = await ejs.renderFile(
+  await ejs.renderFile(
     path.join(__dirname, "../mails/activation-mail.ejs"),
     data
   );
@@ -94,28 +94,22 @@ const login = async (payload) => {
   const foundUser = await findByEmail(user_email);
 
   if (!foundUser) {
-    throw new BadRequestError("User not registered");
+    throw new BadRequestError("Email or Password are wrong");
   }
-  console.log("ok1");
+
   const macthPassword = await bcrypt.compare(
     user_password,
     foundUser.user_password
   );
 
   if (!macthPassword) {
-    throw new AuthFailureError("Authentication Error");
+    throw new BadRequestError("Email or Password are wrong");
   }
+
   const { _id: userId } = foundUser;
 
   const userInFor = { userId, user_email };
   const token = await createTokenPair(userInFor);
-  console.log("token::", token);
-  console.log("0k2");
-  console.log(
-    "he::",
-    getinFoData(["_id", "user_name", "user_email"], foundUser),
-    token
-  );
   return {
     metaData: getinFoData(["_id", "user_name", "user_email"], foundUser),
     accessToken: token,
