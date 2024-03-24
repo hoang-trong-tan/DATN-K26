@@ -1,0 +1,35 @@
+footer {
+    width: 100%;
+    height: 70px;
+    background-color: #1E1E2C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2.5rem;
+}
+.footer-logo {
+    display: flex;
+    align-items: center;
+    margin: 0 100px;
+}
+.footer-logo p{
+    color: #BCBCC0;
+    font-size: 18px;
+    margin-left: 20px;
+}
+.footer-menu {
+    margin: 0 100px;
+}
+.footer-menu-items {
+    display: flex;
+
+}
+.footer-menu-item {
+    color: #A4A4AA;
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 10px;
+}
+.footer-menu-item:hover {
+    color: gray;
+}

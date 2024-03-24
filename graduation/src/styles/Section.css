@@ -2,12 +2,12 @@ section {
     justify-content: center;
     display: flex;
     width: 100%;
-    height: 500px;
+    height: auto;
     margin-top: 100px;
 }
 .section-container-video {
     width: 848px;
-    height: 300px;
+    height: auto;
     margin: 0 25px;
 }
 .tutor-icon-star-line {
@@ -43,7 +43,7 @@ section {
     margin-top: 40px;
     width: 848px;
     height: 536px;
-    background-color: bisque;
+    background-color: black;
 }
 .section-container-slide-box {
     width: 334px;
@@ -52,38 +52,41 @@ section {
 .section-container-slide {
     position: relative;
     width: 334px;
-    height: 65vh;
+    height: auto;
     margin-top: 175px;
     scrollbar-width: 334px;
-    overflow-y: scroll; /* Hiển thị thanh cuộn theo chiều dọc */
+    overflow-y: hidden; /* Hiển thị thanh cuộn theo chiều dọc */
     scrollbar-width: thin; /* Điều chỉnh kích thước thanh cuộn */
     
 }
 .section-container-slide-header {
     width: 322px;
-    height: 80px;
+    height: auto;
     background-color: rgb(244, 246, 249);
     text-align: center;
-    border-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
     border: 1px solid #A8A8A8;
 }
 .section-container-slide-header-btn {
     width: 266px;
-    height: 34px;
-    border-radius: 6px;
+    height: auto;
+    border-radius:6px ;
     background-color: #5572D1;
     border: none;
-    margin-top: 22px;
+    margin:  22px 0;
     color: white;
     font-weight: 500;
     font-size: 16px;
     cursor: pointer;
+    padding: 1rem;
 }
 .section-container-slide-subheader {
     width: 322px;
     height: 140px;
-    background-color: rgb(244, 246, 249);
-    border-radius: 6px;
+    background-color: rgb(255, 255, 255);
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
     border: 1px solid #A8A8A8;
     border-top: 0px;
 }
@@ -132,14 +135,16 @@ section {
     width: 322px;
     height: 140px;
     background-color: rgb(244, 246, 249);
-    border-radius: 6px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
     border: 1px solid #A8A8A8;
 }
 .section-container-slide-footer {
     width: 322px;
     height: 440px;
     background-color: rgb(244, 246, 249);
-    border-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
     border: 1px solid #A8A8A8;
     border-top: 0px;
 }
@@ -187,7 +192,7 @@ section {
 .section-container-video-footer {
     margin-top: 50px;
     width: 848px;
-    height: 300px;
+    height: auto;
 }
 .section-container-video-footer-header {
     width: 100%;
@@ -203,7 +208,7 @@ section {
 .section-container-video-footer-info {
     text-align: center;
     margin: 10px 0px;
-    width: 150px;
+    width: 200px;
     height: 40px;
 }
 .section-container-video-footer-review {
@@ -216,9 +221,18 @@ section {
     border-bottom: 2px solid blue;
 }
 .section-container-video-footer-subheader h6{
-    margin: 30px 0;
+    margin: 25px 0;
     font-size: 24px;
     color: #5572D1;
+}
+.section-container-video-footer-subheader p{
+    line-height: 1.25;
+}
+.section-container-video-footer-subheader ul li{
+
+    line-height: 1.25;
+    list-style-type: disc;
+    margin-left: 1.25rem;    
 }
 .section-container-video-footer-course-content {
     margin-top: 30px;
@@ -239,6 +253,7 @@ section {
     padding: 16px;
     font-size: 18px;
     font-weight: 600;
+
 }
 .section-container-video-footer-course-content-array:hover {
     color: #5572D1;
@@ -252,29 +267,31 @@ section {
 }
 .section-container-video-footer-course-second-content-array {
     width: 100%;
-    height: 120px;
+    height: auto;
+    padding: 0.1rem;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     border: 1px solid #A8A8A8;
     border-top: none;
     position: relative;
+
 }
 .section-container-video-footer-course-second-content-array-arrl {
     display: flex;
     height: 40px;
-    position: relative;
+    justify-content: space-between;
 }
 .section-container-video-footer-course-second-content-array-arrl:hover {
     background-color: #EFF1F6;
 }
 .section-container-video-footer-course-second-content-array-arrl-logo {
     display: flex;
-    margin: 12px;
+    margin: auto 1rem;
 }
 .section-container-video-footer-course-second-content-array-arrl-eye {
     position: absolute;
     display: flex;
-    margin-left: 90%;
+    margin-left: 87%;
     margin-top: 12px;
 }
 .section-container-video-footer-course-second-content-array-arrl-logo a {
