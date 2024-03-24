@@ -31,7 +31,7 @@ const userSchema = new Schema(
     },
     user_avatar: {
       type: String,
-      //required: true,
+      default: "",
     },
     user_role: {
       type: String,
@@ -40,6 +40,18 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    user_course: [
+      {
+        courseId: {
+          type: Schema.Types.ObjectId,
+          ref: "Course",
+        },
+        process_Course: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
   },
   {
     collection: COLLECTION_NAME,

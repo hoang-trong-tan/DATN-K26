@@ -18,6 +18,8 @@ const {
   queryCourseByType,
   search,
 } = require("../model/repositories/course.repo");
+const userModel = require("../model/user.model");
+const JWT = require("jsonwebtoken");
 
 const createCourse = async (payload, courseTypeId) => {
   const existingType = await courseType.findOne({ _id: courseTypeId });
@@ -83,14 +85,34 @@ const createCourseType = async (payload) => {
 };
 
 // lay ra mot khoa hoc
-const findOneCourse = async (courseId) => {
-  return await findOneCourseId(courseId, [
+const getCoursePurchased = async (courseId, accessToken) => {
+  let fieldsToExclude = [
     "courseDataShema",
     "courseShema",
+    "video_url",
     "__v",
     "createdAt",
     "updatedAt",
-  ]);
+  ];
+
+  if (!accessToken) {
+    return await findOneCourseId(courseId, fieldsToExclude);
+  }
+
+  const decodeUser = JWT.verify(accessToken, process.env.PUBLICKEY);
+
+  const findUser = await userModel.findOne({ _id: decodeUser.userId });
+
+  const existCourse = findUser.user_course.find(
+    (course) => course._id.toString() === courseId
+  );
+
+  if (existCourse) {
+    // Nếu không tìm thấy khóa học trong user_course, loại bỏ trường "video_url" và trả về kết quả
+    fieldsToExclude = fieldsToExclude.filter((field) => field !== "video_url");
+  }
+
+  return await findOneCourseId(courseId, fieldsToExclude);
 };
 
 // lay ra toan bo khoa hoc
@@ -153,7 +175,7 @@ module.exports = {
   createCourse,
   createCourseData,
   createCourseVideo,
-  findOneCourse,
+  getCoursePurchased,
   createCourseType,
   getCourseType,
   getAllCourses,
