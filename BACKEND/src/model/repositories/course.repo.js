@@ -19,7 +19,6 @@ const findOneCourseId = async (courseId, unSelect) => {
   const fullCourse = await getFullCourse(courseId, unSelect);
 
   fullCourse.totalLength = totalLength;
-
   return { ...fullCourse, courseData };
 };
 

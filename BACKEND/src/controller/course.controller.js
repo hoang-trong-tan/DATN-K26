@@ -7,21 +7,18 @@ const {
   createCourseVideo,
   createCourseType,
   getCoursePurchased,
-  getCourseIsNotPurchased,
   getCourseType,
   getAllCourses,
   getCourseByType,
   getListSearchCourses,
+  getOneCourse,
 } = require("../service/course.service");
-const HEADER = {
-  ACCESSTOKEN: "x-atoken-id",
-};
 
 // tao khoa hoc
 exports.createCourse = catchAsync(async (req, res, next) => {
   new CreatedResponse({
     message: "Create new course success",
-    data: await createCourse(req.body, req.body.course_type),
+    data: await createCourse(req.body),
   }).send(res);
 });
 
@@ -49,12 +46,19 @@ exports.createCourseType = catchAsync(async (req, res, next) => {
   }).send(res);
 });
 
-// lay ra mot khoa hoc da mua
-exports.getCoursePurchased = catchAsync(async (req, res, next) => {
-  let accessToken = req.headers[HEADER.ACCESSTOKEN];
+// xem chi tiet khoa hoc
+exports.getOneCourse = catchAsync(async (req, res, next) => {
   new Ok({
     message: "find course is sucess",
-    data: await getCoursePurchased(req.params.id, accessToken),
+    data: await getOneCourse(req.params.id),
+  }).send(res);
+});
+
+// lay ra mot khoa hoc da mua
+exports.getCoursePurchased = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "find course is sucess",
+    data: await getCoursePurchased(req.params.id, req.user.userId),
   }).send(res);
 });
 
@@ -68,6 +72,7 @@ exports.findAllCourseType = catchAsync(async (req, res, next) => {
 
 // lay ra toan bo khoa hoc
 exports.findAllCourses = catchAsync(async (req, res, next) => {
+  console.log("Ok2");
   new Ok({
     message: "find courses is sucess",
     data: await getAllCourses(req.query),

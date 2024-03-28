@@ -5,17 +5,16 @@ const catchAsync = require("../helper/catchAsync");
 const { addCart, getCart, deleteCart } = require("../service/cart.service");
 
 exports.addCart = catchAsync(async (req, res, next) => {
-  const { courseShema, userShema } = req.body;
   new CreatedResponse({
     message: `Add course in cart is sucess`,
-    data: await addCart(courseShema, userShema),
+    data: await addCart(req.params.id, req.user.userId),
   }).send(res);
 });
 
 exports.getCartByUser = catchAsync(async (req, res, next) => {
   new Ok({
     message: `Get cart is sucess`,
-    data: await getCart(req.params.id, req.query.courseType),
+    data: await getCart(req.user.userId, req.query.courseType),
   }).send(res);
 });
 

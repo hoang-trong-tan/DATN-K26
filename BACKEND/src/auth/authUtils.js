@@ -1,12 +1,15 @@
 "use strict";
 
 const JWT = require("jsonwebtoken");
+
 const catchAsync = require("../helper/catchAsync");
+
+const { AuthFailureError, NotFoundError } = require("../core/error.response");
 const userModel = require("../model/user.model");
-const { AuthFailureError } = require("../core/error.response");
-const { findOneCourseId } = require("../model/repositories/course.repo");
-const { findOneCourse } = require("../service/course.service");
-const { getCourseIsNotPurchased } = require("../controller/course.controller");
+const HEADER = {
+  CLIENT_ID: "x-client-id",
+  ACCESSTOKEN: "x-atoken-id",
+};
 
 // Tao Token OTP
 const createTokenOtp = async (payload) => {
@@ -50,4 +53,49 @@ const createTokenPair = async (payload) => {
   } catch (error) {}
 };
 
-module.exports = { createTokenOtp, createTokenPair };
+const authentication = catchAsync(async (req, res, next) => {
+  /**
+   *  1 - Kiểm tra xem user có được truyền vào lại ko
+   *  2 - Kiểm tra user có trong database
+   *  3 - verify token
+   *  4 - kiểm tra user truyền vào có giống với user khi verify thành công
+   *  5 - ok tất cả thì next
+   */
+
+  //1
+  const userId = req.headers[HEADER.CLIENT_ID];
+  if (!userId) {
+    throw new AuthFailureError("Invalid Request");
+  }
+
+  //2
+  const checkUser = await userModel.findById(userId);
+
+  if (!checkUser) {
+    throw new NotFoundError("Not found user");
+  }
+
+  //3
+  if (req.headers[HEADER.ACCESSTOKEN]) {
+    try {
+      const accessToken = req.headers[HEADER.ACCESSTOKEN];
+      const decodeUser = await verifyJWT(accessToken, process.env.PUBLICKEY);
+      // 4
+      if (userId !== decodeUser.userId) {
+        throw new AuthFailureError("Invalid UserId");
+      }
+      //5
+      req.user = decodeUser;
+      req.accessToken = accessToken;
+      return next();
+    } catch (error) {
+      throw error;
+    }
+  }
+});
+
+const verifyJWT = async (token, publicKey) => {
+  return await JWT.verify(token, publicKey);
+};
+
+module.exports = { createTokenOtp, createTokenPair, authentication };
