@@ -10,7 +10,7 @@ const checkIdCourse = async (coureId, userId) => {
     .populate("courseShema");
 
   for (let i = 0; i < findCourse.length; i++) {
-    if (findCourse[i].courseShema._id == coureId) {
+    if (findCourse[i].courseShema._id.toString() === coureId) {
       return true;
     }
   }

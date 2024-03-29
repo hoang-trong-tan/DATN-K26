@@ -9,7 +9,7 @@ const getCartByUser = async ({ userId, unSlect, courseType }) => {
   const existUser = await userModel.findOne({ _id: userId });
 
   if (!existUser) {
-    throw new BadRequestError("User is not exist");
+    throw new BadRequestError("User is add cart");
   }
 
   const coursesInCart = await cartModel

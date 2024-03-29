@@ -19,19 +19,17 @@ const {
   search,
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
-const JWT = require("jsonwebtoken");
 
-const createCourse = async (payload, courseTypeId) => {
-  const existingType = await courseType.findOne({ _id: courseTypeId });
+const { verifyJWT } = require("../auth/authUtils");
+
+const createCourse = async (payload) => {
+  const existingType = await courseType.findOne({ _id: payload.course_type });
 
   if (!existingType) {
     throw new NotFoundError("Not Found Course Type!!");
   }
 
-  const newCourse = await course.create({
-    ...payload,
-    courseTypeId: existingType._id,
-  });
+  const newCourse = await course.create(payload);
   return newCourse;
 };
 
@@ -85,7 +83,7 @@ const createCourseType = async (payload) => {
 };
 
 // lay ra mot khoa hoc
-const getCoursePurchased = async (courseId, accessToken) => {
+const getCoursePurchased = async (courseId, userId) => {
   let fieldsToExclude = [
     "courseDataShema",
     "courseShema",
@@ -95,24 +93,30 @@ const getCoursePurchased = async (courseId, accessToken) => {
     "updatedAt",
   ];
 
-  if (!accessToken) {
-    return await findOneCourseId(courseId, fieldsToExclude);
-  }
-
-  const decodeUser = JWT.verify(accessToken, process.env.PUBLICKEY);
-
-  const findUser = await userModel.findOne({ _id: decodeUser.userId });
+  const findUser = await userModel.findOne({ _id: userId });
 
   const existCourse = findUser.user_course.find(
     (course) => course._id.toString() === courseId
   );
 
-  if (existCourse) {
-    // Nếu không tìm thấy khóa học trong user_course, loại bỏ trường "video_url" và trả về kết quả
-    fieldsToExclude = fieldsToExclude.filter((field) => field !== "video_url");
+  if (!existCourse) {
+    throw new BadRequestError("The course has not been purchased yet");
   }
 
+  fieldsToExclude = fieldsToExclude.filter((field) => field !== "video_url");
+
   return await findOneCourseId(courseId, fieldsToExclude);
+};
+
+const getOneCourse = async (courseId) => {
+  return await findOneCourseId(courseId, [
+    "courseDataShema",
+    "courseShema",
+    "video_url",
+    "__v",
+    "createdAt",
+    "updatedAt",
+  ]);
 };
 
 // lay ra toan bo khoa hoc
@@ -120,7 +124,6 @@ const getAllCourses = async ({ limit, sort = "ctime", page }) => {
   return await findAllCourses({
     limit,
     sort,
-    //filter,
     page,
     select: [
       "course_name",
@@ -181,4 +184,5 @@ module.exports = {
   getAllCourses,
   getCourseByType,
   getListSearchCourses,
+  getOneCourse,
 };

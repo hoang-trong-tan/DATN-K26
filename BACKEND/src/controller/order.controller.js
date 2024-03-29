@@ -19,8 +19,8 @@ exports.createVNPAY = catchAsync(async (req, res, next) => {
     message: "Create vnpay is success",
     data: await createVnpay({
       ipAddr,
-      courseId: req.body.courseId,
-      userId: req.params.id,
+      courseId: req.params.id,
+      userId: req.user.userId,
     }),
   }).send(res);
 });
@@ -28,8 +28,7 @@ exports.createVNPAY = catchAsync(async (req, res, next) => {
 // tra ve thong tin giao dich
 exports.vnpayReturn = catchAsync(async (req, res, next) => {
   const vnp_Params = req.query;
-  // const x = await vnpayReturn(vnp_Params);
-  // console.log("x::", x);
+
   new Ok({
     message: "payment is success",
     data: await vnpayReturn(vnp_Params),
