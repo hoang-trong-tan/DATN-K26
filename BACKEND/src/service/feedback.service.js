@@ -19,7 +19,7 @@ const calculateAvgRating = async (courseId) => {
     0
   );
 
-  return avgRating / reviewByCourseId.length;
+  return (avgRating / reviewByCourseId.length).toFixed(1);
 };
 
 // hàm cập nhật cái rating trung binh của khóa học
@@ -28,7 +28,6 @@ const updateCourseAverageRating = async (courseId, avgRating) => {
 
   if (checkCourse) {
     checkCourse.course_ratingsAverage = avgRating;
-
     await checkCourse.save();
   }
 };
