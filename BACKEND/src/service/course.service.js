@@ -100,7 +100,7 @@ const getCoursePurchased = async (courseId, userId) => {
   );
 
   if (!existCourse) {
-    throw new BadRequestError("The course has not been purchased yet");
+    return await findOneCourseId(courseId, fieldsToExclude);
   }
 
   fieldsToExclude = fieldsToExclude.filter((field) => field !== "video_url");
