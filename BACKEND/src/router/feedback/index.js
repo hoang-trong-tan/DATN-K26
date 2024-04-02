@@ -9,5 +9,8 @@ router.use(authentication);
 
 router.post("/review/:id", feedbackController.addReview);
 router.post("/reply-review/:id", feedbackController.replyReview);
+router.post("/add-question/:id", feedbackController.addQuestion);
+router.post("/add-anwser/:id", feedbackController.addAnwser);
+router.get("/get-question/:id", feedbackController.getAllQuestionByVideo);
 
 module.exports = router;

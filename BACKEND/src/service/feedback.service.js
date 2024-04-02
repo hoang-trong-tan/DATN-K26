@@ -1,11 +1,17 @@
 "use strict";
 
 const { NotFoundError, BadRequestError } = require("../core/error.response");
-const { course } = require("../model/course.model");
-const { review, replyReview } = require("../model/feedback.model");
+const { course, courseDataVideo } = require("../model/course.model");
+const {
+  review,
+  replyReview,
+  questionReview,
+  anwserReview,
+} = require("../model/feedback.model");
 const {
   getAllReview,
   getReviewsWithReplies,
+  getQuestionByVideo,
 } = require("../model/repositories/feedback.repo");
 
 const userModel = require("../model/user.model");
@@ -107,6 +113,59 @@ const addReplyReview = async ({ reviewId, courseId, comment, userId }) => {
   return newReplyReview;
 };
 
+const addQuestion = async ({ userId, courseId, videoId, question }) => {
+  const checkCourse = await course.findById(courseId);
+
+  if (!checkCourse) {
+    throw new BadRequestError("Course is not exist");
+  }
+
+  const findByIdVideo = await courseDataVideo.findById(videoId);
+
+  if (!findByIdVideo) {
+    throw new BadRequestError("Video is not exist");
+  }
+
+  const user = await userModel.findById(userId);
+
+  const existCourse = user.user_course.find(
+    (course) => course._id.toString() === courseId
+  );
+
+  if (!existCourse) {
+    throw new NotFoundError("You must purchase the course to comment");
+  }
+
+  const questionData = {
+    userId,
+    courseId,
+    videoId,
+    question_comment: question,
+  };
+
+  const newQuestion = await questionReview.create(questionData);
+
+  return newQuestion;
+};
+
+const addAnwser = async ({ questionId, userId, anwser }) => {
+  const findByIdQuestion = await questionReview.findById(questionId);
+
+  if (!findByIdQuestion) {
+    throw new BadRequestError("Question is not exist");
+  }
+
+  const anwserData = {
+    questionId,
+    userId,
+    answser_comment: anwser,
+  };
+
+  const newAnwser = await anwserReview.create(anwserData);
+
+  return newAnwser;
+};
+
 const getAllReviewByCourse = async ({ courseId, limit, page }) => {
   return await getAllReview({
     courseId,
@@ -123,4 +182,26 @@ const getAllReviewByCourse = async ({ courseId, limit, page }) => {
   });
 };
 
-module.exports = { addReview, getAllReviewByCourse, addReplyReview };
+const getAllQuestionByVideo = async ({ videoId, limit, page }) => {
+  return await getQuestionByVideo({
+    videoId,
+    limit,
+    page,
+    select: [
+      "userId",
+      "user_avatar",
+      "answser_comment",
+      "question_comment",
+      "createdAt",
+    ],
+  });
+};
+
+module.exports = {
+  addReview,
+  getAllReviewByCourse,
+  addReplyReview,
+  addQuestion,
+  getAllQuestionByVideo,
+  addAnwser,
+};
