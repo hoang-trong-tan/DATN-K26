@@ -65,8 +65,64 @@ const replyReviewSchema = new Schema(
   }
 );
 
+const questionSchema = new Schema(
+  {
+    videoId: {
+      type: Schema.Types.ObjectId,
+      ref: "CourseDataVideo",
+      required: true,
+    },
+
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
+    courseId: {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+      required: true,
+    },
+    question_comment: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    collection: "QuestionReviews",
+    timestamps: true,
+  }
+);
+
+const anwserSchema = new Schema(
+  {
+    questionId: {
+      type: Schema.Types.ObjectId,
+      ref: "QuestionReview",
+      required: true,
+    },
+
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    answser_comment: {
+      type: String,
+      required: true,
+    },
+  },
+  {
+    collection: "AnwserReviews",
+    timestamps: true,
+  }
+);
+
 //Export the model
 module.exports = {
   review: model(DOCUMENT_NAME, reviewSchema),
   replyReview: model("ReplyReview", replyReviewSchema),
+  questionReview: model("QuestionReview", questionSchema),
+  anwserReview: model("AnswerReview", anwserSchema),
 };
