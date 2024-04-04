@@ -1,12 +1,16 @@
 const express = require("express");
 const cartController = require("../../controller/cart.controller");
-const { authentication } = require("../../auth/authUtils");
+const { authentication, authorizeRoles } = require("../../auth/authUtils");
 const router = express.Router();
 
 router.use(authentication);
 
-router.post("/:id", cartController.addCart);
-router.get("", cartController.getCartByUser);
-router.delete("/:id", cartController.deleteCartInCart);
+router.post("/:id", authorizeRoles("student"), cartController.addCart);
+router.get("", authorizeRoles("student"), cartController.getCartByUser);
+router.delete(
+  "/:id",
+  authorizeRoles("student"),
+  cartController.deleteCartInCart
+);
 
 module.exports = router;

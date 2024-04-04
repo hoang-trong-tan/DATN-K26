@@ -1,7 +1,7 @@
 const express = require("express");
 const uploadController = require("../../controller/upload.controller");
 const upload = require("../../config/config.multer");
-const { authentication } = require("../../auth/authUtils");
+const { authentication, authorizeRoles } = require("../../auth/authUtils");
 const router = express.Router();
 
 router.use(authentication);
@@ -9,6 +9,7 @@ router.use(authentication);
 // router upload images
 router.post(
   "/upload-images",
+  authorizeRoles("teacher"),
   upload.single("imgaes"),
   uploadController.uploadImages
 );
@@ -16,6 +17,7 @@ router.post(
 // router upload video
 router.post(
   "/upload-video",
+  authorizeRoles("teacher"),
   upload.single("video"),
   uploadController.uploadVideo
 );

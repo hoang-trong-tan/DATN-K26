@@ -78,7 +78,7 @@ const questionSchema = new Schema(
       ref: "User",
       required: true,
     },
-
+    video_time: { type: Number },
     courseId: {
       type: Schema.Types.ObjectId,
       ref: "Course",

@@ -113,7 +113,13 @@ const addReplyReview = async ({ reviewId, courseId, comment, userId }) => {
   return newReplyReview;
 };
 
-const addQuestion = async ({ userId, courseId, videoId, question }) => {
+const addQuestion = async ({
+  userId,
+  videoTime,
+  courseId,
+  videoId,
+  question,
+}) => {
   const checkCourse = await course.findById(courseId);
 
   if (!checkCourse) {
@@ -138,10 +144,13 @@ const addQuestion = async ({ userId, courseId, videoId, question }) => {
 
   const questionData = {
     userId,
+    video_time: videoTime,
     courseId,
     videoId,
     question_comment: question,
   };
+
+  console.log("questionData", questionData);
 
   const newQuestion = await questionReview.create(questionData);
 
