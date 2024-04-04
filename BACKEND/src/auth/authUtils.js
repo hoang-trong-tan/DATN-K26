@@ -4,7 +4,11 @@ const JWT = require("jsonwebtoken");
 
 const catchAsync = require("../helper/catchAsync");
 
-const { AuthFailureError, NotFoundError } = require("../core/error.response");
+const {
+  AuthFailureError,
+  NotFoundError,
+  FobiddenError,
+} = require("../core/error.response");
 const userModel = require("../model/user.model");
 const HEADER = {
   CLIENT_ID: "x-client-id",
@@ -84,8 +88,12 @@ const authentication = catchAsync(async (req, res, next) => {
       if (userId !== decodeUser.userId) {
         throw new AuthFailureError("Invalid UserId");
       }
+
+      const findUser = await userModel.findById(decodeUser.userId);
       //5
       req.user = decodeUser;
+      req.user.user_role = findUser.user_role;
+
       req.accessToken = accessToken;
       return next();
     } catch (error) {
@@ -98,4 +106,20 @@ const verifyJWT = async (token, publicKey) => {
   return await JWT.verify(token, publicKey);
 };
 
-module.exports = { createTokenOtp, createTokenPair, authentication };
+const authorizeRoles = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.user_role || "")) {
+      throw new FobiddenError(
+        `Role: ${req.user.user_role} is not allowed to access this resource`
+      );
+    }
+    next();
+  };
+};
+
+module.exports = {
+  createTokenOtp,
+  createTokenPair,
+  authentication,
+  authorizeRoles,
+};

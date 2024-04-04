@@ -115,4 +115,5 @@ const login = async (payload) => {
     accessToken: token,
   };
 };
+
 module.exports = { signUp, activateUser, login };
