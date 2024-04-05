@@ -45,7 +45,6 @@ exports.getAllReviewByCourse = catchAsync(async (req, res, next) => {
 
 // them cau hoi
 exports.addQuestion = catchAsync(async (req, res, next) => {
-  console.log("ok::", req.body.video_time);
   new CreatedResponse({
     message: "add question is sucess",
     data: await addQuestion({

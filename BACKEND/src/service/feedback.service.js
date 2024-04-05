@@ -150,8 +150,6 @@ const addQuestion = async ({
     question_comment: question,
   };
 
-  console.log("questionData", questionData);
-
   const newQuestion = await questionReview.create(questionData);
 
   return newQuestion;
@@ -199,6 +197,7 @@ const getAllQuestionByVideo = async ({ videoId, limit, page }) => {
     select: [
       "userId",
       "user_avatar",
+      "video_time",
       "answser_comment",
       "question_comment",
       "createdAt",
