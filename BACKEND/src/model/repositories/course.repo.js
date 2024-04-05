@@ -63,13 +63,9 @@ const search = async ({ type, keySearch, select, limit, page }) => {
   const skip = (page - 1) * limit;
 
   const searchCourse = await course
-    .find(
-      { $text: { $search: regexSearch } }
-      // { score: { $meta: "textScore" } }
-    )
+    .find({ $text: { $search: regexSearch } })
     .skip(skip)
     .limit(limit)
-    // .sort({ score: { $meta: "textScore" } })
     .select(select)
     .lean();
 
