@@ -38,7 +38,7 @@ const updateCourseAverageRating = async (courseId, avgRating) => {
   }
 };
 
-const checkUserId = async (userId, courseId) => {
+const checkUserReview = async (userId, courseId) => {
   const findCourse = await review.find({ courseId }).populate("userId");
 
   for (let i = 0; i < findCourse.length; i++) {
@@ -50,10 +50,10 @@ const checkUserId = async (userId, courseId) => {
 };
 
 const addReview = async ({ userId, courseId, rating, comment }) => {
-  const existUser = await checkUserId(userId, courseId);
+  const existUser = await checkUserReview(userId, courseId);
 
   if (existUser) {
-    throw new BadRequestError("Reviewed only once");
+    throw new BadRequestError("Only one review is allowed ");
   }
 
   const checkCourse = await course.findById(courseId);
@@ -212,4 +212,5 @@ module.exports = {
   addQuestion,
   getAllQuestionByVideo,
   addAnwser,
+  checkUserReview,
 };

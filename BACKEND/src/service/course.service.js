@@ -19,8 +19,7 @@ const {
   search,
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
-
-const { verifyJWT } = require("../auth/authUtils");
+const { checkUserReview } = require("./feedback.service");
 
 const createCourse = async (payload) => {
   const existingType = await courseType.findOne({ _id: payload.course_type });
@@ -93,6 +92,8 @@ const getCoursePurchased = async (courseId, userId) => {
     "updatedAt",
   ];
 
+  const isUserReview = await checkUserReview(userId, courseId);
+
   const findUser = await userModel.findOne({ _id: userId });
 
   const existCourse = findUser.user_course.find(
@@ -105,13 +106,18 @@ const getCoursePurchased = async (courseId, userId) => {
 
   fieldsToExclude = fieldsToExclude.filter((field) => field !== "video_url");
 
-  return await findOneCourseId(courseId, fieldsToExclude);
+  const course = await findOneCourseId(courseId, fieldsToExclude);
+  return {
+    ...course,
+    is_user_review: isUserReview,
+  };
 };
 
 const getOneCourse = async (courseId) => {
   return await findOneCourseId(courseId, [
     "courseDataShema",
     "courseShema",
+    "courseData",
     "video_url",
     "__v",
     "createdAt",

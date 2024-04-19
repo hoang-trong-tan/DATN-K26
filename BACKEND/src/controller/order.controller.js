@@ -1,11 +1,7 @@
 "use strict";
 const { CreatedResponse, Ok } = require("../core/sucess.response");
 const catchAsync = require("../helper/catchAsync");
-const {
-  createOder,
-  createVnpay,
-  vnpayReturn,
-} = require("../service/order.service");
+const { createVnpay, vnpayReturn } = require("../service/order.service");
 
 // tao payment vnpay
 exports.createVNPAY = catchAsync(async (req, res, next) => {

@@ -35,7 +35,9 @@ const createTokenOtp = async (payload) => {
     );
 
     return { activationToken, otpCode };
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Tao AccessToken
@@ -54,12 +56,14 @@ const createTokenPair = async (payload) => {
     });
 
     return accessToken;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 };
 
 const authentication = catchAsync(async (req, res, next) => {
   /**
-   *  1 - Kiểm tra xem user có được truyền vào lại ko
+   *  1 - Kiểm tra xem user có được truyền vào ko
    *  2 - Kiểm tra user có trong database
    *  3 - verify token
    *  4 - kiểm tra user truyền vào có giống với user khi verify thành công

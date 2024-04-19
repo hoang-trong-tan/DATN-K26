@@ -51,7 +51,7 @@ const signUp = async ({ name, email, password }) => {
       data,
     });
   } catch (error) {
-    console.error("Goi mail that bai::", error);
+    throw error;
   }
 
   return { activationToken: token.activationToken };
