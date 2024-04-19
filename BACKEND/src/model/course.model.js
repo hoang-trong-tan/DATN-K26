@@ -94,7 +94,7 @@ const courseShema = new Schema(
     },
     course_ratingsAverage: {
       type: Number,
-      default: 4.5,
+      default: 0,
     },
   },
   {

@@ -7,6 +7,7 @@ const {
   courseDataVideo,
   courseType,
 } = require("../course.model");
+const { quiz } = require("../quiz.model");
 
 const Types = { COURSE: "course", MENTOR: "mentor" };
 
@@ -84,7 +85,9 @@ const getCourseData = async (courseId, unSelect) => {
     .lean();
   for (const data of getcourseData) {
     const courseDataVideo = await getCourseDataVideo(data._id, unSelect);
+    const courseDataQuizs = await getCourseDataQuizs(data._id, unSelect);
     data.courseDataVideo = courseDataVideo;
+    data.courseDataQuiz = courseDataQuizs;
   }
 
   return getcourseData;
@@ -93,6 +96,13 @@ const getCourseData = async (courseId, unSelect) => {
 const getCourseDataVideo = async (courseDataId, unSelect) => {
   return await courseDataVideo
     .find({ courseDataShema: courseDataId })
+    .select(getUnSelect(unSelect))
+    .lean();
+};
+
+const getCourseDataQuizs = async (courseDataId, unSelect) => {
+  return await quiz
+    .find({ courseData: courseDataId })
     .select(getUnSelect(unSelect))
     .lean();
 };

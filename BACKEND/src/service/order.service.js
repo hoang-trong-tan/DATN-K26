@@ -130,7 +130,6 @@ const createVnpay = async ({ ipAddr, courseId, userId }) => {
 
 const vnpayReturn = async (vnp_Params) => {
   let inforPayment = cutString(vnp_Params["vnp_OrderInfo"]);
-
   let secureHash = vnp_Params["vnp_SecureHash"];
 
   delete vnp_Params["vnp_SecureHash"];
