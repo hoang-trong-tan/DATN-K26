@@ -18,7 +18,7 @@ const {
 exports.createCourse = catchAsync(async (req, res, next) => {
   new CreatedResponse({
     message: "Create new course success",
-    data: await createCourse(req.body),
+    data: await createCourse(req.body, req.user.userId),
   }).send(res);
 });
 

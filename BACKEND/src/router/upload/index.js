@@ -9,7 +9,7 @@ router.use(authentication);
 // router upload images
 router.post(
   "/upload-images",
-  authorizeRoles("teacher"),
+  authorizeRoles("teacher", "student", "admin"),
   upload.single("imgaes"),
   uploadController.uploadImages
 );

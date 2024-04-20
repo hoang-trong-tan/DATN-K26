@@ -1,5 +1,6 @@
 "use strict";
 
+const { checkIdQuiz } = require("../../service/quiz.service");
 const { getUnSelect } = require("../../util");
 const {
   course,
@@ -35,6 +36,7 @@ const findAllCourses = async ({ sort, limit, page, select }) => {
 
   const courses = await course
     .find()
+    .populate("user_teacher", "user_name user_avatar")
     .sort(sortBy)
     .skip(skip)
     .limit(limit)
@@ -49,6 +51,7 @@ const queryCourseByType = async ({ courseTypeId, limit, page, select }) => {
   const skip = (page - 1) * limit;
   return await course
     .find({ course_type: courseTypeId })
+    .populate("user_teacher", "user_name user_avatar")
     .sort({ updateAt: -1 })
     .skip(skip)
     .limit(limit)

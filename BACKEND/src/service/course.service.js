@@ -21,14 +21,17 @@ const {
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
 
-const createCourse = async (payload) => {
+const createCourse = async (payload, teacherId) => {
   const existingType = await courseType.findOne({ _id: payload.course_type });
 
   if (!existingType) {
     throw new NotFoundError("Not Found Course Type!!");
   }
 
-  const newCourse = await course.create(payload);
+  const newCourse = await course.create({
+    ...payload,
+    user_teacher: teacherId,
+  });
   return newCourse;
 };
 
@@ -86,6 +89,7 @@ const getCoursePurchased = async (courseId, userId) => {
   let fieldsToExclude = [
     "courseDataShema",
     "courseShema",
+    "courseData",
     "video_url",
     "__v",
     "createdAt",

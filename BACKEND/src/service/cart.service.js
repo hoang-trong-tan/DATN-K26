@@ -4,7 +4,7 @@ const { BadRequestError } = require("../core/error.response");
 const cartModel = require("../model/cart.model");
 const { getCartByUser } = require("../model/repositories/cart.repo");
 
-const checkIdCourse = async (coureId, userId) => {
+const checkIdCourseInCart = async (coureId, userId) => {
   const findCourse = await cartModel
     .find({ userShema: userId })
     .populate("courseShema");
@@ -19,7 +19,7 @@ const checkIdCourse = async (coureId, userId) => {
 };
 
 const addCart = async (coureId, userId) => {
-  const exitsCourse = await checkIdCourse(coureId, userId);
+  const exitsCourse = await checkIdCourseInCart(coureId, userId);
 
   if (exitsCourse) {
     throw new BadRequestError("Course is exits in cart");
@@ -53,4 +53,4 @@ const getCart = async (userId, courseType) => {
   });
 };
 
-module.exports = { addCart, getCart, deleteCart };
+module.exports = { addCart, getCart, deleteCart, checkIdCourseInCart };

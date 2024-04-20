@@ -93,4 +93,5 @@ module.exports = {
   printQuizQuestion,
   createAnswerQuiz,
   printResultQuestion,
+  checkIdQuiz,
 };
