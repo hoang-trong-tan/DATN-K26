@@ -1,5 +1,6 @@
 const express = require("express");
 const courseController = require("../../controller/course.controller");
+const userController = require("../../controller/user.controller");
 const { authentication, authorizeRoles } = require("../../auth/authUtils");
 const router = express.Router();
 
@@ -16,6 +17,13 @@ router.get(
   authorizeRoles("student", "teacher"),
   courseController.getCoursePurchased
 );
+
+router.patch(
+  "/update-process-learn/:id",
+  authorizeRoles("student"),
+  userController.updateProcessLearn
+);
+
 router.post(
   "/create-course",
   authorizeRoles("teacher"),

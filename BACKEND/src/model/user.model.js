@@ -52,6 +52,17 @@ const userSchema = new Schema(
         },
       },
     ],
+    user_about: {
+      type: String,
+      default: "",
+    },
+    user_experience: [
+      {
+        company: String,
+        title: String,
+        description: String,
+      },
+    ],
   },
   {
     collection: COLLECTION_NAME,

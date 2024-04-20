@@ -61,7 +61,7 @@ const createOder = async ({ courseId, userId, deliveryCode }) => {
       });
     }
   } catch (error) {
-    console.error("Goi mail that bai::", error);
+    throw error;
   }
 
   user.user_course.push(existCourse._id);

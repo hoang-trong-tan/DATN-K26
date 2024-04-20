@@ -96,6 +96,10 @@ const courseShema = new Schema(
       type: Number,
       default: 0,
     },
+    user_teacher: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   {
     collection: COLLECTION_NAME,

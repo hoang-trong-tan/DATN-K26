@@ -23,7 +23,7 @@ const uploadImages = async (file) => {
 
     return urlName;
   } catch (error) {
-    console.log("Error uploading image use S3Client::", error);
+    throw error; // Ném ra lỗi để xử lý ở nơi gọi hàm
   }
 };
 
@@ -45,7 +45,6 @@ const uploadVideo = async (file) => {
 
     return urlName;
   } catch (error) {
-    console.error("Error uploading video:", error);
     throw error; // Ném ra lỗi để xử lý ở nơi gọi hàm
   }
 };
