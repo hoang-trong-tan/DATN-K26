@@ -5,12 +5,8 @@ const router = express.Router();
 
 router.use(authentication);
 
-router.post("/:id", authorizeRoles("student"), cartController.addCart);
-router.get("", authorizeRoles("student"), cartController.getCartByUser);
-router.delete(
-  "/:id",
-  authorizeRoles("student"),
-  cartController.deleteCartInCart
-);
+router.post("/:id", cartController.addCart);
+router.get("", cartController.getCartByUser);
+router.delete("/:id", cartController.deleteCartInCart);
 
 module.exports = router;

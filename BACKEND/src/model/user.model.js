@@ -70,5 +70,9 @@ const userSchema = new Schema(
   }
 );
 
+// create index for search
+
+userSchema.index({ user_name: "text" });
+
 //Export the model
 module.exports = model(DOCUMENT_NAME, userSchema);

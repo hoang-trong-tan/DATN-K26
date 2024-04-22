@@ -1,5 +1,6 @@
 "use strict";
 
+const { sum } = require("lodash");
 const { checkIdQuiz } = require("../../service/quiz.service");
 const { getUnSelect } = require("../../util");
 const {
@@ -9,6 +10,7 @@ const {
   courseType,
 } = require("../course.model");
 const { quiz } = require("../quiz.model");
+const userModel = require("../user.model");
 
 const Types = { COURSE: "course", MENTOR: "mentor" };
 
@@ -16,12 +18,12 @@ const Types = { COURSE: "course", MENTOR: "mentor" };
 const findOneCourseId = async (courseId, unSelect) => {
   const courseData = await getCourseData(courseId, unSelect);
 
-  const totalLength = await calculateTotalLength(courseData, unSelect);
+  const totalLength = await calculateTotalLength(courseData);
 
   const fullCourse = await getFullCourse(courseId, unSelect);
-
-  fullCourse.totalLength = totalLength;
-  return { ...fullCourse, courseData };
+  fullCourse.total_length_video = totalLength;
+  //fullCourse.total_length = totalLength;
+  return { ...fullCourse, course_data: courseData };
 };
 
 // lay ra toan bo danh muc
@@ -68,6 +70,14 @@ const search = async ({ type, keySearch, select, limit, page }) => {
 
   const searchCourse = await course
     .find({ $text: { $search: regexSearch } })
+    .populate("user_teacher", "user_name user_avatar")
+    .skip(skip)
+    .limit(limit)
+    .select(select)
+    .lean();
+
+  const searchMentor = await userModel
+    .find({ $text: { $search: regexSearch }, user_role: "teacher" })
     .skip(skip)
     .limit(limit)
     .select(select)
@@ -76,7 +86,7 @@ const search = async ({ type, keySearch, select, limit, page }) => {
   if (type === Types.COURSE) {
     return searchCourse;
   } else if (type === Types.MENTOR) {
-    return [];
+    return searchMentor;
   }
 };
 
@@ -89,8 +99,12 @@ const getCourseData = async (courseId, unSelect) => {
   for (const data of getcourseData) {
     const courseDataVideo = await getCourseDataVideo(data._id, unSelect);
     const courseDataQuizs = await getCourseDataQuizs(data._id, unSelect);
-    data.courseDataVideo = courseDataVideo;
-    data.courseDataQuiz = courseDataQuizs;
+    const sumLengthVideo = calculateTotalLengthSection(courseDataVideo);
+    data.course_data_video = {
+      course_video: courseDataVideo,
+      total_video_section: sumLengthVideo,
+    };
+    data.course_data_quiz = courseDataQuizs;
   }
 
   return getcourseData;
@@ -110,14 +124,20 @@ const getCourseDataQuizs = async (courseDataId, unSelect) => {
     .lean();
 };
 
-const calculateTotalLength = async (courseData, unSelect) => {
+const calculateTotalLength = async (courseData) => {
+  const totalLengthVideo = courseData.reduce(
+    (total, curr) => total + curr.course_data_video.total_video_section,
+    0
+  );
+  return totalLengthVideo;
+};
+
+const calculateTotalLengthSection = (courseDataVideo) => {
   let totalLength = 0;
-  for (const data of courseData) {
-    const courseDataVideos = await getCourseDataVideo(data._id, unSelect);
-    for (const video of courseDataVideos) {
-      totalLength += Math.round(video.video_length);
-    }
+  for (const data of courseDataVideo) {
+    totalLength += Math.round(data.video_length);
   }
+
   return totalLength;
 };
 

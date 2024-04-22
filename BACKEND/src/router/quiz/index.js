@@ -18,20 +18,8 @@ router.post(
   authorizeRoles("teacher"),
   quizController.createQuestionQuiz
 );
-router.post(
-  "/submit-quiz/:id",
-  authorizeRoles("student"),
-  quizController.createAnswerQuiz
-);
-router.get(
-  "/get-question-quiz/:id",
-  authorizeRoles("student"),
-  quizController.getQuestionQuiz
-);
-router.get(
-  "/show-answer-quiz/:id",
-  authorizeRoles("student"),
-  quizController.getResultQuiz
-);
+router.post("/submit-quiz/:id", quizController.createAnswerQuiz);
+router.get("/get-question-quiz/:id", quizController.getQuestionQuiz);
+router.get("/show-answer-quiz/:id", quizController.getResultQuiz);
 
 module.exports = router;

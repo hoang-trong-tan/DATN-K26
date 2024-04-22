@@ -12,11 +12,7 @@ router.get("/get-course-by-type/:id", courseController.findCoursesByType);
 
 router.use(authentication);
 
-router.get(
-  "/get-one-course/learn/:id",
-  authorizeRoles("student", "teacher"),
-  courseController.getCoursePurchased
-);
+router.get("/get-one-course/learn/:id", courseController.getCoursePurchased);
 
 router.patch(
   "/update-process-learn/:id",
@@ -30,12 +26,12 @@ router.post(
   courseController.createCourse
 );
 router.post(
-  "/update-course-data/:id",
+  "/create-course-data/:id",
   authorizeRoles("teacher"),
   courseController.createCourseData
 );
 router.post(
-  "/update-course-video/:id",
+  "/create-course-video/:id",
   authorizeRoles("teacher"),
   courseController.createCourseVideo
 );
