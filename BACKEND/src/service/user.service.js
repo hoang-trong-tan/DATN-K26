@@ -49,7 +49,7 @@ const printInfoUser = async (userId) => {
 
 // update thông tin giảng viên
 
-const updateProfileTeacher = async (userId, payload) => {
+const updateProfileUser = async (userId, payload) => {
   return await userModel.findOneAndUpdate({ _id: userId }, payload, {
     new: true,
   });
@@ -81,7 +81,7 @@ const getAllCoursesByTeacher = async ({ teacherId, limit, page }) => {
 module.exports = {
   processLearnUser,
   printInfoUser,
-  updateProfileTeacher,
+  updateProfileUser,
   printInfoTeacher,
   getAllCoursesByTeacher,
 };

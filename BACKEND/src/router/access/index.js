@@ -13,15 +13,7 @@ router.get("/all-course-teacher/:id", userController.getAllCoursesTeacher);
 
 router.use(authentication);
 
-router.get(
-  "/information",
-  authorizeRoles("teacher", "admin", "student"),
-  userController.printUser
-);
-router.patch(
-  "/update-profile",
-  authorizeRoles("teacher"),
-  userController.updateProfileTeacher
-);
+router.get("/information", userController.printUser);
+router.patch("/update-profile", userController.updateProfileUser);
 
 module.exports = router;

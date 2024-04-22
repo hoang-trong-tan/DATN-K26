@@ -5,7 +5,7 @@ const catchAsync = require("../helper/catchAsync");
 const {
   processLearnUser,
   printInfoUser,
-  updateProfileTeacher,
+  updateProfileUser,
   printInfoTeacher,
   getAllCoursesByTeacher,
 } = require("../service/user.service");
@@ -50,9 +50,9 @@ exports.getAllCoursesTeacher = catchAsync(async (req, res, next) => {
 });
 
 // update thông tin giang viên
-exports.updateProfileTeacher = catchAsync(async (req, res, next) => {
+exports.updateProfileUser = catchAsync(async (req, res, next) => {
   new Ok({
     message: "update is sucess",
-    data: await updateProfileTeacher(req.user.userId, req.body),
+    data: await updateProfileUser(req.user.userId, req.body),
   }).send(res);
 });

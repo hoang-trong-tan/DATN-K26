@@ -7,10 +7,6 @@ router.get("/payment/vnpay_return", orderController.vnpayReturn);
 
 router.use(authentication);
 
-router.post(
-  "/payment/create_payment_url/:id",
-  authorizeRoles("student"),
-  orderController.createVNPAY
-);
+router.post("/payment/create_payment_url/:id", orderController.createVNPAY);
 
 module.exports = router;

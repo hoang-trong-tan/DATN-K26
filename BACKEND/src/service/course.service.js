@@ -180,6 +180,8 @@ const getListSearchCourses = async ({ type, keySearch, limit, page }) => {
       "course_price",
       "course_ratingsAverage",
       "course_slug",
+      "user_name",
+      "user_avatar",
     ],
   });
 };
