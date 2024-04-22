@@ -8,6 +8,7 @@ const {
   findAllCourseByTeacher,
 } = require("../model/repositories/user.repo");
 const userModel = require("../model/user.model");
+const bcrypt = require("bcrypt");
 
 const processLearnUser = async ({ userId, courseId, process }) => {
   const isUser = await userModel.findById(userId);
@@ -55,6 +56,27 @@ const updateProfileUser = async (userId, payload) => {
   });
 };
 
+// cập nhật password
+const updatePassWord = async ({ oldPassWord, newPassWord, userId }) => {
+  if (!oldPassWord || !newPassWord) {
+    throw new BadRequestError("Please enter old and new password");
+  }
+
+  const user = await userModel.findById(userId);
+
+  const isPassWord = await bcrypt.compare(oldPassWord, user.user_password);
+
+  if (!isPassWord) {
+    throw new BadRequestError("Invalid old password");
+  }
+
+  const passwordHash = await bcrypt.hash(newPassWord, 10);
+
+  user.user_password = passwordHash;
+  await user.save();
+  return user;
+};
+
 // tìm lấy ra thông tin giảng viên theo id
 
 const printInfoTeacher = async (teacherId) => {
@@ -84,4 +106,5 @@ module.exports = {
   updateProfileUser,
   printInfoTeacher,
   getAllCoursesByTeacher,
+  updatePassWord,
 };

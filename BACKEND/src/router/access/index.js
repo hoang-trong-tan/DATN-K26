@@ -15,5 +15,6 @@ router.use(authentication);
 
 router.get("/information", userController.printUser);
 router.patch("/update-profile", userController.updateProfileUser);
+router.patch("/update-password", userController.updatePassWordUser);
 
 module.exports = router;

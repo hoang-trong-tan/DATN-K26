@@ -8,6 +8,7 @@ const {
   updateProfileUser,
   printInfoTeacher,
   getAllCoursesByTeacher,
+  updatePassWord,
 } = require("../service/user.service");
 
 // cap nhat tien trinh hoc cu user
@@ -54,5 +55,17 @@ exports.updateProfileUser = catchAsync(async (req, res, next) => {
   new Ok({
     message: "update is sucess",
     data: await updateProfileUser(req.user.userId, req.body),
+  }).send(res);
+});
+
+// update mật khẩu user
+exports.updatePassWordUser = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "update is sucess",
+    data: await updatePassWord({
+      oldPassWord: req.body.old_passWord,
+      newPassWord: req.body.new_passWord,
+      userId: req.user.userId,
+    }),
   }).send(res);
 });
