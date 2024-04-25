@@ -81,7 +81,6 @@ const printInfoUser = async (userId) => {
 };
 
 // update thông tin giảng viên
-
 const updateProfileUser = async (userId, payload) => {
   return await userModel.findOneAndUpdate({ _id: userId }, payload, {
     new: true,

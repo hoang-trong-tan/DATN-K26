@@ -152,6 +152,21 @@ const getFullCourse = async (courseId, unSelect) => {
     .lean();
 };
 
+const findAllTeacher = async (select) => {
+  const teacher = await userModel.find({ user_role: "teacher" }).select(select);
+
+  const teacherIds = teacher.map((item) => item._id);
+
+  const courses = await course
+    .find({ user_teacher: { $in: teacherIds } })
+    .sort()
+    .exec();
+
+  console.log("data::", courses);
+
+  return teacher;
+};
+
 module.exports = {
   findOneCourse,
   findAllCourseType,
@@ -159,4 +174,5 @@ module.exports = {
   queryCourseByType,
   search,
   getCourseDataVideo,
+  findAllTeacher,
 };

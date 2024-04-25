@@ -9,6 +9,7 @@ router.get("/get-all-course-type", courseController.findAllCourseType);
 router.get("/search", courseController.getListSearchCourses);
 router.get("/get-one-course/:id", courseController.getOneCourse);
 router.get("/get-course-by-type/:id", courseController.findCoursesByType);
+router.get("/get-all-teacher", courseController.printAllTeacher);
 
 router.use(authentication);
 
