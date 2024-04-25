@@ -9,6 +9,7 @@ router.post("/activate-user", accessController.activateUser);
 router.post("/login", accessController.login);
 
 router.get("/information-teacher/:id", userController.printInforTeacher);
+
 router.get("/all-course-teacher/:id", userController.getAllCoursesTeacher);
 
 router.use(authentication);

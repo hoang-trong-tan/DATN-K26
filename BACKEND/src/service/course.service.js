@@ -17,6 +17,7 @@ const {
   findAllCourses,
   queryCourseByType,
   search,
+  findAllTeacher,
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
@@ -194,6 +195,10 @@ const getListSearchCourses = async ({ type, keySearch, limit, page }) => {
   });
 };
 
+const printAllTeacher = async () => {
+  return await findAllTeacher(["user_name", "user_avatar"]);
+};
+
 module.exports = {
   createCourse,
   createCourseData,
@@ -205,4 +210,5 @@ module.exports = {
   getCourseByType,
   getListSearchCourses,
   getOneCourse,
+  printAllTeacher,
 };

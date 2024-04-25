@@ -12,6 +12,7 @@ const {
   getCourseByType,
   getListSearchCourses,
   getOneCourse,
+  printAllTeacher,
 } = require("../service/course.service");
 
 // tao khoa hoc
@@ -96,5 +97,13 @@ exports.getListSearchCourses = catchAsync(async (req, res, next) => {
       keySearch: req.query.keySearch,
       ...req.query,
     }),
+  }).send(res);
+});
+
+// in ra tat ca teacher
+exports.printAllTeacher = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "print all teacher is sucess",
+    data: await printAllTeacher(),
   }).send(res);
 });

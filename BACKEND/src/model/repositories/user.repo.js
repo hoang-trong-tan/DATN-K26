@@ -24,12 +24,8 @@ const findOneUser = async (userId, select) => {
 
 const findOneTeacher = async (teacherId, select) => {
   const findTeacher = await userModel
-    .findOne({ _id: teacherId })
+    .findOne({ _id: teacherId, user_role: "teacher" })
     .select(select);
-
-  if (!findTeacher.user_role.includes("teacher")) {
-    throw new BadRequestError("User is not teacher");
-  }
 
   const numberCourseByTeacher = await course
     .find({ user_teacher: teacherId })
@@ -88,6 +84,7 @@ const getPurchasedCourses = async (userId) => {
     {
       $project: {
         "user_course.course_info.course_name": 1,
+        "user_course.course_info._id": 1,
         "user_course.process_Course": 1,
         "user_course.course_info.course_thumnail": 1,
         "user_course.course_info.user_teacher": 1, // Thêm thông tin về giáo viên vào kết quả
