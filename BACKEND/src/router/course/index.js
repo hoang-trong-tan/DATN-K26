@@ -14,7 +14,7 @@ router.use(authentication);
 
 router.get("/get-one-course/learn/:id", courseController.getCoursePurchased);
 
-router.patch(
+router.post(
   "/update-process-learn/:id",
   authorizeRoles("student"),
   userController.updateProcessLearn

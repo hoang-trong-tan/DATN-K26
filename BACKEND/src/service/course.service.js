@@ -12,7 +12,7 @@ const {
   courseType,
 } = require("../model/course.model");
 const {
-  findOneCourseId,
+  findOneCourse,
   findAllCourseType,
   findAllCourses,
   queryCourseByType,
@@ -20,6 +20,7 @@ const {
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
+const { printDetailProcessUserCourse } = require("./user.service");
 
 const createCourse = async (payload, teacherId) => {
   const existingType = await courseType.findOne({ _id: payload.course_type });
@@ -104,21 +105,28 @@ const getCoursePurchased = async (courseId, userId) => {
     (course) => course._id.toString() === courseId
   );
 
+  const videosSeen = await printDetailProcessUserCourse(userId, courseId);
+
+  const videoIdsSeen = videosSeen.map((item) =>
+    item.video_shema._id.toString()
+  );
+
   if (!existCourse) {
-    return await findOneCourseId(courseId, fieldsToExclude);
+    return await findOneCourse(courseId, fieldsToExclude, videoIdsSeen);
   }
 
   fieldsToExclude = fieldsToExclude.filter((field) => field !== "video_url");
 
-  const course = await findOneCourseId(courseId, fieldsToExclude);
+  const course = await findOneCourse(courseId, fieldsToExclude, videoIdsSeen);
+
   return {
-    ...course,
     is_user_review: isUserReview,
+    ...course,
   };
 };
 
 const getOneCourse = async (courseId) => {
-  return await findOneCourseId(courseId, [
+  return await findOneCourse(courseId, [
     "courseDataShema",
     "courseShema",
     "courseData",
@@ -130,10 +138,9 @@ const getOneCourse = async (courseId) => {
 };
 
 // lay ra toan bo khoa hoc
-const getAllCourses = async ({ limit, sort = "ctime", page }) => {
+const getAllCourses = async ({ limit, page }) => {
   return await findAllCourses({
     limit,
-    sort,
     page,
     select: [
       "course_name",
@@ -141,6 +148,7 @@ const getAllCourses = async ({ limit, sort = "ctime", page }) => {
       "course_price",
       "course_ratingsAverage",
       "course_slug",
+      "course_purchased",
     ],
   });
 };

@@ -1,7 +1,5 @@
 "use strict";
 
-const { sum } = require("lodash");
-const { checkIdQuiz } = require("../../service/quiz.service");
 const { getUnSelect } = require("../../util");
 const {
   course,
@@ -15,14 +13,14 @@ const userModel = require("../user.model");
 const Types = { COURSE: "course", MENTOR: "mentor" };
 
 // chi tiet khoa hoc
-const findOneCourseId = async (courseId, unSelect) => {
-  const courseData = await getCourseData(courseId, unSelect);
+const findOneCourse = async (courseId, unSelect, videoIdsSeen) => {
+  const courseData = await getCourseSections(courseId, unSelect, videoIdsSeen);
 
   const totalLength = await calculateTotalLength(courseData);
 
   const fullCourse = await getFullCourse(courseId, unSelect);
   fullCourse.total_length_video = totalLength;
-  //fullCourse.total_length = totalLength;
+
   return { ...fullCourse, course_data: courseData };
 };
 
@@ -32,14 +30,13 @@ const findAllCourseType = async (unSelect) => {
 };
 
 // lay ra toan bo khoa hoc
-const findAllCourses = async ({ sort, limit, page, select }) => {
+const findAllCourses = async ({ limit, page, select }) => {
   const skip = (page - 1) * limit;
-  const sortBy = sort === "ctime" ? { _id: -1 } : { _id: 1 };
 
   const courses = await course
     .find()
     .populate("user_teacher", "user_name user_avatar")
-    .sort(sortBy)
+    .sort({ course_purchased: -1 })
     .skip(skip)
     .limit(limit)
     .select(select)
@@ -90,24 +87,30 @@ const search = async ({ type, keySearch, select, limit, page }) => {
   }
 };
 
-const getCourseData = async (courseId, unSelect) => {
-  const getcourseData = await courseData
+const getCourseSections = async (courseId, unSelect, videoIdsSeen) => {
+  const course = await courseData
     .find({ courseShema: courseId })
     .populate("courseShema")
     .select(getUnSelect(unSelect))
     .lean();
-  for (const data of getcourseData) {
+  for (const data of course) {
     const courseDataVideo = await getCourseDataVideo(data._id, unSelect);
     const courseDataQuizs = await getCourseDataQuizs(data._id, unSelect);
     const sumLengthVideo = calculateTotalLengthSection(courseDataVideo);
     data.course_data_video = {
-      course_video: courseDataVideo,
+      course_video: courseDataVideo.map((item) => {
+        const courseVideoItem = { ...item };
+        if (videoIdsSeen) {
+          courseVideoItem.isSeen = videoIdsSeen.includes(item._id.toString());
+        }
+        return courseVideoItem;
+      }),
       total_video_section: sumLengthVideo,
     };
     data.course_data_quiz = courseDataQuizs;
   }
 
-  return getcourseData;
+  return course;
 };
 
 const getCourseDataVideo = async (courseDataId, unSelect) => {
@@ -144,14 +147,16 @@ const calculateTotalLengthSection = (courseDataVideo) => {
 const getFullCourse = async (courseId, unSelect) => {
   return await course
     .findOne({ _id: courseId })
+    .populate("course_type", "type_name")
     .select(getUnSelect(unSelect))
     .lean();
 };
 
 module.exports = {
-  findOneCourseId,
+  findOneCourse,
   findAllCourseType,
   findAllCourses,
   queryCourseByType,
   search,
+  getCourseDataVideo,
 };

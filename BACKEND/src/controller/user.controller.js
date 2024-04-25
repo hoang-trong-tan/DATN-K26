@@ -9,6 +9,8 @@ const {
   printInfoTeacher,
   getAllCoursesByTeacher,
   updatePassWord,
+  printDetailProcessUserCourse,
+  printPurchasedCourses,
 } = require("../service/user.service");
 
 // cap nhat tien trinh hoc cu user
@@ -18,8 +20,27 @@ exports.updateProcessLearn = catchAsync(async (req, res, next) => {
     data: await processLearnUser({
       userId: req.user.userId,
       courseId: req.params.id,
-      process: req.body.process_Course,
+      videoId: req.body.video_shema,
     }),
+  }).send(res);
+});
+
+// hien tien do hoc cua student
+exports.printDetailProcessUserCourse = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "print process learn is sucess",
+    data: await printDetailProcessUserCourse(
+      req.user.userId,
+      req.query.courseId
+    ),
+  }).send(res);
+});
+
+// hien tien tat ca khoa hoc ma student da mua
+exports.printPurchasedCourses = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "print purchased course is sucess",
+    data: await printPurchasedCourses(req.user.userId),
   }).send(res);
 });
 

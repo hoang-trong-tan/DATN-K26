@@ -5,6 +5,27 @@ const DOCUMENT_NAME = "Course";
 
 const COLLECTION_NAME = "Courses";
 
+const processShema = new Schema(
+  {
+    user_shema: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    course_shema: {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+    },
+    video_shema: {
+      type: Schema.Types.ObjectId,
+      ref: "CourseDataVideo",
+    },
+  },
+  {
+    collection: "ProcessLearns",
+    timestamps: true,
+  }
+);
+
 const videoShema = new Schema(
   {
     video_title: String,
@@ -122,4 +143,5 @@ module.exports = {
   courseData: model("CourseData", courseDataShema),
   courseDataVideo: model("CourseDataVideo", videoShema),
   courseType: model("CourseType", courseTypeShema),
+  processLearn: model("ProcessLearn", processShema),
 };

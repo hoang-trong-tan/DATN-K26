@@ -10,7 +10,6 @@ const {
 } = require("../model/feedback.model");
 const {
   getAllReview,
-  getReviewsWithReplies,
   getQuestionByVideo,
 } = require("../model/repositories/feedback.repo");
 

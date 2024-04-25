@@ -1,8 +1,8 @@
 "use strict";
 
 const { BadRequestError } = require("../../core/error.response");
-const { REQUESTED_RANGE_NOT_SATISFIABLE } = require("../../util/statusCode");
-const { course } = require("../course.model");
+const { Types } = require("mongoose");
+const { course, processLearn } = require("../course.model");
 const userModel = require("../user.model");
 
 const findByEmail = async (
@@ -58,9 +58,58 @@ const findAllCourseByTeacher = async ({ teacherId, limit, page, select }) => {
     .lean();
 };
 
+const findDetailProcessUserCourse = async ({ userId, courseId, select }) => {
+  return await processLearn
+    .find({ user_shema: userId, course_shema: courseId })
+    .populate("video_shema", "video_title")
+    .select(select)
+    .lean();
+};
+
+const getPurchasedCourses = async (userId) => {
+  const user = await userModel.aggregate([
+    {
+      $match: {
+        _id: new Types.ObjectId(userId),
+      },
+    },
+    {
+      $unwind: "$user_course",
+    },
+    {
+      $lookup: {
+        from: "Courses",
+        localField: "user_course._id",
+        foreignField: "_id",
+        as: "user_course.course_info",
+      },
+    },
+
+    {
+      $project: {
+        "user_course.course_info.course_name": 1,
+        "user_course.process_Course": 1,
+        "user_course.course_info.course_thumnail": 1,
+        "user_course.course_info.user_teacher": 1, // Thêm thông tin về giáo viên vào kết quả
+        // Thêm các trường khác mà bạn muốn lấy từ collection "Courses" và "Users"
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        user_course: { $push: "$user_course" },
+      },
+    },
+  ]);
+
+  return user;
+};
+
 module.exports = {
   findByEmail,
   findOneUser,
   findOneTeacher,
   findAllCourseByTeacher,
+  findDetailProcessUserCourse,
+  getPurchasedCourses,
 };
