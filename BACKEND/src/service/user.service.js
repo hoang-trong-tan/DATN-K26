@@ -1,41 +1,72 @@
 "use strict";
 
 const { BadRequestError } = require("../core/error.response");
-const { course } = require("../model/course.model");
+const {
+  course,
+  processLearn,
+  courseData,
+  courseDataVideo,
+} = require("../model/course.model");
+const {
+  getCourseDataVideo,
+  findOneCourseId,
+} = require("../model/repositories/course.repo");
 const {
   findOneUser,
   findOneTeacher,
   findAllCourseByTeacher,
+  findDetailProcessUserCourse,
+  getPurchasedCourses,
 } = require("../model/repositories/user.repo");
 const userModel = require("../model/user.model");
 const bcrypt = require("bcrypt");
 
-const processLearnUser = async ({ userId, courseId, process }) => {
-  const isUser = await userModel.findById(userId);
-  const isCourse = await course.findById(courseId);
-  if (!isUser) {
-    throw new BadRequestError("User is not exits");
-  }
+const processLearnUser = async ({ userId, courseId, videoId }) => {
+  const newProcess = await processLearn.create({
+    user_shema: userId,
+    course_shema: courseId,
+    video_shema: videoId,
+  });
 
-  if (!isCourse) {
-    throw new BadRequestError("Course is not exits");
-  }
+  const videosSeen = await printDetailProcessUserCourse(userId, courseId);
+  const courses = await courseData.find({ courseShema: courseId });
+  const courseIds = courses.map((item) => item._id);
 
-  // tim cai vi tri cua khoa hoc trong truong user_course
-  const userCourseIndex = isUser.user_course.findIndex(
-    (course) => course._id.toString() === courseId
+  const videos = await courseDataVideo
+    .find({
+      courseDataShema: {
+        $in: courseIds,
+      },
+    })
+    .exec();
+
+  await userModel.updateOne(
+    {
+      _id: userId,
+      "user_course._id": courseId,
+    },
+    {
+      $set: {
+        "user_course.$.process_Course": videosSeen.length / videos.length,
+      },
+    }
   );
 
-  if (userCourseIndex === -1) {
-    throw new BadRequestError("Course is not Purchased");
-  }
-
-  isUser.user_course[userCourseIndex].process_Course = process;
-
-  await isUser.save();
-
-  return isUser;
+  return newProcess;
 };
+
+const printDetailProcessUserCourse = async (userId, courseId) => {
+  return await findDetailProcessUserCourse({
+    userId,
+    courseId,
+    select: ["video_shema"],
+  });
+};
+
+const printPurchasedCourses = async (userId) => {
+  return await getPurchasedCourses(userId);
+};
+
 // xem thông user
 const printInfoUser = async (userId) => {
   return await findOneUser(userId, [
@@ -45,6 +76,7 @@ const printInfoUser = async (userId) => {
     "user_role",
     "user_experience",
     "user_about",
+    "user_course",
   ]);
 };
 
@@ -107,4 +139,6 @@ module.exports = {
   printInfoTeacher,
   getAllCoursesByTeacher,
   updatePassWord,
+  printDetailProcessUserCourse,
+  printPurchasedCourses,
 };

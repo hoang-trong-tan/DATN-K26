@@ -7,6 +7,7 @@ const {
   getQuizQuestion,
   showAnswers,
 } = require("../model/repositories/quiz.repo");
+const userModel = require("../model/user.model");
 
 const createQuiz = async (quizTitle, courseDataId) => {
   const checkCouseData = await courseData.findById(courseDataId);
