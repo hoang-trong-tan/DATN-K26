@@ -1,5 +1,6 @@
 "use strict";
 
+const { find } = require("lodash");
 const {
   NotFoundError,
   ConflictRequestError,
@@ -18,6 +19,8 @@ const {
   queryCourseByType,
   search,
   findAllTeacher,
+  findAllCoursesWithCart,
+  queryCourseByTypeWithCart,
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
@@ -139,35 +142,55 @@ const getOneCourse = async (courseId) => {
 };
 
 // lay ra toan bo khoa hoc
-const getAllCourses = async ({ limit, page }) => {
-  return await findAllCourses({
-    limit,
-    page,
-    select: [
-      "course_name",
-      "course_thumnail",
-      "course_price",
-      "course_ratingsAverage",
-      "course_slug",
-      "course_purchased",
-    ],
-  });
+const getAllCourses = async ({ limit, page, userId }) => {
+  let courses;
+
+  const select = [
+    "course_name",
+    "course_thumnail",
+    "course_price",
+    "course_ratingsAverage",
+    "course_slug",
+    "course_purchased",
+  ];
+
+  if (userId) {
+    courses = await findAllCoursesWithCart({ limit, page, select, userId });
+  } else {
+    courses = await findAllCourses({ limit, page, select });
+  }
+
+  return courses;
 };
 
 // lay ra khoa hoc theo danh muc loai
-const getCourseByType = async ({ limit, page, courseTypeId }) => {
-  return await queryCourseByType({
-    limit,
-    page,
-    courseTypeId,
-    select: [
-      "course_name",
-      "course_thumnail",
-      "course_price",
-      "course_ratingsAverage",
-      "course_slug",
-    ],
-  });
+const getCourseByType = async ({ limit, page, courseTypeId, userId }) => {
+  let courses;
+  const select = [
+    "course_name",
+    "course_thumnail",
+    "course_price",
+    "course_ratingsAverage",
+    "course_slug",
+  ];
+  if (userId) {
+    courses = await queryCourseByTypeWithCart({
+      limit,
+      page,
+      courseTypeId,
+      select,
+      userId,
+    });
+  } else {
+    courses = await queryCourseByType({
+      limit,
+      page,
+      courseTypeId,
+      select,
+    });
+  }
+
+  return courses;
 };
 
 // lay ra toan bo danh muc
