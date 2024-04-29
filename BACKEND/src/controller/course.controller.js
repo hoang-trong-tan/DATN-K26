@@ -73,10 +73,9 @@ exports.findAllCourseType = catchAsync(async (req, res, next) => {
 
 // lay ra toan bo khoa hoc
 exports.findAllCourses = catchAsync(async (req, res, next) => {
-  console.log("Ok2");
   new Ok({
     message: "find courses is sucess",
-    data: await getAllCourses(req.query),
+    data: await getAllCourses({ ...req.query, userId: req.body.userId }),
   }).send(res);
 });
 
@@ -84,7 +83,11 @@ exports.findAllCourses = catchAsync(async (req, res, next) => {
 exports.findCoursesByType = catchAsync(async (req, res, next) => {
   new Ok({
     message: "find courses by type is sucess",
-    data: await getCourseByType({ ...req.query, courseTypeId: req.params.id }),
+    data: await getCourseByType({
+      ...req.query,
+      courseTypeId: req.params.id,
+      userId: req.body.userId,
+    }),
   }).send(res);
 });
 

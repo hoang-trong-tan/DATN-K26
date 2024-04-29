@@ -4,7 +4,7 @@ const userController = require("../../controller/user.controller");
 const { authentication, authorizeRoles } = require("../../auth/authUtils");
 const router = express.Router();
 
-router.get("", courseController.findAllCourses);
+router.get("/get-all-course", courseController.findAllCourses);
 router.get("/get-all-course-type", courseController.findAllCourseType);
 router.get("/search", courseController.getListSearchCourses);
 router.get("/get-one-course/:id", courseController.getOneCourse);

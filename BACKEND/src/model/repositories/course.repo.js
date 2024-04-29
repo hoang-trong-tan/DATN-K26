@@ -1,5 +1,6 @@
 "use strict";
 
+const { checkIdCourseInCart } = require("../../service/cart.service");
 const { getUnSelect } = require("../../util");
 const {
   course,
@@ -45,6 +46,28 @@ const findAllCourses = async ({ limit, page, select }) => {
   return courses;
 };
 
+// lay ra toan bo khoa hoc
+const findAllCoursesWithCart = async ({ limit, page, select, userId }) => {
+  const skip = (page - 1) * limit;
+
+  const courses = await course
+    .find()
+    .populate("user_teacher", "user_name user_avatar")
+    .sort({ course_purchased: -1 })
+    .skip(skip)
+    .limit(limit)
+    .select(select)
+    .lean();
+
+  for (let i = 0; i < courses.length; i++) {
+    const coureId = courses[i]._id.toString();
+    const isInCart = await checkIdCourseInCart(coureId, userId);
+    courses[i].is_in_cart = isInCart;
+  }
+
+  return courses;
+};
+
 // lấy ra toàn bộ khóa học theo danh mục loại
 const queryCourseByType = async ({ courseTypeId, limit, page, select }) => {
   const skip = (page - 1) * limit;
@@ -57,6 +80,33 @@ const queryCourseByType = async ({ courseTypeId, limit, page, select }) => {
     .select(select)
     .lean()
     .exec();
+};
+// lấy ra toàn bộ khóa học theo danh mục loại
+const queryCourseByTypeWithCart = async ({
+  courseTypeId,
+  limit,
+  page,
+  select,
+  userId,
+}) => {
+  const skip = (page - 1) * limit;
+  const courses = await course
+    .find({ course_type: courseTypeId })
+    .populate("user_teacher", "user_name user_avatar")
+    .sort({ updateAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .select(select)
+    .lean()
+    .exec();
+
+  for (let i = 0; i < courses.length; i++) {
+    const coureId = courses[i]._id.toString();
+    const isInCart = await checkIdCourseInCart(coureId, userId);
+    courses[i].is_in_cart = isInCart;
+  }
+
+  return courses;
 };
 
 // tim kiem san pham theo ten
@@ -153,18 +203,34 @@ const getFullCourse = async (courseId, unSelect) => {
 };
 
 const findAllTeacher = async (select) => {
-  const teacher = await userModel.find({ user_role: "teacher" }).select(select);
+  // Tìm tất cả giáo viên
+  const teachers = await userModel
+    .find({ user_role: "teacher" })
+    .select(select);
 
-  const teacherIds = teacher.map((item) => item._id);
+  // Tạo một mảng chứa thông tin về số học viên mua của mỗi giáo viên
+  const teachersWithStudentCounts = [];
 
-  const courses = await course
-    .find({ user_teacher: { $in: teacherIds } })
-    .sort()
-    .exec();
+  // Duyệt qua từng giáo viên
+  for (const teacher of teachers) {
+    // Tìm các khóa học của giáo viên đó
+    const courses = await course.find({ user_teacher: teacher._id });
 
-  console.log("data::", courses);
+    // Tính tổng số học viên mua của giáo viên đó
+    const totalStudents = courses.reduce(
+      (total, course) => total + course.course_purchased,
+      0
+    );
 
-  return teacher;
+    // Thêm thông tin về giáo viên và số học viên mua vào mảng
+    teachersWithStudentCounts.push({ teacher, totalStudents });
+  }
+
+  // Sắp xếp danh sách giáo viên theo số lượng học viên mua giảm dần
+  teachersWithStudentCounts.sort((a, b) => b.totalStudents - a.totalStudents);
+
+  // Trả về danh sách giáo viên đã sắp xếp theo số lượng học viên mua giảm dần
+  return teachersWithStudentCounts.map((item) => item.teacher);
 };
 
 module.exports = {
@@ -175,4 +241,6 @@ module.exports = {
   search,
   getCourseDataVideo,
   findAllTeacher,
+  findAllCoursesWithCart,
+  queryCourseByTypeWithCart,
 };

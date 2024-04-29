@@ -63,41 +63,27 @@ const findDetailProcessUserCourse = async ({ userId, courseId, select }) => {
 };
 
 const getPurchasedCourses = async (userId) => {
-  const user = await userModel.aggregate([
-    {
-      $match: {
-        _id: new Types.ObjectId(userId),
-      },
-    },
-    {
-      $unwind: "$user_course",
-    },
-    {
-      $lookup: {
-        from: "Courses",
-        localField: "user_course._id",
-        foreignField: "_id",
-        as: "user_course.course_info",
-      },
-    },
-
-    {
-      $project: {
-        "user_course.course_info.course_name": 1,
-        "user_course.course_info._id": 1,
-        "user_course.process_Course": 1,
-        "user_course.course_info.course_thumnail": 1,
-        "user_course.course_info.user_teacher": 1, // Thêm thông tin về giáo viên vào kết quả
-        // Thêm các trường khác mà bạn muốn lấy từ collection "Courses" và "Users"
-      },
-    },
-    {
-      $group: {
-        _id: "$_id",
-        user_course: { $push: "$user_course" },
-      },
-    },
-  ]);
+  const user_info = "user_course._id";
+  const user = await userModel
+    .findOne({ _id: userId })
+    .populate({
+      path: user_info,
+      model: "Course",
+      select: "course_name course_thumnail user_teacher course_type",
+      populate: [
+        {
+          path: "course_type",
+          model: "CourseType",
+          select: "type_name",
+        },
+        {
+          path: "user_teacher",
+          model: "User",
+          select: "user_name user_avatar",
+        },
+      ],
+    })
+    .select("user_course");
 
   return user;
 };
