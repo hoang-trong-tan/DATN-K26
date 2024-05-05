@@ -20,4 +20,21 @@ router.post(
   upload.single("video"),
   uploadController.uploadVideo
 );
+
+// router upload document
+router.post(
+  "/upload-document/:id",
+  authorizeRoles("teacher"),
+  upload.single("file"),
+  uploadController.uploadDocument
+);
+
+// router get document
+router.get("/get-document/:id", uploadController.getDocumentByVideoId);
+
+// router download document
+router.get(
+  "/download-document/:id",
+  uploadController.downLoadDocumentByVideoId
+);
 module.exports = router;

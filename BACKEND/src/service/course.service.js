@@ -218,8 +218,12 @@ const getListSearchCourses = async ({ type, keySearch, limit, page }) => {
   });
 };
 
-const printAllTeacher = async () => {
-  return await findAllTeacher(["user_name", "user_avatar"]);
+const printAllTeacher = async (limit, page) => {
+  return await findAllTeacher({
+    select: ["user_name", "user_avatar"],
+    page,
+    limit,
+  });
 };
 
 module.exports = {
