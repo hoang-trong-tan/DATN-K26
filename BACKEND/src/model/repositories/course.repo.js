@@ -202,11 +202,14 @@ const getFullCourse = async (courseId, unSelect) => {
     .lean();
 };
 
-const findAllTeacher = async (select) => {
+const findAllTeacher = async ({ select, page, limit }) => {
+  const skip = (page - 1) * limit;
   // Tìm tất cả giáo viên
   const teachers = await userModel
     .find({ user_role: "teacher" })
-    .select(select);
+    .select(select)
+    .skip(skip)
+    .limit(limit);
 
   // Tạo một mảng chứa thông tin về số học viên mua của mỗi giáo viên
   const teachersWithStudentCounts = [];

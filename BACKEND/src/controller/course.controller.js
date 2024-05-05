@@ -105,8 +105,9 @@ exports.getListSearchCourses = catchAsync(async (req, res, next) => {
 
 // in ra tat ca teacher
 exports.printAllTeacher = catchAsync(async (req, res, next) => {
+  const { limit, page } = req.query;
   new Ok({
     message: "print all teacher is sucess",
-    data: await printAllTeacher(),
+    data: await printAllTeacher(limit, page),
   }).send(res);
 });

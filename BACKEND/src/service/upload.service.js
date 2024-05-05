@@ -4,7 +4,11 @@ const {
   s3,
   PutObjectCommand,
   DeleteBucketCommand,
+  ListObjectsCommand,
+  GetObjectCommand,
 } = require("../config/config.awsS3");
+const path = require("path");
+const fs = require("fs");
 
 // upload file use S3client ///
 
@@ -49,4 +53,66 @@ const uploadVideo = async (file) => {
   }
 };
 
-module.exports = { uploadVideo, uploadImages };
+const uploadDocument = async (file, videoId) => {
+  try {
+    const documentPath = `Document/${videoId}/${file.originalname}`;
+    const urlName = `${process.env.AWS_CLOUDFRONT_LINK}${documentPath}`;
+    const command = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: documentPath,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    });
+
+    await s3.send(command);
+
+    return urlName;
+  } catch (error) {
+    throw error; // Ném ra lỗi để xử lý ở nơi gọi hàm
+  }
+};
+
+const getDocumentByVideoId = async (videoId) => {
+  try {
+    const documentPath = `Document/${videoId}/`;
+    const command = new ListObjectsCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Delimiter: "/",
+      Prefix: documentPath,
+    });
+
+    const data = await s3.send(command);
+
+    const document = data.Contents.map((item) => item.Key);
+
+    let fileName = document.map((item) => path.basename(item));
+
+    return fileName;
+  } catch (error) {
+    throw error; // Ném ra lỗi để xử lý ở nơi gọi hàm
+  }
+};
+
+const downLoadDocByVideoId = async (videoId, fileName) => {
+  try {
+    const documentPath = `Document/${videoId}/${fileName}`;
+    const command = new GetObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: documentPath,
+    });
+
+    const data = await s3.send(command);
+
+    return data;
+  } catch (error) {
+    throw error; // Ném ra lỗi để xử lý ở nơi gọi hàm
+  }
+};
+
+module.exports = {
+  uploadVideo,
+  uploadImages,
+  uploadDocument,
+  getDocumentByVideoId,
+  downLoadDocByVideoId,
+};
