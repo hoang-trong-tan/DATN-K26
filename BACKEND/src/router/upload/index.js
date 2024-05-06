@@ -4,6 +4,12 @@ const upload = require("../../config/config.multer");
 const { authentication, authorizeRoles } = require("../../auth/authUtils");
 const router = express.Router();
 
+// router download document
+router.get(
+  "/download-document/:id",
+  uploadController.downLoadDocumentByVideoId
+);
+
 router.use(authentication);
 
 // router upload images
@@ -32,9 +38,4 @@ router.post(
 // router get document
 router.get("/get-document/:id", uploadController.getDocumentByVideoId);
 
-// router download document
-router.get(
-  "/download-document/:id",
-  uploadController.downLoadDocumentByVideoId
-);
 module.exports = router;
