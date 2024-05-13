@@ -13,6 +13,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
       name: req.body.user_name,
       email: req.body.user_email,
       password: req.body.user_password,
+      role: req.body.user_role,
     }),
   }).send(res);
 });

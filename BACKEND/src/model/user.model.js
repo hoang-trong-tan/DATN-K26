@@ -28,6 +28,8 @@ const userSchema = new Schema(
     user_password: {
       type: String,
       required: true,
+      minlength: 6,
+      maxlength: 15,
     },
     user_avatar: {
       type: String,
@@ -35,6 +37,7 @@ const userSchema = new Schema(
     },
     user_role: {
       type: String,
+      enum: ["student", "teacher", "admin"],
     },
     user_isBlocked: {
       type: Boolean,
@@ -63,6 +66,36 @@ const userSchema = new Schema(
         description: String,
       },
     ],
+    user_phone: {
+      type: String,
+      maxlength: 10,
+      default: null,
+    },
+    user_birthday: {
+      type: Date,
+      default: null,
+    },
+    user_university: {
+      type: String,
+      default: null,
+    },
+    user_major: {
+      type: String,
+      default: null,
+    },
+    course_type: {
+      type: Schema.Types.ObjectId,
+      ref: "CourseType",
+      default: null,
+    },
+    user_diploma: {
+      type: String,
+      default: null,
+    },
+    user_fcm_token: {
+      type: String,
+      default: null,
+    },
   },
   {
     collection: COLLECTION_NAME,

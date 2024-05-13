@@ -108,17 +108,21 @@ const updatePassWord = async ({ oldPassWord, newPassWord, userId }) => {
   return user;
 };
 
+// tao profile teacher
+
 // tìm lấy ra thông tin giảng viên theo id
 
 const printInfoTeacher = async (teacherId) => {
   return await findOneTeacher(teacherId, [
     "user_name",
-    "user_name",
-    "user_name",
     "user_experience",
     "user_about",
     "user_role",
     "user_avatar",
+    "user_phone",
+    "user_birthday",
+    "user_university",
+    "user_diploma",
   ]);
 };
 
