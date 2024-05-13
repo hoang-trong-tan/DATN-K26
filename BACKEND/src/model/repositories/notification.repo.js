@@ -22,7 +22,15 @@ const getNotification = async ({ userId, select, type, page, limit }) => {
       .lean();
   }
 
-  return { notifications, number_notification: notifications.length };
+  const numbers = await numerNotifications(userId);
+
+  return { notifications, number_notification: numbers };
+};
+
+const numerNotifications = async (userId) => {
+  const notifications = await notificationModel.find({ userId });
+  const numbers = notifications.filter((item) => !item.status);
+  return numbers.length;
 };
 
 module.exports = { getNotification };
