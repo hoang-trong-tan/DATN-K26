@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { MdOutlineOndemandVideo } from "react-icons/md";
-import { CourseDataType, CourseDataVideo } from "../../course";
+import { CourseDataType } from "../../course";
 import { convertNumberToTextTime } from "../../../utils";
 
 type Props = {
@@ -54,8 +54,6 @@ const CourseContentList: FC<Props> = (props) => {
         const sectionStartIndex: number = totalCount; // Start index of videos within the current section
         totalCount += sectionVideoCount; // Update the total count of videos
 
-        const sectionContentHours: number = sectionVideoLength / 60;
-
         return (
           <div
             className={`${
@@ -85,16 +83,11 @@ const CourseContentList: FC<Props> = (props) => {
             <h5 className="text-black dark:text-white">
               {sectionVideoCount} Lessons ·{" "}
               {convertNumberToTextTime(sectionVideoLength)}
-              {/* {sectionVideoLength < 60
-                ? sectionVideoLength
-                : sectionContentHours.toFixed(2)}{" "}
-              {sectionVideoLength > 60 ? "hours" : "minutes"} */}
             </h5>
             {isSectionVisible && (
-              <div className="w-full">
+              <div className="w-full mt-3">
                 {sectionVideos?.course_video?.map((item, index: number) => {
                   const videoIndex: number = sectionStartIndex + index; // Calculate the video index within the overall list
-                  const contentLength: number = item?.video_length / 60;
                   return (
                     <div
                       className={`w-full ${
@@ -118,10 +111,6 @@ const CourseContentList: FC<Props> = (props) => {
                         </h1>
                       </div>
                       <h5 className="pl-8 text-black dark:text-white">
-                        {/* {item?.video_length > 60
-                          ? contentLength.toFixed(2)
-                          : item?.video_length}{" "}
-                        {item?.video_length > 60 ? "hours" : "minutes"} */}
                         {convertNumberToTextTime(item?.video_length)}
                       </h5>
                     </div>

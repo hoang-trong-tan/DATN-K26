@@ -3,7 +3,6 @@ import { useGetCourseDetailsQuery } from "../../redux/features/courses/coursesAp
 import Ratings from "../../components/ui/Ratings";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
-import { MdOutlineOndemandVideo } from "react-icons/md";
 import CourseContentList from "../courses/components/CourseContentList";
 
 type CourseType = {
@@ -109,16 +108,6 @@ const Course = () => {
           </h1>
 
           <div>
-            {/* {course?.course_data?.map((item) => (
-              <div className="flex">
-                <MdOutlineOndemandVideo
-                  size={25}
-                  className="mr-2"
-                  color="#1cdada"
-                />
-                <span>{item.courseData_title}</span>
-              </div>
-            ))} */}
             {course?.course_data && (
               <CourseContentList data={course.course_data} />
             )}
