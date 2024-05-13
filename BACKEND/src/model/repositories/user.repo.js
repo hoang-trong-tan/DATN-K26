@@ -12,7 +12,15 @@ const findByEmail = async (
     user_password: 2,
     user_name: 1,
     user_isBlocked: 1,
-    user_role: 1,
+    user_about: 1,
+    user_phone: 1,
+    user_birthday: 1,
+    user_university: 1,
+    user_major: 1,
+    user_diploma: 1,
+    user_fcm_token: 1,
+    user_experience: 1,
+    user_course: 1,
   }
 ) => {
   return await userModel.findOne({ user_email: email }).select(select).lean();
