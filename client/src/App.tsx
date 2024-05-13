@@ -8,6 +8,7 @@ import { Providers } from "./Provider";
 const Courses = lazy(() => import("./pages/courses"));
 const HomePage = lazy(() => import("./pages/home"));
 const Course = lazy(() => import("./pages/course"));
+const Lecture = lazy(() => import("./pages/lecture"));
 
 function App() {
   return (
@@ -38,6 +39,15 @@ function App() {
               element={
                 <Suspense fallback={<Loader />}>
                   <Course />
+                </Suspense>
+              }
+            />
+            <Route
+              index
+              path={ROUTE.LECTURE}
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Lecture />
                 </Suspense>
               }
             />

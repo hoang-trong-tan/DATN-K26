@@ -3,15 +3,19 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { MdOutlineOndemandVideo } from "react-icons/md";
 import { CourseDataType } from "../../course";
 import { convertNumberToTextTime } from "../../../utils";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 type Props = {
   data: CourseDataType[];
-  activeVideo?: number;
-  setActiveVideo?: any;
-  isDemo?: boolean;
+  setVideoUrl?: React.Dispatch<React.SetStateAction<string>>;
+  lecture_id?: string;
 };
 
 const CourseContentList: FC<Props> = (props) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { id } = useParams();
+
   const [visibleSections, setVisibleSections] = useState<Set<string>>(
     new Set<string>()
   );
@@ -34,11 +38,7 @@ const CourseContentList: FC<Props> = (props) => {
   };
 
   return (
-    <div
-      className={`mt-[15px] w-full flex flex-col gap-8 ${
-        !props.isDemo && "sticky top-24 left-0 z-30"
-      }`}
-    >
+    <div className={`w-full flex flex-col gap-8`}>
       {videoSections.map((section: string) => {
         const isSectionVisible = visibleSections.has(section);
 
@@ -56,14 +56,12 @@ const CourseContentList: FC<Props> = (props) => {
 
         return (
           <div
-            className={`${
-              !props.isDemo &&
+            className={
               "border-b border-[#0000001c] dark:border-[#ffffff8e] pb-2"
-            }`}
+            }
             key={section}
           >
             <div className="w-full flex">
-              {/* Render video section */}
               <div className="w-full flex justify-between items-center">
                 <h2 className="text-[22px] text-black dark:text-white">
                   {section}
@@ -86,17 +84,23 @@ const CourseContentList: FC<Props> = (props) => {
             </h5>
             {isSectionVisible && (
               <div className="w-full mt-3">
-                {sectionVideos?.course_video?.map((item, index: number) => {
-                  const videoIndex: number = sectionStartIndex + index; // Calculate the video index within the overall list
+                {sectionVideos?.course_video?.map((item) => {
                   return (
                     <div
                       className={`w-full ${
-                        videoIndex === props.activeVideo ? "bg-slate-800" : ""
+                        props.lecture_id === item._id ? "bg-slate-800" : ""
                       } cursor-pointer transition-all p-2`}
                       key={item._id}
-                      onClick={() =>
-                        props.isDemo ? null : props?.setActiveVideo(videoIndex)
-                      }
+                      onClick={() => {
+                        if (!item?.video_url) {
+                          return;
+                        }
+                        if (!location.pathname.includes("lecture")) {
+                          navigate(`${location.pathname}/lecture/${item._id}`);
+                          return;
+                        }
+                        navigate(`/course/${id}/lecture/${item._id}`);
+                      }}
                     >
                       <div className="flex items-start">
                         <div>

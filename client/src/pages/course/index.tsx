@@ -1,11 +1,15 @@
 import { useParams } from "react-router-dom";
-import { useGetCourseDetailsQuery } from "../../redux/features/courses/coursesApi";
+import {
+  useGetCourseDetailsPurchaseQuery,
+  useGetCourseDetailsQuery,
+} from "../../redux/features/courses/coursesApi";
 import Ratings from "../../components/ui/Ratings";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import CourseContentList from "../courses/components/CourseContentList";
+import { Button } from "../../components/ui/Button";
 
-type CourseType = {
+export type CourseType = {
   course_benefits: string[];
   course_data: CourseDataType[];
   course_demoVideo: string;
@@ -33,7 +37,8 @@ type CourseVideo = {
   _id: string;
   video_title: string;
   video_length: number;
-  video_url: string;
+  video_url?: string;
+  isSeen?: boolean;
 };
 
 type CourseDataQuiz = {
@@ -43,7 +48,11 @@ type CourseDataQuiz = {
 
 const Course = () => {
   const { id } = useParams();
-  const { data } = useGetCourseDetailsQuery(id as string);
+  const userId = localStorage.getItem("user_id");
+  const { data } = userId
+    ? useGetCourseDetailsPurchaseQuery(id as string)
+    : useGetCourseDetailsQuery(id as string);
+
   const course: CourseType = data?.data;
   const [urlVideo, setUrlVideo] = useState("");
   useEffect(() => {
@@ -51,9 +60,10 @@ const Course = () => {
       setUrlVideo(course?.course_demoVideo);
     }
   }, [course?.course_demoVideo, urlVideo]);
+
   return (
     <div className="flex my-4 gap-5">
-      <div className="flex flex-col gap-8 w-[70%]">
+      <div className="flex flex-col gap-8 w-[60%]">
         <div className="flex flex-col gap-3">
           <h1 className="font-semibold text-3xl font-Poppins">
             {course?.course_name}
@@ -114,7 +124,7 @@ const Course = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col gap-3 flex-1">
+      <div className="flex flex-col gap-3 flex-1 items-center">
         {urlVideo && (
           <video
             controls
@@ -124,6 +134,9 @@ const Course = () => {
             <source src={urlVideo} type="video/mp4" />
           </video>
         )}
+        <Button className="w-[200px] py-3 bg-[#DC143C]">
+          Pay now {course?.course_price}$
+        </Button>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ function DefaultLayout() {
       <div className="w-full border-b border-[#ffffff1c]">
         <Header />
       </div>
-      <div className="w-full flex-1 max-w-[1280px]">
+      <div className="w-full flex-1 max-w-[1500px]">
         <Outlet />
       </div>
       <Footer />

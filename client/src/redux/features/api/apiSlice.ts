@@ -31,10 +31,11 @@ export const apiSlice = createApi({
       async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
+          console.log({ result });
           dispatch(
             userLoggedIn({
-              accessToken: result.data.accessToken,
-              user: result.data.user,
+              accessToken: localStorage.getItem("access_token") || "",
+              user: result?.data?.data?._id || "",
             })
           );
         } catch (error: any) {
