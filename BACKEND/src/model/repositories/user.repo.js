@@ -16,6 +16,7 @@ const findByEmail = async (
     user_phone: 1,
     user_birthday: 1,
     user_university: 1,
+    user_role: 1,
     user_major: 1,
     user_diploma: 1,
     user_fcm_token: 1,
