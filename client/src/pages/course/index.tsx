@@ -8,6 +8,7 @@ import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import CourseContentList from "../courses/components/CourseContentList";
 import { Button } from "../../components/ui/Button";
+import Loader from "../../components/Loader/Loader";
 
 export type CourseType = {
   course_benefits: string[];
@@ -49,7 +50,7 @@ type CourseDataQuiz = {
 const Course = () => {
   const { id } = useParams();
   const userId = localStorage.getItem("user_id");
-  const { data } = userId
+  const { data, isLoading } = userId
     ? useGetCourseDetailsPurchaseQuery(id as string)
     : useGetCourseDetailsQuery(id as string);
 
@@ -61,7 +62,9 @@ const Course = () => {
     }
   }, [course?.course_demoVideo, urlVideo]);
 
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className="flex my-4 gap-5">
       <div className="flex flex-col gap-8 w-[60%]">
         <div className="flex flex-col gap-3">

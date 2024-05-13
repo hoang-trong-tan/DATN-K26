@@ -31,7 +31,6 @@ export const apiSlice = createApi({
       async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log({ result });
           dispatch(
             userLoggedIn({
               accessToken: localStorage.getItem("access_token") || "",

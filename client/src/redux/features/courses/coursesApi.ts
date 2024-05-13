@@ -50,6 +50,12 @@ export const coursesApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getLectureVideo: builder.query({
+      query: (id: string) => ({
+        url: `course/get-one-video/${id}`,
+        method: "GET",
+      }),
+    }),
 
     getCourseContent: builder.query({
       query: (id) => ({
@@ -122,4 +128,5 @@ export const {
   useAddReviewInCourseMutation,
   useAddReplyInReviewMutation,
   useGetCourseDetailsPurchaseQuery,
+  useGetLectureVideoQuery,
 } = coursesApi;

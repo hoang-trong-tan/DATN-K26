@@ -7,14 +7,12 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 type Props = {
   data: CourseDataType[];
-  setVideoUrl?: React.Dispatch<React.SetStateAction<string>>;
-  lecture_id?: string;
 };
 
 const CourseContentList: FC<Props> = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { id } = useParams();
+  const { id, lecture_id } = useParams();
 
   const [visibleSections, setVisibleSections] = useState<Set<string>>(
     new Set<string>()
@@ -88,7 +86,7 @@ const CourseContentList: FC<Props> = (props) => {
                   return (
                     <div
                       className={`w-full ${
-                        props.lecture_id === item._id ? "bg-slate-800" : ""
+                        lecture_id === item._id ? "bg-slate-800" : ""
                       } cursor-pointer transition-all p-2`}
                       key={item._id}
                       onClick={() => {
