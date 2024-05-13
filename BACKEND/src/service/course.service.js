@@ -21,6 +21,7 @@ const {
   findAllTeacher,
   findAllCoursesWithCart,
   queryCourseByTypeWithCart,
+  getOneVideo,
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
@@ -163,6 +164,14 @@ const getAllCourses = async ({ limit, page, userId }) => {
   return courses;
 };
 
+const printVideoById = async (videoId) => {
+  return await getOneVideo(videoId, [
+    "video_title",
+    "video_url",
+    "video_length",
+  ]);
+};
+
 // lay ra khoa hoc theo danh muc loai
 const getCourseByType = async ({ limit, page, courseTypeId, userId }) => {
   let courses;
@@ -238,4 +247,5 @@ module.exports = {
   getListSearchCourses,
   getOneCourse,
   printAllTeacher,
+  printVideoById,
 };

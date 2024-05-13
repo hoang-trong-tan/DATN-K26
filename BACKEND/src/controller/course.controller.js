@@ -13,6 +13,7 @@ const {
   getListSearchCourses,
   getOneCourse,
   printAllTeacher,
+  printVideoById,
 } = require("../service/course.service");
 
 // tao khoa hoc
@@ -76,6 +77,14 @@ exports.findAllCourses = catchAsync(async (req, res, next) => {
   new Ok({
     message: "find courses is sucess",
     data: await getAllCourses({ ...req.query, userId: req.body.userId }),
+  }).send(res);
+});
+
+// lay ra video theo id
+exports.findOneVideo = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "find one video is sucess",
+    data: await printVideoById(req.params.id),
   }).send(res);
 });
 
