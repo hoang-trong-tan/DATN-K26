@@ -29,7 +29,7 @@ const getAllReview = async ({ courseId, limit, page, select }) => {
 
 const getRelyReview = async (reviewId, select) => {
   return await replyReview
-    .find({ reviewId })
+    .findOne({ reviewId })
     .populate("userId", "user_name user_avatar")
     .select(select)
     .lean();

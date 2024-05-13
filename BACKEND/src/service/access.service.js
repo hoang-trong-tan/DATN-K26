@@ -106,7 +106,7 @@ const login = async (payload) => {
   const userInFor = { userId, user_email };
   const token = await createTokenPair(userInFor);
   return {
-    metaData: getinFoData(["_id", "user_name", "user_email"], foundUser),
+    metaData: foundUser,
     accessToken: token,
   };
 };
