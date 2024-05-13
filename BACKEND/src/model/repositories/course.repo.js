@@ -197,7 +197,7 @@ const calculateTotalLengthSection = (courseDataVideo) => {
 const getFullCourse = async (courseId, unSelect) => {
   return await course
     .findOne({ _id: courseId })
-    .populate("course_type", "type_name")
+    .populate("user_teacher course_type")
     .select(getUnSelect(unSelect))
     .lean();
 };

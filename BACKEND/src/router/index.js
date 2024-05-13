@@ -16,4 +16,6 @@ router.use("/v1/api/cart", require("../router/cart/index"));
 
 router.use("/v1/api/quiz", require("../router/quiz/index"));
 
+router.use("/v1/api/notification", require("../router/notification/index"));
+
 module.exports = router;

@@ -12,6 +12,7 @@ const moment = require("moment");
 let querystring = require("qs");
 
 var crypto = require("crypto");
+const notificationModel = require("../model/notification.model");
 
 const newOrder = async (data) => {
   const order = await orderModel.create(data);
@@ -66,6 +67,14 @@ const createOder = async ({ courseId, userId, deliveryCode }) => {
 
   user.user_course.push(existCourse._id);
   await user.save();
+
+  const title = "ĐƠN HÀNG MỚI";
+  const message = `Một người dùng có id là ${userId} vừa mua thành công khóa học của bạn`;
+  await notificationModel.create({
+    title: title,
+    message: message,
+    userId: existCourse.user_teacher,
+  });
 
   existCourse.course_purchased = existCourse.course_purchased + 1;
   await existCourse.save();

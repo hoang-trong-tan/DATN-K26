@@ -8,6 +8,7 @@ const {
   questionReview,
   anwserReview,
 } = require("../model/feedback.model");
+const notificationModel = require("../model/notification.model");
 const {
   getAllReview,
   getQuestionByVideo,
@@ -84,6 +85,15 @@ const addReview = async ({ userId, courseId, rating, comment }) => {
 
   await updateCourseAverageRating(courseId, avgRating);
 
+  const title = "CÓ MỘT ĐÁNH GIÁ MỚI";
+  const message = `Một người dùng có id là ${userId} vừa đánh giá khóa học của bạn`;
+
+  await notificationModel.create({
+    title: title,
+    message: message,
+    userId: checkCourse.user_teacher,
+  });
+
   return newReview;
 };
 
@@ -108,6 +118,15 @@ const addReplyReview = async ({ reviewId, courseId, comment, userId }) => {
   };
 
   const newReplyReview = await replyReview.create(replyData);
+
+  const title = "PHẢN HỒI ĐÁNH GIÁ";
+  const message = `Giảng viên vừa phản hồi đánh giá của bạn trong khóa học ${checkCourse.course_name}`;
+
+  await notificationModel.create({
+    title: title,
+    message: message,
+    userId: findByIdReview.userId,
+  });
 
   return newReplyReview;
 };
@@ -151,11 +170,22 @@ const addQuestion = async ({
 
   const newQuestion = await questionReview.create(questionData);
 
+  const title = "CÓ CÂU HỎI MỚI";
+  const message = `Có một học viên vừa đặt câu hỏi trong khóa học ${checkCourse.course_name}`;
+
+  await notificationModel.create({
+    title: title,
+    message: message,
+    userId: checkCourse.user_teacher,
+  });
+
   return newQuestion;
 };
 
 const addAnwser = async ({ questionId, userId, anwser }) => {
-  const findByIdQuestion = await questionReview.findById(questionId);
+  const findByIdQuestion = await questionReview
+    .findById(questionId)
+    .populate("userId");
 
   if (!findByIdQuestion) {
     throw new BadRequestError("Question is not exist");
@@ -168,6 +198,14 @@ const addAnwser = async ({ questionId, userId, anwser }) => {
   };
 
   const newAnwser = await anwserReview.create(anwserData);
+  const title = "PHẢN HỒI CÂU HỎI";
+  const message = `Giảng viên hay một ai đó vừa phản hồi câu hỏi của bạn có nội dung là: ${newAnwser.answser_comment}`;
+
+  await notificationModel.create({
+    title: title,
+    message: message,
+    userId: findByIdQuestion.userId._id,
+  });
 
   return newAnwser;
 };

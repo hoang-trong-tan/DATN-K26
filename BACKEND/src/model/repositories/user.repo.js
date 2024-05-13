@@ -25,6 +25,7 @@ const findOneUser = async (userId, select) => {
 const findOneTeacher = async (teacherId, select) => {
   const findTeacher = await userModel
     .findOne({ _id: teacherId, user_role: "teacher" })
+    .populate("course_type", "type_name")
     .select(select);
 
   const numberCourseByTeacher = await course

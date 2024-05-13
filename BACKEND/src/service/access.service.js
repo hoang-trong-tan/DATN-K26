@@ -10,14 +10,9 @@ const { createTokenOtp, createTokenPair } = require("../auth/authUtils");
 const sendMail = require("../util/sendMail");
 const JWT = require("jsonwebtoken");
 const { getinFoData } = require("../util");
-const RoleUser = {
-  STUDENT: "student",
-  TEACHER: "teacher",
-  ADMIN: "admin",
-};
 
 // Đăng Kí Tài Khoảng người dùng
-const signUp = async ({ name, email, password }) => {
+const signUp = async ({ name, email, role, password }) => {
   /**
    * 1- Kiem tra email da ton tai hay chua
    * 2- tao mot cai publickey
@@ -30,7 +25,7 @@ const signUp = async ({ name, email, password }) => {
   if (isEmailExist) {
     throw new BadRequestError("User Is Already Registered");
   }
-  const payload = { name, email, password };
+  const payload = { name, email, role, password };
 
   const token = await createTokenOtp(payload);
 
@@ -66,7 +61,7 @@ const activateUser = async (payload) => {
     throw new BadRequestError("Invalid activation code");
   }
 
-  const { name, email, password } = decodeUser.payload;
+  const { name, email, role, password } = decodeUser.payload;
 
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -74,7 +69,7 @@ const activateUser = async (payload) => {
     user_name: name,
     user_email: email,
     user_password: passwordHash,
-    user_role: RoleUser.STUDENT,
+    user_role: role,
   });
 
   return getinFoData(["_id", "user_name", "user_email"], newUser);
