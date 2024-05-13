@@ -86,7 +86,7 @@ const addReview = async ({ userId, courseId, rating, comment }) => {
   await updateCourseAverageRating(courseId, avgRating);
 
   const title = "CÓ MỘT ĐÁNH GIÁ MỚI";
-  const message = `Một người dùng có id là ${userId} vừa đánh giá khóa học của bạn`;
+  const message = `Một người dùng có id là ${user.user_name} vừa đánh giá khóa học của bạn`;
 
   await notificationModel.create({
     title: title,
