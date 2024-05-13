@@ -14,6 +14,7 @@ router.get("/get-all-teacher", courseController.printAllTeacher);
 router.use(authentication);
 
 router.get("/get-one-course/learn/:id", courseController.getCoursePurchased);
+router.get("/get-one-video/:id", courseController.findOneVideo);
 
 router.post(
   "/update-process-learn/:id",

@@ -1,5 +1,6 @@
 "use strict";
 
+const { BadRequestError } = require("../../core/error.response");
 const { checkIdCourseInCart } = require("../../service/cart.service");
 const { getUnSelect } = require("../../util");
 const {
@@ -170,6 +171,10 @@ const getCourseDataVideo = async (courseDataId, unSelect) => {
     .lean();
 };
 
+const getOneVideo = async (videoId, select) => {
+  return await courseDataVideo.findOne({ _id: videoId }).select(select);
+};
+
 const getCourseDataQuizs = async (courseDataId, unSelect) => {
   return await quiz
     .find({ courseData: courseDataId })
@@ -246,4 +251,5 @@ module.exports = {
   findAllTeacher,
   findAllCoursesWithCart,
   queryCourseByTypeWithCart,
+  getOneVideo,
 };
