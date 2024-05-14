@@ -35,9 +35,15 @@ export const apiSlice = createApi({
             userLoggedIn({
               accessToken: localStorage.getItem("access_token") || "",
               user: result?.data?.data?._id || "",
+              avatar: result?.data?.data?.user_avatar,
+              role: result?.data?.data?.user_role,
             })
           );
         } catch (error: any) {
+          const userId = localStorage.getItem("user_id");
+          if (userId) {
+            localStorage.clear();
+          }
           console.log(error);
         }
       },

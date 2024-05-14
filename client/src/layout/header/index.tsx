@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
-import { HiOutlineMenuAlt3, HiOutlineUserCircle } from "react-icons/hi";
+import { HiOutlineUserCircle } from "react-icons/hi";
 import NavItems from "./NavItems";
 import { useState } from "react";
 import CustomModal from "../../components/ui/Modal";
 import Login from "./Auth/Login";
 import Signup from "./Auth/SignUp";
-import { useLoadUserQuery } from "../../redux/features/api/apiSlice";
 import avatar from "../../assets/avatar.png";
+import { useSelector, useDispatch } from "react-redux";
+import { userLoggedIn } from "../../redux/features/auth/authSlice";
 enum AuthModal {
   CLOSE = "CLOSE",
   LOGIN = "LOGIN",
@@ -14,8 +15,9 @@ enum AuthModal {
 }
 const Header = () => {
   const [open, setOpen] = useState<AuthModal>(AuthModal.CLOSE);
-  const { data: userData } = useLoadUserQuery("");
-  const userAvatar = userData?.data?.user_avatar;
+  const { avatar: userAvatar, user } = useSelector((state: any) => state.auth);
+  const dispatch = useDispatch();
+  console.log({ userAvatar });
   return (
     <div className="w-[90%]  m-auto py-2 h-full">
       <div className="w-full h-[80px] flex items-center justify-between p-3">
@@ -29,11 +31,24 @@ const Header = () => {
         </div>
         <div className="flex items-center">
           <NavItems />
-          {userData ? (
-            <div className="cursor-pointer">
+          {user ? (
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                localStorage.clear();
+                dispatch(
+                  userLoggedIn({
+                    accessToken: "",
+                    user: "",
+                    avatar: "",
+                    role: "",
+                  })
+                );
+              }}
+            >
               <img
                 className="rounded-full"
-                src={userAvatar ?? avatar}
+                src={userAvatar || avatar}
                 width={50}
                 height={50}
                 alt="avatar"

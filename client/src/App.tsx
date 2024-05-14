@@ -4,13 +4,15 @@ import { lazy, Suspense } from "react";
 import Loader from "./components/Loader/Loader";
 import { ROUTE } from "./utils/constants";
 import { Providers } from "./Provider";
+import AdminLayout from "./layout/admin";
 
 const Courses = lazy(() => import("./pages/courses"));
 const HomePage = lazy(() => import("./pages/home"));
 const Course = lazy(() => import("./pages/course"));
 const Lecture = lazy(() => import("./pages/lecture"));
 const About = lazy(() => import("./pages/about"));
-
+const Policy = lazy(() => import("./pages/policy"));
+const Admin = lazy(() => import("./pages/admin"));
 function App() {
   return (
     <Providers>
@@ -58,6 +60,26 @@ function App() {
               element={
                 <Suspense fallback={<Loader />}>
                   <About />
+                </Suspense>
+              }
+            />
+            <Route
+              index
+              path={ROUTE.POLICY}
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Policy />
+                </Suspense>
+              }
+            />
+          </Route>
+          <Route element={<AdminLayout />}>
+            <Route
+              index
+              path={ROUTE.ADMIN}
+              element={
+                <Suspense fallback={<Loader />}>
+                  <Admin />
                 </Suspense>
               }
             />

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useParams } from "react-router-dom";
 import {
   useGetCourseDetailsPurchaseQuery,

@@ -13,16 +13,14 @@ const CourseContentMedia = () => {
 
   const { data: courseRes, isLoading: isLoadingCourse } =
     useGetCourseDetailsPurchaseQuery(id as string);
-  const { data: lectureRes, isLoading: isLoadingLecture } =
-    useGetLectureVideoQuery(lecture_id as string);
+  const { data: lectureRes } = useGetLectureVideoQuery(lecture_id as string);
   if (!courseRes || !lectureRes) {
     return <div>Not found</div>;
   }
 
   const course: CourseType = courseRes?.data;
   const videoUrl: string = lectureRes?.data?.video_url || "";
-  console.log({ lecture_id, videoUrl });
-  return isLoadingCourse || isLoadingLecture ? (
+  return isLoadingCourse ? (
     <Loader />
   ) : (
     <div className="flex mb-5 gap-10 my-10">

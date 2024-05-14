@@ -3,4 +3,6 @@ export enum ROUTE {
   COURSE = "/course/:id",
   LECTURE = "/course/:id/lecture/:lecture_id",
   ABOUT = "/about",
+  POLICY = "/policy",
+  ADMIN = "/admin",
 }
