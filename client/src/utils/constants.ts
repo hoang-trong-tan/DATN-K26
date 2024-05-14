@@ -5,4 +5,5 @@ export enum ROUTE {
   ABOUT = "/about",
   POLICY = "/policy",
   ADMIN = "/admin",
+  CREATE_COURSE = "/admin/create-course",
 }
