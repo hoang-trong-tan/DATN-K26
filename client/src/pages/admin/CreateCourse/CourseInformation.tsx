@@ -1,11 +1,17 @@
 import { FC, useState } from "react";
 import { styles } from "../../../styles/style";
+import { useGetCategoriesQuery } from "../../../redux/features/courses/coursesApi";
 
 type Props = {
   courseInfo: any;
   setCourseInfo: (courseInfo: any) => void;
   active: number;
   setActive: (active: number) => void;
+};
+
+type CategoryType = {
+  _id: string;
+  type_name: string;
 };
 
 const CourseInformation: FC<Props> = ({
@@ -15,7 +21,9 @@ const CourseInformation: FC<Props> = ({
   setActive,
 }) => {
   const [dragging, setDragging] = useState(false);
-  const categories: any[] = [];
+  const { data: categoriesRes } = useGetCategoriesQuery({});
+  console.log({ categoryRes: categoriesRes });
+  const categories: CategoryType[] = categoriesRes?.data;
   //   const { data } = useGetHeroDataQuery("Categories", {});
   //   const [categories, setCategories] = useState([]);
 
@@ -24,7 +32,7 @@ const CourseInformation: FC<Props> = ({
   //       setCategories(data.layout?.categories);
   //     }
   //   }, [data]);
-
+  console.log({ categories });
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setActive(active + 1);
@@ -84,7 +92,7 @@ const CourseInformation: FC<Props> = ({
               setCourseInfo({ ...courseInfo, name: e.target.value })
             }
             id="name"
-            placeholder="MERN stack LMS platform with next 13"
+            placeholder="Enter course name"
             className={`
             ${styles.input}`}
           />
@@ -174,11 +182,17 @@ const CourseInformation: FC<Props> = ({
                 setCourseInfo({ ...courseInfo, categories: e.target.value })
               }
             >
-              <option value="">Select Category</option>
-              {categories &&
-                categories.map((item: any) => (
-                  <option value={item.title} key={item._id}>
-                    {item.title}
+              <option className="text-black" value="">
+                Select Category
+              </option>
+              {categories?.length &&
+                categories.map((item: CategoryType) => (
+                  <option
+                    className="text-black"
+                    value={item.type_name}
+                    key={item._id}
+                  >
+                    {item.type_name}
                   </option>
                 ))}
             </select>
@@ -209,7 +223,7 @@ const CourseInformation: FC<Props> = ({
               name=""
               required
               value={courseInfo.demoUrl}
-              onChange={(e: any) =>
+              onChange={(e) =>
                 setCourseInfo({ ...courseInfo, demoUrl: e.target.value })
               }
               id="demoUrl"

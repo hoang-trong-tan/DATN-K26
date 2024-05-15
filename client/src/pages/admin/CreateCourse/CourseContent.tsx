@@ -10,7 +10,7 @@ type Props = {
   setActive: (active: number) => void;
   courseContentData: any;
   setCourseContentData: (courseContentData: any) => void;
-  handleSubmit: any;
+  handlePreviewData: any;
 };
 
 const CourseContent: FC<Props> = ({
@@ -18,7 +18,7 @@ const CourseContent: FC<Props> = ({
   setCourseContentData,
   active,
   setActive,
-  handleSubmit: handlleCourseSubmit,
+  handlePreviewData,
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(
     Array(courseContentData.length).fill(false)
@@ -121,7 +121,7 @@ const CourseContent: FC<Props> = ({
       toast.error("section can't be empty!");
     } else {
       setActive(active + 1);
-      handlleCourseSubmit();
+      handlePreviewData();
     }
   };
 

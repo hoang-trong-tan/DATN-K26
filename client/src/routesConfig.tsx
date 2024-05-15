@@ -15,11 +15,11 @@ const Admin = lazy(() => import("./pages/admin"));
 const CreateCourse = lazy(() => import("./pages/admin/CreateCourse"));
 
 const getSuspenseElement = (
-  Element: LazyExoticComponent<() => JSX.Element>
+  Component: LazyExoticComponent<() => JSX.Element>
 ) => {
   return (
     <Suspense fallback={<Loader />}>
-      <Element />
+      <Component />
     </Suspense>
   );
 };

@@ -30,7 +30,6 @@ const CreateCourse = () => {
     name: "",
     description: "",
     price: "",
-    estimatedPrice: "",
     tags: "",
     level: "",
     categories: "",
@@ -58,7 +57,7 @@ const CreateCourse = () => {
 
   const [courseData, setCourseData] = useState({});
 
-  const handleSubmit = async () => {
+  const handlePreviewData = async () => {
     // Format benefits array
     const formattedBenefits = benefits.map((benefit) => ({
       title: benefit.title,
@@ -90,7 +89,6 @@ const CreateCourse = () => {
       description: courseInfo.description,
       categories: courseInfo.categories,
       price: courseInfo.price,
-      estimatedPrice: courseInfo.estimatedPrice,
       tags: courseInfo.tags,
       thumbnail: courseInfo.thumbnail,
       level: courseInfo.level,
@@ -140,7 +138,7 @@ const CreateCourse = () => {
             setActive={setActive}
             courseContentData={courseContentData}
             setCourseContentData={setCourseContentData}
-            handleSubmit={handleSubmit}
+            handlePreviewData={handlePreviewData}
           />
         )}
 
