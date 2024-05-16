@@ -80,6 +80,7 @@ const printInfoUser = async (userId) => {
     "user_university",
     "user_diploma",
     "user_course",
+    "user_email",
   ]);
 };
 
@@ -124,6 +125,7 @@ const printInfoTeacher = async (teacherId) => {
     "user_birthday",
     "user_university",
     "user_diploma",
+    "user_email",
   ]);
 };
 
