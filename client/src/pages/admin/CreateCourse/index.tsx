@@ -1,8 +1,8 @@
-import { useState } from "react";
-import CourseInformation from "./CourseInformation";
+import { ChangeEvent, useState, DragEvent } from "react";
 import { styles } from "../../../styles/style";
 import { useGetCategoriesQuery } from "../../../redux/features/courses/coursesApi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import ReactPlayer from "react-player";
 
 // import { useCreateCourseMutation } from "../../../../redux/features/courses/coursesApi";
 // import { toast } from "react-hot-toast";
@@ -29,23 +29,19 @@ const CreateCourse = () => {
     type_name: string;
   };
 
-  const [active, setActive] = useState(0);
   const [courseInfo, setCourseInfo] = useState({
     name: "",
     description: "",
     price: "",
-    tags: "",
-    level: "",
     category: "",
     demoUrl: "",
     thumbnail: "",
   });
-  const [dragging, setDragging] = useState(false);
+  const [dragging, setDragging] = useState<"demoUrl" | "thumbnail" | "">("");
   const { data: categoriesRes } = useGetCategoriesQuery({});
-  const [benefits, setBenefits] = useState([{ title: "" }]);
-  const [prerequisites, setPrerequisites] = useState([{ title: "" }]);
+  const [benefits, setBenefits] = useState<string[]>([""]);
+  const [lessionContents, setLessionContents] = useState<string[]>([""]);
 
-  console.log({ categoryRes: categoriesRes });
   const categories: CategoryType[] = categoriesRes?.data;
   //   const { data } = useGetHeroDataQuery("Categories", {});
   //   const [categories, setCategories] = useState([]);
@@ -55,68 +51,67 @@ const CreateCourse = () => {
   //       setCategories(data.layout?.categories);
   //     }
   //   }, [data]);
-  console.log({ categories });
-  const handleSubmit = (e: any) => {
+
+  const handleDragOver = (e: DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
-    setActive(active + 1);
+    const name = (e.target as any)?.htmlFor;
+    setDragging(name);
   };
-
-  const handleFileChange = (e: any) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setCourseInfo({ ...courseInfo, thumbnail: reader.result as string });
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleDragOver = (e: any) => {
+  const handleDragLeave = (e: DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
-    setDragging(true);
+    setDragging("");
   };
-
-  const handleDragLeave = (e: any) => {
+  const handleDrop = (e: DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
-    setDragging(false);
-  };
-
-  const handleDrop = (e: any) => {
-    e.preventDefault();
-    setDragging(false);
-
+    setDragging("");
+    const name = (e.target as any)?.htmlFor;
     const file = e.dataTransfer.files?.[0];
-
     if (file) {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        setCourseInfo({ ...courseInfo, thumbnail: reader.result as string });
-      };
-      reader.readAsDataURL(file);
+      handleUploadSingleFile(file, name);
     }
   };
 
-  const handleBenefitChange = (index: number, value: any) => {
+  const handleSubmit = () => {};
+
+  const handleUploadSingleFile = (file: File, name = "") => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      console.log({ name, result: reader.result });
+      setCourseInfo({ ...courseInfo, [name]: reader.result as string });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleBenefitChange = (index: number, value: string) => {
     const updatedBenefits = [...benefits];
-    updatedBenefits[index].title = value;
+    updatedBenefits[index] = value;
     setBenefits(updatedBenefits);
   };
   const handleAddBenefit = () => {
-    setBenefits([...benefits, { title: "" }]);
+    setBenefits([...benefits, ""]);
   };
-  const handlePrerequisitesChange = (index: number, value: any) => {
-    const updatedPrerequisites = [...prerequisites];
-    updatedPrerequisites[index].title = value;
-    setPrerequisites(updatedPrerequisites);
+  const handleLessionContentsChange = (index: number, value: string) => {
+    const updatedLessionContents = [...lessionContents];
+    updatedLessionContents[index] = value;
+    setLessionContents(updatedLessionContents);
   };
 
-  const handleAddPrerequisites = () => {
-    setPrerequisites([...prerequisites, { title: "" }]);
+  const handleAddLessionContents = () => {
+    setLessionContents([...lessionContents, ""]);
+  };
+
+  const onChangeCourseInfo = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    const { files } = (e as ChangeEvent<HTMLInputElement>).target;
+    const file = files?.[0];
+    if (file) {
+      handleUploadSingleFile(file, name);
+      return;
+    }
+    setCourseInfo({ ...courseInfo, [name]: value });
   };
 
   return (
@@ -125,13 +120,11 @@ const CreateCourse = () => {
         <div>
           <label htmlFor="">Course Name</label>
           <input
-            type="name"
-            name=""
+            type="text"
+            name="name"
             required
             value={courseInfo.name}
-            onChange={(e: any) =>
-              setCourseInfo({ ...courseInfo, name: e.target.value })
-            }
+            onChange={(e) => onChangeCourseInfo(e)}
             id="name"
             placeholder="Enter course name"
             className={`
@@ -142,16 +135,14 @@ const CreateCourse = () => {
         <div className="mb-5">
           <label className={`${styles.label}`}>Course Description</label>
           <textarea
-            name=""
-            id=""
+            name="description"
+            id="description"
             cols={30}
             rows={8}
             placeholder="Write something amazing..."
             className={`${styles.input} !h-min !py-2`}
             value={courseInfo.description}
-            onChange={(e: any) =>
-              setCourseInfo({ ...courseInfo, description: e.target.value })
-            }
+            onChange={(e) => onChangeCourseInfo(e)}
           ></textarea>
         </div>
         <div className="w-full flex gap-3 justify-between">
@@ -159,12 +150,10 @@ const CreateCourse = () => {
             <label className={`${styles.label}`}>Course Price</label>
             <input
               type="number"
-              name=""
+              name="price"
               required
               value={courseInfo.price}
-              onChange={(e: any) =>
-                setCourseInfo({ ...courseInfo, price: e.target.value })
-              }
+              onChange={(e) => onChangeCourseInfo(e)}
               id="price"
               placeholder="29"
               className={`
@@ -176,13 +165,11 @@ const CreateCourse = () => {
               Course Categories
             </label>
             <select
-              name=""
-              id=""
+              name="category"
+              id="category"
               className={`${styles.input}`}
               value={courseInfo.category}
-              onChange={(e: any) =>
-                setCourseInfo({ ...courseInfo, category: e.target.value })
-              }
+              onChange={(e) => onChangeCourseInfo(e)}
             >
               <option className="text-black" value="">
                 Select Category
@@ -201,36 +188,54 @@ const CreateCourse = () => {
           </div>
         </div>
         <br />
-        <div className="w-full flex justify-between"></div>
-        <div className="w-full justify-between">
+        <div className="w-full flex flex-col gap-2">
           <label className={`${styles.label} w-[50%]`}>Demo Url</label>
           <input
-            type="text"
-            name=""
-            required
-            value={courseInfo.demoUrl}
-            onChange={(e) =>
-              setCourseInfo({ ...courseInfo, demoUrl: e.target.value })
-            }
+            type="file"
+            accept="video/*"
+            name="demoUrl"
             id="demoUrl"
-            placeholder="eer74fd"
-            className={`
-            ${styles.input}`}
+            className="hidden"
+            onChange={(e) => onChangeCourseInfo(e)}
           />
+          <label
+            htmlFor="demoUrl"
+            className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${
+              dragging === "demoUrl" ? "bg-blue-500" : "bg-transparent"
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            {courseInfo.demoUrl ? (
+              <ReactPlayer
+                url={courseInfo.demoUrl}
+                controls
+                width="100%"
+                height="auto"
+              />
+            ) : (
+              <span className="text-black dark:text-white">
+                Drag and drop your video here or click to browse
+              </span>
+            )}
+          </label>
         </div>
         <br />
-        <div className="w-full">
+        <div className="w-full flex flex-col gap-2">
+          <label className={`${styles.label} w-[50%]`}>Thumbnail</label>
           <input
             type="file"
             accept="image/*"
-            id="file"
+            name="thumbnail"
+            id="thumbnail"
             className="hidden"
-            onChange={handleFileChange}
+            onChange={(e) => onChangeCourseInfo(e)}
           />
           <label
-            htmlFor="file"
+            htmlFor="thumbnail"
             className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${
-              dragging ? "bg-blue-500" : "bg-transparent"
+              dragging === "thumbnail" ? "bg-blue-500" : "bg-transparent"
             }`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -239,7 +244,7 @@ const CreateCourse = () => {
             {courseInfo.thumbnail ? (
               <img
                 src={courseInfo.thumbnail}
-                alt=""
+                alt="thumbnail"
                 className="max-h-full w-full object-cover"
               />
             ) : (
@@ -255,15 +260,15 @@ const CreateCourse = () => {
             What are the benefits for students in this course?
           </label>
           <br />
-          {benefits.map((benefit: any, index: number) => (
+          {benefits.map((benefit: string, index: number) => (
             <input
               type="text"
               key={index}
-              name="Benefit"
+              name="benefit"
               placeholder="You will be able to build a full stack LMS Platform..."
               required
               className={`${styles.input} my-2`}
-              value={benefit.title}
+              value={benefit}
               onChange={(e) => handleBenefitChange(index, e.target.value)}
             />
           ))}
@@ -274,24 +279,26 @@ const CreateCourse = () => {
         </div>
         <div>
           <label className={`${styles.label} text-[20px]`} htmlFor="email">
-            What are the prerequisites for starting this course?
+            Lession contents
           </label>
           <br />
-          {prerequisites.map((prerequisites: any, index: number) => (
+          {lessionContents.map((item: string, index: number) => (
             <input
               type="text"
               key={index}
-              name="prerequisites"
-              placeholder="You need basic knowledge of MERN stack"
+              name="lessionContent"
+              placeholder="Fill lession content here"
               required
               className={`${styles.input} my-2`}
-              value={prerequisites.title}
-              onChange={(e) => handlePrerequisitesChange(index, e.target.value)}
+              value={item}
+              onChange={(e) =>
+                handleLessionContentsChange(index, e.target.value)
+              }
             />
           ))}
           <AiOutlinePlusCircle
             style={{ margin: "10px 0px", cursor: "pointer", width: "30px" }}
-            onClick={handleAddPrerequisites}
+            onClick={handleAddLessionContents}
           />
         </div>
         <div className="w-full flex items-center justify-end">

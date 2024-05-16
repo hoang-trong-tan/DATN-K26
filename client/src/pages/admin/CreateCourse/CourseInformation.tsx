@@ -235,6 +235,7 @@ const CourseInformation: FC<Props> = ({
         </div>
         <br />
         <div className="w-full">
+          <label className={`${styles.label} w-[50%]`}>Thumbnail</label>
           <input
             type="file"
             accept="image/*"
