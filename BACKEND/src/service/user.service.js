@@ -71,11 +71,14 @@ const printPurchasedCourses = async (userId) => {
 const printInfoUser = async (userId) => {
   return await findOneUser(userId, [
     "user_name",
-    "user_email",
-    "user_avatar",
-    "user_role",
     "user_experience",
     "user_about",
+    "user_role",
+    "user_avatar",
+    "user_phone",
+    "user_birthday",
+    "user_university",
+    "user_diploma",
     "user_course",
   ]);
 };
@@ -107,8 +110,6 @@ const updatePassWord = async ({ oldPassWord, newPassWord, userId }) => {
   await user.save();
   return user;
 };
-
-// tao profile teacher
 
 // tìm lấy ra thông tin giảng viên theo id
 
