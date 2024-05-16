@@ -49,7 +49,6 @@ const CourseContentList: FC<Props> = (props) => {
           sectionVideos?.course_video?.length || 0; // Number of videos in the current section
         const sectionVideoLength: number =
           sectionVideos?.total_video_section || 0;
-        const sectionStartIndex: number = totalCount; // Start index of videos within the current section
         totalCount += sectionVideoCount; // Update the total count of videos
 
         return (

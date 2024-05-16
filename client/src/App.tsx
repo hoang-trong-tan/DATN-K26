@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Providers } from "./Provider";
 import routesConfig, { RouteConfigType } from "./routesConfig";
+import { Toaster } from "react-hot-toast";
 
 const renderRoutes = (routes: RouteConfigType[]) => {
   return routes.map((route: RouteConfigType, index: number) => {
@@ -28,6 +29,7 @@ function App() {
       <BrowserRouter>
         <Routes>{renderRoutes(routesConfig)}</Routes>
       </BrowserRouter>
+      <Toaster />
     </Providers>
   );
 }

@@ -28,22 +28,26 @@ const Login: FC<Props> = ({ switchToSignUp, onClose }) => {
     initialValues: { email: "", password: "" },
     validationSchema: schema,
     onSubmit: async ({ email, password }) => {
-      const dataRes: any = await login({
-        user_email: email,
-        user_password: password,
-      });
-      const accessToken = dataRes?.data?.data?.accessToken;
-      const userId = dataRes?.data?.data?.metaData?._id;
-      if (accessToken) {
-        localStorage.setItem("access_token", accessToken);
+      try {
+        const dataRes: any = await login({
+          user_email: email,
+          user_password: password,
+        });
+        const accessToken = dataRes?.data?.data?.accessToken;
+        const userId = dataRes?.data?.data?.metaData?._id;
+        if (accessToken) {
+          localStorage.setItem("access_token", accessToken);
+        }
+        if (userId) {
+          localStorage.setItem("user_id", userId);
+        }
+        if (onClose) {
+          onClose();
+        }
+        refetchUserData();
+      } catch (error: any) {
+        toast.error(error?.data?.message);
       }
-      if (userId) {
-        localStorage.setItem("user_id", userId);
-      }
-      if (onClose) {
-        onClose();
-      }
-      refetchUserData();
     },
   });
 

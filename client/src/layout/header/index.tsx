@@ -17,7 +17,6 @@ const Header = () => {
   const [open, setOpen] = useState<AuthModal>(AuthModal.CLOSE);
   const { avatar: userAvatar, user } = useSelector((state: any) => state.auth);
   const dispatch = useDispatch();
-  console.log({ userAvatar });
   return (
     <div className="w-[90%]  m-auto py-2 h-full">
       <div className="w-full h-[80px] flex items-center justify-between p-3">
@@ -42,6 +41,7 @@ const Header = () => {
                     user: "",
                     avatar: "",
                     role: "",
+                    course_bought: [""],
                   })
                 );
               }}

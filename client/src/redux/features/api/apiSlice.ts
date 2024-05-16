@@ -37,6 +37,9 @@ export const apiSlice = createApi({
               user: result?.data?.data?._id || "",
               avatar: result?.data?.data?.user_avatar,
               role: result?.data?.data?.user_role,
+              course_bought: result?.data?.data?.user_course?.map(
+                (item: any) => item?._id
+              ),
             })
           );
         } catch (error: any) {

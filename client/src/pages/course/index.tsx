@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   useGetCourseDetailsPurchaseQuery,
   useGetCourseDetailsQuery,
@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import CourseContentList from "../courses/components/CourseContentList";
 import { Button } from "../../components/ui/Button";
 import Loader from "../../components/Loader/Loader";
+import { useSelector } from "react-redux";
+import { useCreateOrderMutation } from "../../redux/features/orders/ordersApi";
 
 export type CourseType = {
   course_benefits: string[];
@@ -51,10 +53,11 @@ type CourseDataQuiz = {
 const Course = () => {
   const { id } = useParams();
   const userId = localStorage.getItem("user_id");
+  const { course_bought } = useSelector((state: any) => state.auth);
+  const navigate = useNavigate();
   const { data, isLoading } = userId
     ? useGetCourseDetailsPurchaseQuery(id as string)
     : useGetCourseDetailsQuery(id as string);
-
   const course: CourseType = data?.data;
   const [urlVideo, setUrlVideo] = useState("");
   useEffect(() => {
@@ -62,6 +65,24 @@ const Course = () => {
       setUrlVideo(course?.course_demoVideo);
     }
   }, [course?.course_demoVideo, urlVideo]);
+
+  const [createOrder] = useCreateOrderMutation();
+  const isCourseBought = course_bought?.includes(id);
+  const firstLectureVideo =
+    course?.course_data?.[0]?.course_data_video?.course_video?.[0]?._id;
+
+  const handleCourseClick = async () => {
+    if (isCourseBought && firstLectureVideo) {
+      navigate(`/course/${id}/lecture/${firstLectureVideo}`);
+    }
+    try {
+      const orderInfo: any = await createOrder(id);
+      // window.open(orderInfo?.data?.data);
+      window.location = orderInfo?.data?.data;
+    } catch (error) {
+      console.log({ error });
+    }
+  };
 
   return isLoading ? (
     <Loader />
@@ -138,8 +159,11 @@ const Course = () => {
             <source src={urlVideo} type="video/mp4" />
           </video>
         )}
-        <Button className="w-[200px] py-3 bg-[#DC143C]">
-          Pay now {course?.course_price}$
+        <Button
+          className="w-[200px] py-3 bg-[#DC143C]"
+          onClick={() => handleCourseClick()}
+        >
+          {isCourseBought ? "Go to course" : `Pay now ${course?.course_price}$`}
         </Button>
       </div>
     </div>

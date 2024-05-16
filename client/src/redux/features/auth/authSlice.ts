@@ -5,6 +5,7 @@ const initialState = {
   user: "",
   avatar: "",
   role: "",
+  course_bought: [""],
 };
 
 const authSlice = createSlice({
@@ -21,18 +22,21 @@ const authSlice = createSlice({
         user: string;
         avatar: string;
         role: string;
+        course_bought: string[];
       }>
     ) => {
       state.token = action.payload.accessToken;
       state.user = action.payload.user;
       state.avatar = action.payload.avatar;
       state.role = action.payload.role;
+      state.course_bought = action.payload.course_bought;
     },
     userLoggedOut: (state) => {
       state.token = "";
       state.user = "";
       state.avatar = "";
       state.role = "";
+      state.course_bought = [];
     },
   },
 });
