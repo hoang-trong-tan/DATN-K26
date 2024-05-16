@@ -57,7 +57,7 @@ const addReview = async ({ userId, courseId, rating, comment }) => {
     throw new BadRequestError("Only one review is allowed ");
   }
 
-  const checkCourse = await course.findById(courseId);
+  const checkCourse = await course.findById(courseId).populate("user_teacher");
 
   if (!checkCourse) {
     throw new NotFoundError("Course is not exist");
@@ -95,7 +95,7 @@ const addReview = async ({ userId, courseId, rating, comment }) => {
     userId: checkCourse.user_teacher,
   });
 
-  const userToken = checkCourse.user_fcm_token;
+  const userToken = checkCourse.user_teacher.user_fcm_token;
 
   if (userToken) {
     await sendNotification(title, message, userToken);
