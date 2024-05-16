@@ -22,7 +22,7 @@ const newOrder = async (data) => {
 const createOder = async ({ courseId, userId, deliveryCode }) => {
   const user = await userModel.findById(userId);
 
-  const existCourse = await course.findById(courseId);
+  const existCourse = await course.findById(courseId).populate("user_teacher");
 
   if (!existCourse) {
     throw new NotFoundError("Course not found");
@@ -75,6 +75,12 @@ const createOder = async ({ courseId, userId, deliveryCode }) => {
     message: message,
     userId: existCourse.user_teacher,
   });
+
+  const userToken = existCourse.user_teacher.user_fcm_token;
+
+  if (userToken) {
+    await sendNotification(title, message, userToken);
+  }
 
   existCourse.course_purchased = existCourse.course_purchased + 1;
   await existCourse.save();

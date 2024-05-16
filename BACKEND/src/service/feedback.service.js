@@ -15,6 +15,7 @@ const {
 } = require("../model/repositories/feedback.repo");
 
 const userModel = require("../model/user.model");
+const { sendNotification } = require("../util/sendFCMNotification");
 
 // hàm tinh tổng rating của user đánh khóa học
 const calculateAvgRating = async (courseId) => {
@@ -86,13 +87,19 @@ const addReview = async ({ userId, courseId, rating, comment }) => {
   await updateCourseAverageRating(courseId, avgRating);
 
   const title = "CÓ MỘT ĐÁNH GIÁ MỚI";
-  const message = `Một người dùng có id là ${user.user_name} vừa đánh giá khóa học của bạn`;
+  const message = `Người dùng là ${user.user_name} vừa đánh giá khóa học của bạn`;
 
   await notificationModel.create({
     title: title,
     message: message,
     userId: checkCourse.user_teacher,
   });
+
+  const userToken = checkCourse.user_fcm_token;
+
+  if (userToken) {
+    await sendNotification(title, message, userToken);
+  }
 
   return newReview;
 };
@@ -104,7 +111,7 @@ const addReplyReview = async ({ reviewId, courseId, comment, userId }) => {
     throw new BadRequestError("Course is not exist");
   }
 
-  const findByIdReview = await review.findById(reviewId);
+  const findByIdReview = await review.findById(reviewId).populate("userId");
 
   if (!findByIdReview) {
     throw new BadRequestError("Review is not exist");
@@ -127,6 +134,12 @@ const addReplyReview = async ({ reviewId, courseId, comment, userId }) => {
     message: message,
     userId: findByIdReview.userId,
   });
+
+  const userToken = findByIdReview.userId.user_fcm_token;
+
+  if (userToken) {
+    await sendNotification(title, message, userToken);
+  }
 
   return newReplyReview;
 };
@@ -179,6 +192,12 @@ const addQuestion = async ({
     userId: checkCourse.user_teacher,
   });
 
+  const userToken = checkCourse.user_fcm_token;
+
+  if (userToken) {
+    await sendNotification(title, message, userToken);
+  }
+
   return newQuestion;
 };
 
@@ -206,6 +225,12 @@ const addAnwser = async ({ questionId, userId, anwser }) => {
     message: message,
     userId: findByIdQuestion.userId._id,
   });
+
+  const userToken = findByIdQuestion.userId.user_fcm_token;
+
+  if (userToken) {
+    await sendNotification(title, message, userToken);
+  }
 
   return newAnwser;
 };
