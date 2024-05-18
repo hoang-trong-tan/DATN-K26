@@ -43,4 +43,16 @@ router.post(
   courseController.createCourseType
 );
 
+router.get(
+  "/get-all-course-data/:id",
+  authorizeRoles("teacher"),
+  courseController.printAllCourseData
+);
+
+router.delete(
+  "/delete-course-data/:id",
+  authorizeRoles("teacher"),
+  courseController.deleteCourseData
+);
+
 module.exports = router;
