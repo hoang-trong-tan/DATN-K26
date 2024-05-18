@@ -4,10 +4,10 @@ export const coursesApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createCourse: builder.mutation({
       query: (data) => ({
-        url: "create-course",
+        url: "course/create-course",
         method: "POST",
         body: data,
-        credentials: "include" as const,
+        // credentials: "include" as const,
       }),
     }),
     getAllCourses: builder.query({
@@ -16,26 +16,10 @@ export const coursesApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    deleteCourse: builder.mutation({
-      query: (id) => ({
-        url: `delete-course/${id}`,
-        method: "DELETE",
-        credentials: "include" as const,
-      }),
-    }),
-    editCourse: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `edit-course/${id}`,
-        method: "PUT",
-        body: data,
-        credentials: "include" as const,
-      }),
-    }),
-    getUsersAllCourses: builder.query({
-      query: () => ({
-        url: "get-courses",
+    getAllCoursesByTeacher: builder.query({
+      query: (id: string) => ({
+        url: "user/all-course-teacher/" + id,
         method: "GET",
-        credentials: "include" as const,
       }),
     }),
     getCourseDetails: builder.query({
@@ -48,6 +32,10 @@ export const coursesApi = apiSlice.injectEndpoints({
       query: (id: string) => ({
         url: `course/get-one-course/learn/${id}`,
         method: "GET",
+        headers: {
+          "x-client-id": localStorage.getItem("user_id") || "",
+          "x-atoken-id": localStorage.getItem("access_token") || "",
+        },
       }),
     }),
     getLectureVideo: builder.query({
@@ -56,67 +44,57 @@ export const coursesApi = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-
-    getCourseContent: builder.query({
-      query: (id) => ({
-        url: `get-course-content/${id}`,
-        method: "GET",
-        credentials: "include" as const,
-      }),
-    }),
-    addNewQuestion: builder.mutation({
-      query: ({ question, courseId, contentId }) => ({
-        url: "add-question",
-        body: {
-          question,
-          courseId,
-          contentId,
-        },
-        method: "PUT",
-        credentials: "include" as const,
-      }),
-    }),
-    addAnswerInQuestion: builder.mutation({
-      query: ({ answer, courseId, contentId, questionId }) => ({
-        url: "add-answer",
-        body: {
-          answer,
-          courseId,
-          contentId,
-          questionId,
-        },
-        method: "PUT",
-        credentials: "include" as const,
-      }),
-    }),
-    addReviewInCourse: builder.mutation({
-      query: ({ review, rating, courseId }: any) => ({
-        url: `add-review/${courseId}`,
-        body: {
-          review,
-          rating,
-        },
-        method: "PUT",
-        credentials: "include" as const,
-      }),
-    }),
-    addReplyInReview: builder.mutation({
-      query: ({ comment, courseId, reviewId }: any) => ({
-        url: `add-reply`,
-        body: {
-          comment,
-          courseId,
-          reviewId,
-        },
-        method: "PUT",
-        credentials: "include" as const,
-      }),
-    }),
     getCategories: builder.query({
       query: () => ({
         url: "course/get-all-course-type",
         method: "GET",
       }),
+    }),
+    createChapters: builder.mutation({
+      query: (data) => {
+        console.log({ data });
+        return {
+          url: "course/create-course-data/" + data.id,
+          method: "POST",
+          body: data.payload,
+        };
+      },
+    }),
+    listChaptersByCourseId: builder.query({
+      query: (id) => {
+        return {
+          url: "course/get-all-course-data/" + id,
+          method: "GET",
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    getChapterContents: builder.query({
+      query: (id) => {
+        return {
+          url: "course/get-all-course-data/" + id,
+          method: "GET",
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    deleteChapter: builder.mutation({
+      query: (id) => {
+        return {
+          url: "course/delete-course-data/" + id,
+          method: "DELETE",
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
     }),
   }),
 });
@@ -124,16 +102,13 @@ export const coursesApi = apiSlice.injectEndpoints({
 export const {
   useCreateCourseMutation,
   useGetAllCoursesQuery,
-  useDeleteCourseMutation,
-  useEditCourseMutation,
-  useGetUsersAllCoursesQuery,
   useGetCourseDetailsQuery,
-  useGetCourseContentQuery,
-  useAddNewQuestionMutation,
-  useAddAnswerInQuestionMutation,
-  useAddReviewInCourseMutation,
-  useAddReplyInReviewMutation,
   useGetCourseDetailsPurchaseQuery,
   useGetLectureVideoQuery,
   useGetCategoriesQuery,
+  useGetAllCoursesByTeacherQuery,
+  useCreateChaptersMutation,
+  useListChaptersByCourseIdQuery,
+  useDeleteChapterMutation,
+  useGetChapterContentsQuery,
 } = coursesApi;

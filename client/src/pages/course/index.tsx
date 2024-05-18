@@ -77,7 +77,6 @@ const Course = () => {
     }
     try {
       const orderInfo: any = await createOrder(id);
-      // window.open(orderInfo?.data?.data);
       window.location = orderInfo?.data?.data;
     } catch (error) {
       console.log({ error });

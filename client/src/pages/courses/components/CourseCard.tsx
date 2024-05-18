@@ -12,30 +12,26 @@ export type CourseCardType = {
 };
 type Props = {
   item: CourseCardType;
-  isProfile?: boolean;
+  isOwn?: boolean;
 };
 
-const CourseCard: FC<Props> = ({ item, isProfile }) => {
+const CourseCard: FC<Props> = ({ item, isOwn }) => {
   return (
-    <Link to={!isProfile ? `/course/${item._id}` : `course-access/${item._id}`}>
+    <Link to={isOwn ? `/admin/course/${item._id}` : `/course/${item._id}`}>
       <div className="w-full min-h-[35vh] flex flex-col justify-between h-full dark:bg-slate-500 dark:bg-opacity-20 backdrop-blur border dark:border-[#ffffff1d] border-[#00000015] dark:shadow-[bg-slate-700] rounded-lg p-3 shadow-sm dark:shadow-inner">
         <img
           src={item?.course_thumnail}
           alt=""
-          className="w-full h-[250px] object-cover"
+          className="w-full h-[250px] mb-5"
         />
-        <br />
+
         <h1 className="font-Poppins flex-1 text-[16px] text-black dark:text-[#fff]">
           {item.course_name}
         </h1>
         <div>
           <div className="w-full flex items-center justify-between pt-2">
             <Ratings rating={item.course_ratingsAverage} />
-            <h5
-              className={`text-black dark:text-[#fff] ${
-                isProfile && "hidden 800px:inline"
-              }`}
-            >
+            <h5 className={`text-black dark:text-[#fff]`}>
               {item.course_purchased} Students
             </h5>
           </div>

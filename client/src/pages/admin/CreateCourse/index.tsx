@@ -1,29 +1,27 @@
-import { ChangeEvent, useState, DragEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { styles } from "../../../styles/style";
-import { useGetCategoriesQuery } from "../../../redux/features/courses/coursesApi";
+import {
+  useCreateCourseMutation,
+  useGetCategoriesQuery,
+} from "../../../redux/features/courses/coursesApi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import ReactPlayer from "react-player";
-
-// import { useCreateCourseMutation } from "../../../../redux/features/courses/coursesApi";
-// import { toast } from "react-hot-toast";
-// import { redirect } from "react-router-dom";
+import {
+  useUploadImageMutation,
+  useUploadVideoMutation,
+} from "../../../redux/features/upload/uploadApi";
+import Loader from "../../../components/Loader/Loader";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CreateCourse = () => {
-  //   const [createCourse, { isLoading, isSuccess, error }] =
-  //     useCreateCourseMutation();
+  const [createCourse, { isLoading: isLoadingCreateCourse }] =
+    useCreateCourseMutation();
+  const [loadingUploadFile, setLoadingUploadFile] = useState<
+    "thumbnail" | "demoUrl" | ""
+  >("");
 
-  //   useEffect(() => {
-  //     if (isSuccess) {
-  //       toast.success("Course created successfully");
-  //       redirect("/admin/courses");
-  //     }
-  //     if (error) {
-  //       if ("data" in error) {
-  //         const errorMessage = error as any;
-  //         toast.error(errorMessage.data.message);
-  //       }
-  //     }
-  //   }, [isSuccess, error]);
+  const navigate = useNavigate();
   type CategoryType = {
     _id: string;
     type_name: string;
@@ -37,50 +35,67 @@ const CreateCourse = () => {
     demoUrl: "",
     thumbnail: "",
   });
-  const [dragging, setDragging] = useState<"demoUrl" | "thumbnail" | "">("");
   const { data: categoriesRes } = useGetCategoriesQuery({});
   const [benefits, setBenefits] = useState<string[]>([""]);
   const [lessionContents, setLessionContents] = useState<string[]>([""]);
-
+  const [uploadImage] = useUploadImageMutation();
+  const [uploadVideo] = useUploadVideoMutation();
   const categories: CategoryType[] = categoriesRes?.data;
-  //   const { data } = useGetHeroDataQuery("Categories", {});
-  //   const [categories, setCategories] = useState([]);
 
-  //   useEffect(() => {
-  //     if (data) {
-  //       setCategories(data.layout?.categories);
-  //     }
-  //   }, [data]);
-
-  const handleDragOver = (e: DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-    const name = (e.target as any)?.htmlFor;
-    setDragging(name);
-  };
-  const handleDragLeave = (e: DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-    setDragging("");
-  };
-  const handleDrop = (e: DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-    setDragging("");
-    const name = (e.target as any)?.htmlFor;
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      handleUploadSingleFile(file, name);
+  const handleSubmit = async () => {
+    try {
+      console.log({ courseInfo, benefits, lessionContents });
+      const transferData = {
+        course_name: courseInfo.name,
+        course_type: courseInfo.category,
+        course_description: courseInfo.description,
+        course_thumnail: courseInfo.thumbnail,
+        course_demoVideo: courseInfo.demoUrl,
+        course_benefits: benefits,
+        course_lessonContent: lessionContents,
+        course_price: Number(courseInfo.price),
+      };
+      await createCourse(transferData);
+      toast.success("create video successfully");
+      navigate("/admin");
+    } catch (error) {
+      console.log({ error });
+      toast.success("create video failed");
     }
   };
 
-  const handleSubmit = () => {};
-
-  const handleUploadSingleFile = (file: File, name = "") => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      console.log({ name, result: reader.result });
-      setCourseInfo({ ...courseInfo, [name]: reader.result as string });
-    };
-    reader.readAsDataURL(file);
+  const handleUploadSingleFile = async (
+    file: File,
+    name: "thumbnail" | "demoUrl" = "demoUrl"
+  ) => {
+    try {
+      let result: string;
+      if (name === "demoUrl") {
+        setLoadingUploadFile("demoUrl");
+        const formData = new FormData();
+        formData.append("video", file);
+        const rs: any = await uploadVideo(formData);
+        console.log({ rs });
+        result = rs?.data?.data;
+      } else {
+        setLoadingUploadFile("thumbnail");
+        const formData = new FormData();
+        formData.append("imgaes", file);
+        const rs: any = await uploadImage(formData);
+        console.log({ rs });
+        result = rs?.data?.data;
+      }
+      console.log({ result });
+      setCourseInfo({ ...courseInfo, [name]: result as string });
+      setLoadingUploadFile("");
+      // const reader = new FileReader();
+      // reader.onload = () => {
+      // };
+      // reader.readAsDataURL(file);
+    } catch (error) {
+      toast.error("Error uploading file");
+      setLoadingUploadFile("");
+    }
   };
 
   const handleBenefitChange = (index: number, value: string) => {
@@ -108,13 +123,15 @@ const CreateCourse = () => {
     const { files } = (e as ChangeEvent<HTMLInputElement>).target;
     const file = files?.[0];
     if (file) {
-      handleUploadSingleFile(file, name);
+      handleUploadSingleFile(file, name as "thumbnail" | "demoUrl");
       return;
     }
     setCourseInfo({ ...courseInfo, [name]: value });
   };
 
-  return (
+  return isLoadingCreateCourse ? (
+    <Loader />
+  ) : (
     <div className="w-[80%] m-auto mt-24">
       <form onSubmit={handleSubmit} className={`${styles.label}`}>
         <div>
@@ -178,7 +195,7 @@ const CreateCourse = () => {
                 categories.map((item: CategoryType) => (
                   <option
                     className="text-black"
-                    value={item.type_name}
+                    value={item._id}
                     key={item._id}
                   >
                     {item.type_name}
@@ -200,14 +217,13 @@ const CreateCourse = () => {
           />
           <label
             htmlFor="demoUrl"
-            className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${
-              dragging === "demoUrl" ? "bg-blue-500" : "bg-transparent"
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
+            className={
+              "w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center bg-transparent"
+            }
           >
-            {courseInfo.demoUrl ? (
+            {loadingUploadFile === "demoUrl" ? (
+              <div className="loader"></div>
+            ) : courseInfo.demoUrl ? (
               <ReactPlayer
                 url={courseInfo.demoUrl}
                 controls
@@ -234,14 +250,13 @@ const CreateCourse = () => {
           />
           <label
             htmlFor="thumbnail"
-            className={`w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center ${
-              dragging === "thumbnail" ? "bg-blue-500" : "bg-transparent"
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
+            className={
+              "w-full min-h-[10vh] dark:border-white border-[#00000026] p-3 border flex items-center justify-center bg-transparent"
+            }
           >
-            {courseInfo.thumbnail ? (
+            {loadingUploadFile === "thumbnail" ? (
+              <div className="loader"></div>
+            ) : courseInfo.thumbnail ? (
               <img
                 src={courseInfo.thumbnail}
                 alt="thumbnail"
