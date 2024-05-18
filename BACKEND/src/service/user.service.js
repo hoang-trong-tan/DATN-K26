@@ -134,7 +134,13 @@ const getAllCoursesByTeacher = async ({ teacherId, limit, page }) => {
     teacherId,
     limit,
     page,
-    select: ["course_name", "course_thumnail", "course_price", "user_teacher"],
+    select: [
+      "course_name",
+      "course_thumnail",
+      "course_price",
+      "user_teacher",
+      "course_purchased",
+    ],
   });
 };
 

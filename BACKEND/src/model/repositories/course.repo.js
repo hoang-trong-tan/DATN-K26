@@ -172,7 +172,7 @@ const getCourseDataVideo = async (courseDataId, unSelect) => {
 };
 
 const getOneVideo = async (videoId, select) => {
-  return await courseDataVideo.findOne({ _id: videoId }).select(select);
+  return await courseDataVideo.findOne({ _id: videoId }).select(select).lean();
 };
 
 const getCourseDataQuizs = async (courseDataId, unSelect) => {
