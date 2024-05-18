@@ -14,6 +14,8 @@ const {
   getOneCourse,
   printAllTeacher,
   printVideoById,
+  printAllCourseData,
+  deleleCourseData,
 } = require("../service/course.service");
 
 // tao khoa hoc
@@ -118,5 +120,21 @@ exports.printAllTeacher = catchAsync(async (req, res, next) => {
   new Ok({
     message: "print all teacher is sucess",
     data: await printAllTeacher(limit, page),
+  }).send(res);
+});
+
+// in ra tat ca teacher
+exports.printAllCourseData = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "print all course data is sucess",
+    data: await printAllCourseData(req.params.id),
+  }).send(res);
+});
+
+// in ra tat ca teacher
+exports.deleteCourseData = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "delete  course data is sucess",
+    data: await deleleCourseData(req.params.id),
   }).send(res);
 });

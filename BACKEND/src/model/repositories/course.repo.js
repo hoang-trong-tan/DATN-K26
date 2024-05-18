@@ -207,6 +207,10 @@ const getFullCourse = async (courseId, unSelect) => {
     .lean();
 };
 
+const getAllSection = async (coureId) => {
+  return await courseData.find({ courseShema: coureId });
+};
+
 const findAllTeacher = async ({ select, page, limit }) => {
   const skip = (page - 1) * limit;
   // Tìm tất cả giáo viên
@@ -252,4 +256,5 @@ module.exports = {
   findAllCoursesWithCart,
   queryCourseByTypeWithCart,
   getOneVideo,
+  getAllSection,
 };

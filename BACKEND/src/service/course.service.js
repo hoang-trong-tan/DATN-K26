@@ -22,6 +22,7 @@ const {
   findAllCoursesWithCart,
   queryCourseByTypeWithCart,
   getOneVideo,
+  getAllSection,
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
@@ -218,6 +219,14 @@ const getCourseType = async () => {
   return await findAllCourseType(["__v", "createdAt", "updatedAt"]);
 };
 
+const printAllCourseData = async (coureId) => {
+  return await getAllSection(coureId);
+};
+
+const deleleCourseData = async (sectionId) => {
+  return await courseData.findByIdAndDelete(sectionId);
+};
+
 // tim kiem khoa hoc
 
 const getListSearchCourses = async ({ type, keySearch, limit, page }) => {
@@ -259,4 +268,6 @@ module.exports = {
   getOneCourse,
   printAllTeacher,
   printVideoById,
+  printAllCourseData,
+  deleleCourseData,
 };
