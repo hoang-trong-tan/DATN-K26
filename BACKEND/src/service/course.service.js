@@ -26,6 +26,7 @@ const {
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
 const { printDetailProcessUserCourse } = require("./user.service");
+const { getDocumentByVideoId } = require("./upload.service");
 
 const createCourse = async (payload, teacherId) => {
   const existingType = await courseType.findOne({ _id: payload.course_type });
@@ -48,10 +49,12 @@ const createCourseData = async (coureId, payload) => {
     throw new NotFoundError("Not Found Data");
   }
 
-  const newCourseData = await courseData.create({
-    ...payload,
+  const courseSection = payload.map((item) => ({
+    ...item,
     courseShema: coureId,
-  });
+  }));
+
+  const newCourseData = await courseData.insertMany(courseSection);
 
   return newCourseData;
 };
@@ -63,10 +66,12 @@ const createCourseVideo = async (coureId, payload) => {
     throw new NotFoundError("Not Found Data");
   }
 
-  const newCourseVideo = await courseDataVideo.create({
-    ...payload,
+  const courseVideo = payload.map((item) => ({
+    ...item,
     courseDataShema: coureId,
-  });
+  }));
+
+  const newCourseVideo = await courseDataVideo.create(courseVideo);
 
   return newCourseVideo;
 };
@@ -165,11 +170,17 @@ const getAllCourses = async ({ limit, page, userId }) => {
 };
 
 const printVideoById = async (videoId) => {
-  return await getOneVideo(videoId, [
+  const data = await getOneVideo(videoId, [
     "video_title",
     "video_url",
     "video_length",
   ]);
+
+  const documentByVideoId = await getDocumentByVideoId(videoId);
+  return {
+    ...data,
+    document: documentByVideoId,
+  };
 };
 
 // lay ra khoa hoc theo danh muc loai

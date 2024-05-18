@@ -105,6 +105,12 @@ const createVnpay = async ({ ipAddr, courseId, userId }) => {
     throw new NotFoundError("Course not found");
   }
 
+  const checkTeacherId = userId === existCourse.user_teacher.toString();
+
+  if (checkTeacherId) {
+    throw new BadRequestError("Instructors cannot purchase their own courses");
+  }
+
   process.env.TZ = "Asia/Ho_Chi_Minh";
   let date = new Date();
   let createDate = moment(date).format("YYYYMMDDHHmmss");

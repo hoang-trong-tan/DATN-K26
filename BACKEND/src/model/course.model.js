@@ -72,6 +72,9 @@ const courseTypeShema = new Schema(
       required: true,
       unique: true,
     },
+    type_thumnail: {
+      type: String,
+    },
   },
   {
     collection: "CourseTypes",
