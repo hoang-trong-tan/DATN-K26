@@ -55,4 +55,10 @@ router.delete(
   courseController.deleteCourseData
 );
 
+router.get(
+  "/get-all-video/:id",
+  authorizeRoles("teacher"),
+  courseController.getAllVideoBySectionId
+);
+
 module.exports = router;

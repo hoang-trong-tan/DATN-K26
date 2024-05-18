@@ -83,11 +83,15 @@ const getDocumentByVideoId = async (videoId) => {
 
     const data = await s3.send(command);
 
-    const document = data.Contents.map((item) => item.Key);
+    const document = data.Contents?.map((item) => item.Key);
 
-    let fileName = document.map((item) => path.basename(item));
+    if (!document) {
+      return [];
+    }
 
-    return fileName;
+    let fileNames = document.map((item) => path.basename(item));
+
+    return fileNames;
   } catch (error) {
     throw error; // Ném ra lỗi để xử lý ở nơi gọi hàm
   }

@@ -23,6 +23,7 @@ const {
   queryCourseByTypeWithCart,
   getOneVideo,
   getAllSection,
+  getCourseDataVideo,
 } = require("../model/repositories/course.repo");
 const userModel = require("../model/user.model");
 const { checkUserReview } = require("./feedback.service");
@@ -122,17 +123,21 @@ const getCoursePurchased = async (courseId, userId) => {
     item.video_shema._id.toString()
   );
 
-  if (!existCourse) {
+  const courseData = await course.findOne({ _id: courseId });
+
+  const checkTeacherId = userId === courseData.user_teacher.toString();
+  console.log("check::", checkTeacherId);
+
+  if (!existCourse && !checkTeacherId) {
     return await findOneCourse(courseId, fieldsToExclude, videoIdsSeen);
   }
-
   fieldsToExclude = fieldsToExclude.filter((field) => field !== "video_url");
 
-  const course = await findOneCourse(courseId, fieldsToExclude, videoIdsSeen);
+  const data = await findOneCourse(courseId, fieldsToExclude, videoIdsSeen);
 
   return {
     is_user_review: isUserReview,
-    ...course,
+    ...data,
   };
 };
 
@@ -255,6 +260,10 @@ const printAllTeacher = async (limit, page) => {
   });
 };
 
+const printVideoBySectionId = async (sectionId) => {
+  return await getCourseDataVideo(sectionId);
+};
+
 module.exports = {
   createCourse,
   createCourseData,
@@ -270,4 +279,6 @@ module.exports = {
   printVideoById,
   printAllCourseData,
   deleleCourseData,
+  printVideoById,
+  printVideoBySectionId,
 };
