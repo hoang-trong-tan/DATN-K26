@@ -7,6 +7,7 @@ const {
   printQuizQuestion,
   createAnswerQuiz,
   printResultQuestion,
+  getQuizBySectionId,
 } = require("../service/quiz.service");
 
 // tao bai quizz
@@ -49,5 +50,12 @@ exports.getResultQuiz = catchAsync(async (req, res, next) => {
   new Ok({
     message: "get result question is success",
     data: await printResultQuestion(req.params.id, req.user.userId),
+  }).send(res);
+});
+
+exports.getQuizBySectionId = catchAsync(async (req, res, next) => {
+  new Ok({
+    message: "get quizz is success",
+    data: await getQuizBySectionId(req.params.id),
   }).send(res);
 });
