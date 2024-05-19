@@ -52,7 +52,6 @@ export const coursesApi = apiSlice.injectEndpoints({
     }),
     createChapters: builder.mutation({
       query: (data) => {
-        console.log({ data });
         return {
           url: "course/create-course-data/" + data.id,
           method: "POST",
@@ -85,10 +84,85 @@ export const coursesApi = apiSlice.injectEndpoints({
       },
     }),
     deleteChapter: builder.mutation({
-      query: (id) => {
+      query: (id: string) => {
         return {
           url: "course/delete-course-data/" + id,
           method: "DELETE",
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    getContentChapter: builder.query({
+      query: (id: string) => {
+        return {
+          url: "course/get-all-video/" + id,
+          method: "GET",
+          header: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    createVideoByChapter: builder.mutation({
+      query: ({ payload, chapterId }) => {
+        return {
+          url: "course/create-course-video/" + chapterId,
+          method: "POST",
+          body: payload,
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    createQuizByChapter: builder.mutation({
+      query: ({ payload, quizId }) => {
+        return {
+          url: "quiz/create-question-quiz/" + quizId,
+          method: "POST",
+          body: payload,
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    getQuestionsByChapter: builder.query({
+      query: (quizId: string) => {
+        return {
+          url: "quiz/get-question-quiz/" + quizId,
+          method: "GET",
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    getListQuizs: builder.query({
+      query: (quizId: string) => {
+        return {
+          url: "quiz/get-quiz/" + quizId,
+          method: "GET",
+          headers: {
+            "x-client-id": localStorage.getItem("user_id") || "",
+            "x-atoken-id": localStorage.getItem("access_token") || "",
+          },
+        };
+      },
+    }),
+    createQuizTitle: builder.mutation({
+      query: ({ payload, chapterId }) => {
+        return {
+          url: "quiz/create-quiz/" + chapterId,
+          method: "POST",
+          body: payload,
           headers: {
             "x-client-id": localStorage.getItem("user_id") || "",
             "x-atoken-id": localStorage.getItem("access_token") || "",
@@ -111,4 +185,10 @@ export const {
   useListChaptersByCourseIdQuery,
   useDeleteChapterMutation,
   useGetChapterContentsQuery,
+  useGetContentChapterQuery,
+  useCreateVideoByChapterMutation,
+  useCreateQuizByChapterMutation,
+  useGetQuestionsByChapterQuery,
+  useGetListQuizsQuery,
+  useCreateQuizTitleMutation,
 } = coursesApi;

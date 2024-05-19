@@ -24,7 +24,22 @@ export const uploadApi = apiSlice.injectEndpoints({
         body: formData,
       }),
     }),
+    uploadDocument: builder.mutation({
+      query: ({ formData, videoId }) => ({
+        url: "upload-document/" + videoId,
+        method: "POST",
+        headers: {
+          "x-client-id": localStorage.getItem("user_id") || "",
+          "x-atoken-id": localStorage.getItem("access_token") || "",
+        },
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useUploadImageMutation, useUploadVideoMutation } = uploadApi;
+export const {
+  useUploadImageMutation,
+  useUploadVideoMutation,
+  useUploadDocumentMutation,
+} = uploadApi;

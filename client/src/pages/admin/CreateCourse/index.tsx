@@ -44,7 +44,6 @@ const CreateCourse = () => {
 
   const handleSubmit = async () => {
     try {
-      console.log({ courseInfo, benefits, lessionContents });
       const transferData = {
         course_name: courseInfo.name,
         course_type: courseInfo.category,
@@ -75,23 +74,16 @@ const CreateCourse = () => {
         const formData = new FormData();
         formData.append("video", file);
         const rs: any = await uploadVideo(formData);
-        console.log({ rs });
         result = rs?.data?.data;
       } else {
         setLoadingUploadFile("thumbnail");
         const formData = new FormData();
         formData.append("imgaes", file);
         const rs: any = await uploadImage(formData);
-        console.log({ rs });
         result = rs?.data?.data;
       }
-      console.log({ result });
       setCourseInfo({ ...courseInfo, [name]: result as string });
       setLoadingUploadFile("");
-      // const reader = new FileReader();
-      // reader.onload = () => {
-      // };
-      // reader.readAsDataURL(file);
     } catch (error) {
       toast.error("Error uploading file");
       setLoadingUploadFile("");
@@ -116,14 +108,14 @@ const CreateCourse = () => {
     setLessionContents([...lessionContents, ""]);
   };
 
-  const onChangeCourseInfo = (
+  const onChangeCourseInfo = async (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     const { files } = (e as ChangeEvent<HTMLInputElement>).target;
     const file = files?.[0];
     if (file) {
-      handleUploadSingleFile(file, name as "thumbnail" | "demoUrl");
+      await handleUploadSingleFile(file, name as "thumbnail" | "demoUrl");
       return;
     }
     setCourseInfo({ ...courseInfo, [name]: value });

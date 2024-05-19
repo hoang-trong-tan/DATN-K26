@@ -42,7 +42,6 @@ const CourseByTeacher = () => {
   };
   const onSubmitCreateChapters = async () => {
     try {
-      console.log({ id });
       const formatCreateChapterPayload = courseChapters.map((item) => ({
         courseData_title: item,
       }));

@@ -50,7 +50,7 @@ const Item: FC<itemProps> = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { avatar: userAvatar, role } = useSelector((state: any) => state.auth);
   const [selected, setSelected] = useState("Dashboard");
   const [mounted, setMounted] = useState(false);
 
@@ -136,7 +136,7 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
                   alt="profile-user"
                   width={100}
                   height={100}
-                  src={user.avatar ? user.avatar.url : avatarDefault}
+                  src={userAvatar ? userAvatar : avatarDefault}
                   style={{
                     cursor: "pointer",
                     borderRadius: "50%",
@@ -146,33 +146,18 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
               </Box>
               <Box textAlign="center">
                 <Typography
-                  variant="h4"
-                  className="!text-[20px] text-black dark:text-[#ffffffc1]"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  {user?.name}
-                </Typography>
-                <Typography
                   variant="h6"
                   sx={{ m: "10px 0 0 0" }}
                   className="!text-[20px] text-black dark:text-[#ffffffc1] capitalize"
                 >
-                  - {user?.role}
+                  {role}
                 </Typography>
               </Box>
             </Box>
           )}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/admin"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
+            {/* <Typography
               variant="h5"
               sx={{ m: "15px 0 5px 25px" }}
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
@@ -193,7 +178,7 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
 
             <Typography
               variant="h5"
@@ -224,7 +209,7 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
             >
               {!isCollapsed && "Customization"}
             </Typography>
-            <Item
+            {/* <Item
               title="Hero"
               to="/admin/hero"
               icon={<WebIcon />}
@@ -237,7 +222,7 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
               icon={<QuizIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
             <Item
               title="Categories"
               to="/admin/categories"
@@ -257,36 +242,6 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
               title="Manage Team"
               to="/admin/team"
               icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Typography
-              variant="h6"
-              className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              {!isCollapsed && "Analytics"}
-            </Typography>
-            <Item
-              title="Courses Analytics"
-              to="/admin/courses-analytics"
-              icon={<BarChartOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Orders Analytics"
-              to="/admin/orders-analytics"
-              icon={<MapOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-
-            <Item
-              title="Users Analytics"
-              to="/admin/users-analytics"
-              icon={<ManageHistoryIcon />}
               selected={selected}
               setSelected={setSelected}
             />
