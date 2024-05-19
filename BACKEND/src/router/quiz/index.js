@@ -21,5 +21,6 @@ router.post(
 router.post("/submit-quiz/:id", quizController.createAnswerQuiz);
 router.get("/get-question-quiz/:id", quizController.getQuestionQuiz);
 router.get("/show-answer-quiz/:id", quizController.getResultQuiz);
+router.get("/get-quiz/:id", quizController.getQuizBySectionId);
 
 module.exports = router;

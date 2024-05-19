@@ -78,7 +78,6 @@ const createAnswerQuiz = async (payload, quizId, userId) => {
 
 const printQuizQuestion = async (quizId, userId) => {
   const isTeacher = await userModel.findById(userId);
-  console.log("use::", isTeacher);
 
   let result;
   if (isTeacher.user_role.includes("teacher")) {
@@ -92,6 +91,10 @@ const printQuizQuestion = async (quizId, userId) => {
   }
 
   return result;
+};
+
+const getQuizBySectionId = async (sectionId) => {
+  return await quiz.find({ courseData: sectionId });
 };
 
 const printResultQuestion = async (quizId, userId) => {
@@ -109,4 +112,5 @@ module.exports = {
   createAnswerQuiz,
   printResultQuestion,
   checkIdQuiz,
+  getQuizBySectionId,
 };
