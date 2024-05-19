@@ -18,7 +18,7 @@ router.get("/get-one-video/:id", courseController.findOneVideo);
 
 router.post(
   "/update-process-learn/:id",
-  authorizeRoles("student"),
+  authorizeRoles("student", "teacher"),
   userController.updateProcessLearn
 );
 
