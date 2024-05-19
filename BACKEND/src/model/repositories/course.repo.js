@@ -158,6 +158,7 @@ const getCourseSections = async (courseId, unSelect, videoIdsSeen) => {
       }),
       total_video_section: sumLengthVideo,
     };
+
     data.course_data_quiz = courseDataQuizs;
   }
 
