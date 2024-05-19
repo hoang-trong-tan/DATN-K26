@@ -106,7 +106,7 @@ const addReview = async ({ userId, courseId, rating, comment }) => {
 };
 
 const addReplyReview = async ({ reviewId, courseId, comment, userId }) => {
-  const checkCourse = await course.findById(courseId);
+  const checkCourse = await course.findById(courseId).populate("user_teacher");
 
   if (!checkCourse) {
     throw new BadRequestError("Course is not exist");
@@ -196,7 +196,7 @@ const addQuestion = async ({
     videoId,
   });
 
-  const userToken = checkCourse.user_fcm_token;
+  const userToken = checkCourse.user_teacher.user_fcm_token;
 
   if (userToken) {
     await sendNotification(title, message, userToken);
@@ -229,7 +229,7 @@ const addAnwser = async ({ questionId, userId, anwser }) => {
     message: message,
     userId: findByIdQuestion.userId._id,
     courseId: findByIdQuestion.courseId,
-    videoId,
+    videoId: findByIdQuestion.videoId,
   });
 
   const userToken = findByIdQuestion.userId.user_fcm_token;
