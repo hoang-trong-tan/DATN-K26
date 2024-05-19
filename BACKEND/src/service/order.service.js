@@ -13,6 +13,7 @@ let querystring = require("qs");
 
 var crypto = require("crypto");
 const notificationModel = require("../model/notification.model");
+const { sendNotification } = require("../util/sendFCMNotification");
 
 const newOrder = async (data) => {
   const order = await orderModel.create(data);
@@ -23,6 +24,7 @@ const createOder = async ({ courseId, userId, deliveryCode }) => {
   const user = await userModel.findById(userId);
 
   const existCourse = await course.findById(courseId).populate("user_teacher");
+  console.log("ex::", existCourse);
 
   if (!existCourse) {
     throw new NotFoundError("Course not found");

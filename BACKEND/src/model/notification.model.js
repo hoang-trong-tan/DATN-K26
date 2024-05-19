@@ -33,7 +33,6 @@ const notificationSchema = new Schema(
     videoId: {
       type: Schema.Types.ObjectId,
       ref: "CourseDataVideo",
-      default: "",
     },
   },
   {
