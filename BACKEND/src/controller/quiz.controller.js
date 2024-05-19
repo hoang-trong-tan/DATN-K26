@@ -41,7 +41,7 @@ exports.createAnswerQuiz = catchAsync(async (req, res, next) => {
 exports.getQuestionQuiz = catchAsync(async (req, res, next) => {
   new Ok({
     message: "get quiz question is success",
-    data: await printQuizQuestion(req.params.id),
+    data: await printQuizQuestion(req.params.id, req.user.userId),
   }).send(res);
 });
 
