@@ -7,7 +7,7 @@ const { getNotification } = require("../model/repositories/notification.repo");
 const printNotification = async ({ userId, type, page, limit }) => {
   return await getNotification({
     userId,
-    select: ["title", "message", "status", "createdAt"],
+    select: ["title", "message", "status", "courseId", "videoId", "createdAt"],
     type,
     page,
     limit,

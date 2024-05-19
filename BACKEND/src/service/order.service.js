@@ -69,7 +69,7 @@ const createOder = async ({ courseId, userId, deliveryCode }) => {
   await user.save();
 
   const title = "ĐƠN HÀNG MỚI";
-  const message = `Một người dùng có id là ${userId} vừa mua thành công khóa học của bạn`;
+  const message = `Một người dùng có tên là ${user.user_name} vừa mua thành công khóa học ${existCourse.course_name} của bạn`;
   await notificationModel.create({
     title: title,
     message: message,
