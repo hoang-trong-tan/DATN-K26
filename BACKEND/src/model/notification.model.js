@@ -26,6 +26,15 @@ const notificationSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    courseId: {
+      type: Schema.Types.ObjectId,
+      ref: "Course",
+    },
+    videoId: {
+      type: Schema.Types.ObjectId,
+      ref: "CourseDataVideo",
+      default: "",
+    },
   },
   {
     collection: COLLECTION_NAME,
