@@ -93,6 +93,7 @@ const addReview = async ({ userId, courseId, rating, comment }) => {
     title: title,
     message: message,
     userId: checkCourse.user_teacher,
+    courseId,
   });
 
   const userToken = checkCourse.user_teacher.user_fcm_token;
@@ -133,6 +134,7 @@ const addReplyReview = async ({ reviewId, courseId, comment, userId }) => {
     title: title,
     message: message,
     userId: findByIdReview.userId,
+    courseId,
   });
 
   const userToken = findByIdReview.userId.user_fcm_token;
@@ -190,6 +192,8 @@ const addQuestion = async ({
     title: title,
     message: message,
     userId: checkCourse.user_teacher,
+    courseId,
+    videoId,
   });
 
   const userToken = checkCourse.user_fcm_token;
@@ -224,6 +228,8 @@ const addAnwser = async ({ questionId, userId, anwser }) => {
     title: title,
     message: message,
     userId: findByIdQuestion.userId._id,
+    courseId: findByIdQuestion.courseId,
+    videoId,
   });
 
   const userToken = findByIdQuestion.userId.user_fcm_token;

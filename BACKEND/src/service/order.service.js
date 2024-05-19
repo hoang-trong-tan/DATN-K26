@@ -74,6 +74,7 @@ const createOder = async ({ courseId, userId, deliveryCode }) => {
     title: title,
     message: message,
     userId: existCourse.user_teacher,
+    courseId,
   });
 
   const userToken = existCourse.user_teacher.user_fcm_token;
