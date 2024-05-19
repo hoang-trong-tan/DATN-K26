@@ -261,7 +261,11 @@ const printAllTeacher = async (limit, page) => {
 };
 
 const printVideoBySectionId = async (sectionId) => {
-  return await getCourseDataVideo(sectionId);
+  const video = await getCourseDataVideo(sectionId);
+
+  const chapter = await courseData.findOne({ _id: sectionId });
+
+  return { list_video: video, chapter };
 };
 
 module.exports = {

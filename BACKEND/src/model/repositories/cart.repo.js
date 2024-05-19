@@ -14,10 +14,15 @@ const getCartByUser = async ({ userId, unSlect, courseType }) => {
 
   const coursesInCart = await cartModel
     .find({ userShema: userId })
-    .populate(
-      "courseShema",
-      "course_name course_type course_thumnail course_price course_purchased course_ratingsAverage"
-    )
+    .populate({
+      path: "courseShema",
+      select:
+        "course_name course_type course_thumnail course_price course_purchased course_ratingsAverage user_teacher",
+      populate: {
+        path: "user_teacher",
+        select: "user_name",
+      },
+    })
     .select(getUnSelect(unSlect))
     .lean();
 
