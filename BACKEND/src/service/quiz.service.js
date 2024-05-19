@@ -76,8 +76,22 @@ const createAnswerQuiz = async (payload, quizId, userId) => {
   return addOptions;
 };
 
-const printQuizQuestion = async (quizId) => {
-  return await getQuizQuestion(quizId, ["quiz_questions", "quiz_options"]);
+const printQuizQuestion = async (quizId, userId) => {
+  const isTeacher = await userModel.findById(userId);
+  console.log("use::", isTeacher);
+
+  let result;
+  if (isTeacher.user_role.includes("teacher")) {
+    result = await getQuizQuestion(quizId, [
+      "quiz_questions",
+      "quiz_options",
+      "quiz_correctAnswer",
+    ]);
+  } else {
+    result = await getQuizQuestion(quizId, ["quiz_questions", "quiz_options"]);
+  }
+
+  return result;
 };
 
 const printResultQuestion = async (quizId, userId) => {
