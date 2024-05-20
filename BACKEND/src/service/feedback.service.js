@@ -210,8 +210,6 @@ const addAnwser = async ({ questionId, userId, anwser }) => {
     .findById(questionId)
     .populate("userId");
 
-  console.log("check::", findByIdQuestion);
-
   if (!findByIdQuestion) {
     throw new BadRequestError("Question is not exist");
   }
@@ -235,8 +233,6 @@ const addAnwser = async ({ questionId, userId, anwser }) => {
   });
 
   const userToken = findByIdQuestion.userId.user_fcm_token;
-
-  console.log("user::", userToken);
 
   if (userToken) {
     await sendNotification(title, message, userToken);

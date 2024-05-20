@@ -47,7 +47,9 @@ const processLearnUser = async ({ userId, courseId, videoId }) => {
     },
     {
       $set: {
-        "user_course.$.process_Course": videosSeen.length / videos.length,
+        "user_course.$.process_Course": (
+          videosSeen.length / videos.length
+        ).toFixed(2),
       },
     }
   );
