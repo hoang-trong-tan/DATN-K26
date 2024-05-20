@@ -32,7 +32,7 @@ const CourseCard: FC<Props> = ({ item, isOwn }) => {
           <div className="w-full flex items-center justify-between pt-2">
             <Ratings rating={item.course_ratingsAverage} />
             <h5 className={`text-black dark:text-[#fff]`}>
-              {item.course_purchased} Students
+              {item.course_purchased} Học viên
             </h5>
           </div>
           <div className="w-full flex items-center justify-end pt-3">

@@ -73,7 +73,7 @@ const CourseContentList: FC<Props> = (props) => {
               </div>
             </div>
             <h5 className="text-black dark:text-white">
-              {sectionVideoCount} Lessons ·{" "}
+              {sectionVideoCount} Phần ·{" "}
               {convertNumberToTextTime(sectionVideoLength)}
             </h5>
             {isSectionVisible && (

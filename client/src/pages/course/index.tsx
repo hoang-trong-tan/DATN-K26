@@ -99,12 +99,12 @@ const Course = () => {
                 {course?.course_ratingsAverage} ratings / 5
               </p>
             </div>
-            <h5>{course?.course_purchased} Students</h5>
+            <h5>{course?.course_purchased} Học Viên</h5>
           </div>
         </div>
         <div className="flex flex-col gap-3">
           <h1 className="font-semibold text-2xl font-Poppins">
-            What will you learn from this courses
+            Từ những khóa học này, bạn sẽ học được những kỹ năng gì?
           </h1>
           {course?.course_benefits.map((item, index) => (
             <div className="flex items-center gap-2" key={index}>
@@ -118,7 +118,7 @@ const Course = () => {
         </div>
         <div className="flex flex-col gap-3">
           <h1 className="font-semibold text-2xl font-Poppins">
-            What are the prerequisites for starting this course?
+            Các điều kiện tiên quyết cho việc bắt đầu khóa học này là gì?
           </h1>
           {course?.course_lessonContent?.map((item, index) => (
             <div className="flex items-center gap-2" key={index}>
@@ -132,13 +132,14 @@ const Course = () => {
         </div>
         <div className="flex flex-col gap-3">
           <h1 className="font-semibold text-2xl font-Poppins">
-            Course Description
+            Mô tả Khóa học
           </h1>
           <div>{course?.course_description}</div>
         </div>
         <div className="flex flex-col gap-3">
           <h1 className="font-semibold text-2xl font-Poppins">
-            Course Overview
+
+            Tổng quan về Khóa học
           </h1>
 
           <div>
@@ -162,7 +163,7 @@ const Course = () => {
           className="w-[200px] py-3 bg-[#DC143C]"
           onClick={() => handleCourseClick()}
         >
-          {isCourseBought ? "Go to course" : `Pay now ${course?.course_price}$`}
+          {isCourseBought ? "Học ngay" : `Mua ngay ${course?.course_price}$`}
         </Button>
       </div>
     </div>

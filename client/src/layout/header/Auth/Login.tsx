@@ -14,9 +14,9 @@ type Props = {
 
 const schema = Yup.object().shape({
   email: Yup.string()
-    .email("Invalid email!")
-    .required("Please enter your email!"),
-  password: Yup.string().required("Please enter your password!").min(6),
+    .email("Email không hợp lệ!")
+    .required("Vui lòng nhập email của bạn!"),
+  password: Yup.string().required("Vui lòng nhập mật khẩu của bạn!").min(6),
 });
 
 const Login: FC<Props> = ({ switchToSignUp, onClose }) => {
@@ -53,7 +53,7 @@ const Login: FC<Props> = ({ switchToSignUp, onClose }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Login Successfully!");
+      toast.success("Đăng nhập thành công!");
       // setOpen(false);
       // refetch();
     }
@@ -69,10 +69,10 @@ const Login: FC<Props> = ({ switchToSignUp, onClose }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Login with ELearning</h1>
+      <h1 className={`${styles.title}`}>Đăng nhâp ngay</h1>
       <form onSubmit={handleSubmit}>
         <label className={`${styles.label}`} htmlFor="email">
-          Enter your Email
+          Nhập email
         </label>
         <input
           type="email"
@@ -81,16 +81,15 @@ const Login: FC<Props> = ({ switchToSignUp, onClose }) => {
           onChange={handleChange}
           id="email"
           placeholder="loginmail@gmail.com"
-          className={`${errors.email && touched.email && "border-red-500"} ${
-            styles.input
-          }`}
+          className={`${errors.email && touched.email && "border-red-500"} ${styles.input
+            }`}
         />
         {errors.email && touched.email && (
           <span className="text-red-500 pt-2 block">{errors.email}</span>
         )}
         <div className="w-full mt-5 relative mb-1">
           <label className={`${styles.label}`} htmlFor="email">
-            Enter your password
+            Nhập mật khẩu
           </label>
           <input
             type={!show ? "password" : "text"}
@@ -99,9 +98,8 @@ const Login: FC<Props> = ({ switchToSignUp, onClose }) => {
             onChange={handleChange}
             id="password"
             placeholder="password!@%"
-            className={`${
-              errors.password && touched.password && "border-red-500"
-            } ${styles.input}`}
+            className={`${errors.password && touched.password && "border-red-500"
+              } ${styles.input}`}
           />
           {!show ? (
             <AiOutlineEyeInvisible
@@ -121,16 +119,16 @@ const Login: FC<Props> = ({ switchToSignUp, onClose }) => {
           )}
         </div>
         <div className="w-full mt-5">
-          <input type="submit" value="Login" className={`${styles.button}`} />
+          <input type="submit" value="Đăng nhập" className={`${styles.button}`} />
         </div>
         <br />
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
-          Not have any account?{" "}
+          Bạn chưa có tài khoản?{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"
             onClick={() => switchToSignUp()}
           >
-            Sign up
+            Đăng ký
           </span>
         </h5>
       </form>

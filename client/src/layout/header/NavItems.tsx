@@ -4,25 +4,25 @@ import { ROUTE } from "../../utils/constants";
 
 export const navItemsData = [
   {
-    name: "Home",
+    name: "Trang chủ",
     url: "/",
   },
   {
-    name: "Courses",
+    name: "Khóa học",
     url: ROUTE.COURSES,
   },
-  {
-    name: "About",
-    url: "/about",
-  },
-  {
-    name: "Policy",
-    url: "/policy",
-  },
-  {
-    name: "FAQ",
-    url: "/faq",
-  },
+  // {
+  //   name: "About",
+  //   url: "/about",
+  // },
+  // {
+  //   name: "Policy",
+  //   url: "/policy",
+  // },
+  // {
+  //   name: "FAQ",
+  //   url: "/faq",
+  // },
 ];
 
 const NavItems = () => {

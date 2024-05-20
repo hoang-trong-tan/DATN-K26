@@ -116,7 +116,7 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
               >
                 <Link to="/" className="block">
                   <h3 className="text-[25px] font-Poppins uppercase dark:text-white text-black">
-                    ELearning
+                    K26Demy
                   </h3>
                 </Link>
                 <IconButton
@@ -185,30 +185,30 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {!isCollapsed && "Content"}
+              {!isCollapsed && "Nội dung"}
             </Typography>
             <Item
-              title="Create Course"
+              title="Tạo khóa học"
               to="/admin/create-course"
               icon={<VideoCallIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
-              title="Live Courses"
+              title="Thêm video"
               to="/admin/courses"
               icon={<OndemandVideoIcon />}
               selected={selected}
               setSelected={setSelected}
             />
 
-            <Typography
+            {/* <Typography
               variant="h5"
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
               {!isCollapsed && "Customization"}
-            </Typography>
+            </Typography> */}
             {/* <Item
               title="Hero"
               to="/admin/hero"
@@ -223,39 +223,39 @@ const Sidebar: FC<Props> = ({ isCollapsed, setIsCollapsed }) => {
               selected={selected}
               setSelected={setSelected}
             /> */}
-            <Item
+            {/* <Item
               title="Categories"
               to="/admin/categories"
               icon={<WysiwygIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
-
+            /> */}
+{/* 
             <Typography
               variant="h5"
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
               {!isCollapsed && "Controllers"}
-            </Typography>
-            <Item
+            </Typography> */}
+            {/* <Item
               title="Manage Team"
               to="/admin/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
 
             <Typography
               variant="h6"
               className="!text-[18px] text-black dark:text-[#ffffffc1] capitalize !font-[400]"
               sx={{ m: "15px 0 5px 20px" }}
             >
-              {!isCollapsed && "Extras"}
+              {!isCollapsed && "Mở rộng"}
             </Typography>
             <div onClick={logoutHandler}>
               <Item
-                title="Logout"
+                title="Đăng xuất"
                 to="/"
                 icon={<ExitToAppIcon />}
                 selected={selected}

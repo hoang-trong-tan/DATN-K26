@@ -182,7 +182,7 @@ const Chapter = () => {
             />
           </div>
           <div className="flex flex-col gap-3 justify-center">
-            <h1 className="text-[20px]">Video documents</h1>
+            <h1 className="text-[20px]">Tài liệu video</h1>
             {lectureRes?.data?.document?.length ? (
               <div>
                 {lectureRes?.data?.document?.map((item: any, index: number) => (
@@ -192,12 +192,12 @@ const Chapter = () => {
                 ))}
               </div>
             ) : (
-              <div>NO DOCUMENTS</div>
+              <div>Không có tài liệu</div>
             )}
             <div className="flex flex-col gap-2">
               <div className="w-full flex flex-col gap-2">
                 <label className={`${styles.label} text-[20px] w-[50%]`}>
-                  Add document
+                  Thêm tài liệu
                 </label>
                 <input
                   type="file"
@@ -217,7 +217,7 @@ const Chapter = () => {
                     <div className="loader"></div>
                   ) : (
                     <span className="text-black dark:text-white">
-                      click here to upload your file
+                      Click vào đây để thêm...
                     </span>
                   )}
                 </label>
@@ -262,9 +262,9 @@ const Chapter = () => {
         </div>
       </div>
       <div className="flex flex-col gap-3">
-        <p className="text-[30px] font-bold">Add video</p>
+        <p className="text-[30px] font-bold">Thêm video</p>
         <div>
-          <p className="text-[20px]">Title</p>
+          <p className="text-[20px]">Tiêu đề</p>
           <input
             type="text"
             placeholder="Add video title"
@@ -277,7 +277,7 @@ const Chapter = () => {
         </div>
         <div className="w-full flex flex-col gap-2">
           <label className={`${styles.label} w-[50%] text-[20px]`}>
-            Video Url
+            Thêm video
           </label>
           <input
             type="file"
@@ -306,20 +306,20 @@ const Chapter = () => {
               />
             ) : (
               <span className="text-black dark:text-white">
-                click here to upload your video
+                Click vào đây để thêm video...
               </span>
             )}
           </label>
         </div>
         <div className="flex justify-end">
           <Button className="w-[100px]" onClick={handleSubmitAddVideo}>
-            Add
+            Thêm
           </Button>
         </div>
         <div className="flex gap-5">
           <div className="w-[50%]">
             <label className={`${styles.label} text-[25px] font-bold`}>
-              List quiz
+              Tất cả bài kiểm tra
             </label>
             <div className="flex flex-col gap-3 mt-4">
               {quizsRes?.data?.map((item: any) => (
@@ -339,10 +339,10 @@ const Chapter = () => {
           </div>
           <div className="flex flex-col gap-3 w-[50%] ">
             <label className={`${styles.label} text-[25px] font-bold`}>
-              Add quiz title
+              Tiêu dề bài kiểm tra
             </label>
             <textarea
-              placeholder="Add quiz title"
+              placeholder="Thêm tiêu dề bài kiểm tra..."
               className={`${styles.input} min-h-[100px] my-2 py-2`}
               onChange={(event) => {
                 setAddQuiz(event.target.value);
@@ -353,7 +353,7 @@ const Chapter = () => {
                 className="w-[100px]"
                 onClick={() => handleCreateQuizTitle()}
               >
-                Add
+                Thêm
               </Button>
             </div>
           </div>
@@ -362,15 +362,15 @@ const Chapter = () => {
         <div className="flex gap-5">
           <div className="flex flex-col gap-3 w-1/2">
             <label className={`${styles.label} w-[50%] text-[25px] font-bold`}>
-              Add question
+              Thêm câu hỏi
             </label>
             <div>
               <label className={`${styles.label} w-[50%] text-[18px]`}>
-                + Question
+                + Câu hỏi
               </label>
               <textarea
                 name="question"
-                placeholder="Add question"
+                placeholder="Thêm câu hỏi"
                 className={`${styles.input} min-h-[200px] my-2 py-2`}
                 onChange={(e) => {
                   setQuestion({ ...question, title: e.target.value });
@@ -378,7 +378,7 @@ const Chapter = () => {
               />
             </div>
             <div className="flex gap-5">
-              <label className={`${styles.label} text-[18px]`}>+ Answer</label>
+              <label className={`${styles.label} text-[18px]`}>+ Câu trả lời</label>
               <div>
                 <AiOutlinePlusCircle
                   className="mt-[2px] cursor-pointer w-[30px] h-[30px]"
@@ -394,10 +394,10 @@ const Chapter = () => {
 
             {question.answers.map((_, index) => (
               <div className="flex gap-5 items-center" key={index}>
-                <div className="w-[80px]">&#x2022; Answer {index + 1}: </div>
+                <div className="w-[80px]">&#x2022; Trả lời {index + 1}: </div>
                 <input
                   type="text"
-                  placeholder="Add answer"
+                  placeholder="Thêm câu trả lời"
                   className={`${styles.input} my-2 w-[300px]`}
                   onChange={(e) => handleAddAnswer(e, index)}
                 />
@@ -420,13 +420,13 @@ const Chapter = () => {
                 className="w-[100px]"
                 onClick={() => handleSubmitQuestion()}
               >
-                Add
+                Thêm
               </Button>
             </div>
           </div>
           <div>
             <label className={`${styles.label} w-[50%] text-[25px] font-bold`}>
-              List question
+              Tất cả câu trả lời
             </label>
             <div className="flex flex-col mt-4">
               {questionsRes?.data?.map((item: any, index: number) => (
@@ -440,7 +440,7 @@ const Chapter = () => {
                     ))}
                   </div>
                   <div>
-                    Correct Answer:{" "}
+                    Câu trả lời đúng:{" "}
                     {item?.quiz_options?.[item?.quiz_correctAnswer]}
                   </div>
                 </div>

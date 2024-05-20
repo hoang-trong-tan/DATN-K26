@@ -55,11 +55,11 @@ const Signup: FC<Props> = ({ switchToLogin }) => {
 
   return (
     <div className="w-full">
-      <h1 className={`${styles.title}`}>Join to ELearning</h1>
+      <h1 className={`${styles.title}`}>Đăng ký ngay</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className={`${styles.label}`} htmlFor="email">
-            Enter your Name
+            Nhập tên của bạn
           </label>
           <input
             type="text"
@@ -77,7 +77,7 @@ const Signup: FC<Props> = ({ switchToLogin }) => {
           )}
         </div>
         <label className={`${styles.label}`} htmlFor="email">
-          Enter your Email
+          Nhập email
         </label>
         <input
           type="email"
@@ -95,7 +95,7 @@ const Signup: FC<Props> = ({ switchToLogin }) => {
         )}
         <div className="w-full mt-5 relative mb-1">
           <label className={`${styles.label}`} htmlFor="email">
-            Enter your password
+            Nhập mật khẩu
           </label>
           <input
             type={!show ? "password" : "text"}
@@ -126,16 +126,16 @@ const Signup: FC<Props> = ({ switchToLogin }) => {
           <span className="text-red-500 pt-2 block">{errors.password}</span>
         )}
         <div className="w-full mt-5">
-          <input type="submit" value="Sign Up" className={`${styles.button}`} />
+          <input type="submit" value="Đăng ký" className={`${styles.button}`} />
         </div>
         <br />
         <h5 className="text-center pt-4 font-Poppins text-[14px]">
-          Already have an account?{" "}
+          Bạn đã có tài khoản{" "}
           <span
             className="text-[#2190ff] pl-1 cursor-pointer"
             onClick={() => switchToLogin()}
           >
-            Sign in
+            Đăng ký
           </span>
         </h5>
       </form>

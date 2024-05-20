@@ -71,7 +71,7 @@ const CourseByTeacher = () => {
       <div className="flex gap-10">
         <div className="w-[50%]">
           <label className={`${styles.label} text-[25px] font-bold`}>
-            Add Chapters
+            Thêm tên từng phần
           </label>
           <br />
           {courseChapters.map((benefit: string, index: number) => (
@@ -79,7 +79,7 @@ const CourseByTeacher = () => {
               type="text"
               key={index}
               name="benefit"
-              placeholder="You will be able to build a full stack LMS Platform..."
+              placeholder="Bạn sẽ có thể xây dựng một nền tảng LMS ngăn xếp đầy đủ..."
               required
               className={`${styles.input} my-2`}
               value={benefit}
@@ -100,13 +100,13 @@ const CourseByTeacher = () => {
               )}
             </div>
             <Button className="w-[100px]" onClick={onSubmitCreateChapters}>
-              Submit
+              Gửi
             </Button>
           </div>
         </div>
         <div className="w-[50%]">
           <label className={`${styles.label} text-[25px] font-bold`}>
-            List Chapters
+            Tất cả phần
           </label>
           <div className="flex flex-col gap-5 mt-3 ">
             {listChaptersRes?.data?.map((item: any, index: number) => (
@@ -117,7 +117,7 @@ const CourseByTeacher = () => {
                 }}
               >
                 <p>
-                  - Chapter {index + 1}: {item?.courseData_title}
+                  - Phần {index + 1}: {item?.courseData_title}
                 </p>
                 <AiOutlineDelete
                   className="w-[30px] h-[30px] cursor-pointer"

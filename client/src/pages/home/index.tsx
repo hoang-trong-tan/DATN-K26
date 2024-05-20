@@ -10,23 +10,22 @@ const HomePage = () => {
       <div className="flex">
         <div className="w-[50%] flex flex-col gap-3">
           <h1 className="font-medium text-left py-2 text-5xl leading-[60px]">
-            Start your
+          Bắt đầu
             <span className="text-gradient text-gradient_light">
               {" "}
-              programming
+              lập trình của bạn
             </span>
             <br />
-            <span className="text-gradient_light"> Journey </span>
-            with our
+            <span className="text-gradient_light"> Hành trình </span>
+            cùng chúng tôi
             <br />
-            Dedicated community!
+            Cộng đồng tận tâm!
           </h1>
           <p className=" w-[90%] font-poppins text-[22px] leading-[32px] font-normal text-[#A3B3BC] mb-5 text-left">
-            Begin your coding adventure in our community, where learning is
-            always appreciated and valued.
+          Bắt đầu hành trình lập trình của bạn trong cộng đồng của chúng tôi, nơi việc học luôn được đánh giá cao và trân trọng.
           </p>
           <Button className="w-[200px]" onClick={() => navigate(ROUTE.COURSES)}>
-            Explore Courses
+          Khám Phá Các Khóa Học
           </Button>
         </div>
         <div>
@@ -44,7 +43,7 @@ const HomePage = () => {
       </div>
       <div className="border-b border-[#ffffff1c]" />
       <div className="flex flex-col gap-5">
-        <h1 className="text-center text-5xl font-medium">Reviews</h1>
+        <h1 className="text-center text-5xl font-medium">Đánh giá</h1>
         <Reviews />
       </div>
     </div>

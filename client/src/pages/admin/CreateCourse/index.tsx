@@ -127,7 +127,7 @@ const CreateCourse = () => {
     <div className="w-[80%] m-auto mt-24">
       <form onSubmit={handleSubmit} className={`${styles.label}`}>
         <div>
-          <label htmlFor="">Course Name</label>
+          <label htmlFor="">Tên khóa học</label>
           <input
             type="text"
             name="name"
@@ -135,20 +135,20 @@ const CreateCourse = () => {
             value={courseInfo.name}
             onChange={(e) => onChangeCourseInfo(e)}
             id="name"
-            placeholder="Enter course name"
+            placeholder="Nhập tên khóa học"
             className={`
             ${styles.input}`}
           />
         </div>
         <br />
         <div className="mb-5">
-          <label className={`${styles.label}`}>Course Description</label>
+          <label className={`${styles.label}`}>Chi tiết khóa học</label>
           <textarea
             name="description"
             id="description"
             cols={30}
             rows={8}
-            placeholder="Write something amazing..."
+            placeholder="Viết một cái gì đó tuyệt vời ..."
             className={`${styles.input} !h-min !py-2`}
             value={courseInfo.description}
             onChange={(e) => onChangeCourseInfo(e)}
@@ -156,7 +156,7 @@ const CreateCourse = () => {
         </div>
         <div className="w-full flex gap-3 justify-between">
           <div className="w-[45%]">
-            <label className={`${styles.label}`}>Course Price</label>
+            <label className={`${styles.label}`}>Giá</label>
             <input
               type="number"
               name="price"
@@ -171,7 +171,7 @@ const CreateCourse = () => {
           </div>
           <div className="w-[50%]">
             <label className={`${styles.label} w-[50%]`}>
-              Course Categories
+              Danh mục
             </label>
             <select
               name="category"
@@ -181,7 +181,7 @@ const CreateCourse = () => {
               onChange={(e) => onChangeCourseInfo(e)}
             >
               <option className="text-black" value="">
-                Select Category
+                Chọn danh mục
               </option>
               {categories?.length &&
                 categories.map((item: CategoryType) => (
@@ -198,7 +198,7 @@ const CreateCourse = () => {
         </div>
         <br />
         <div className="w-full flex flex-col gap-2">
-          <label className={`${styles.label} w-[50%]`}>Demo Url</label>
+          <label className={`${styles.label} w-[50%]`}>Video giới thiệu</label>
           <input
             type="file"
             accept="video/*"
@@ -224,14 +224,14 @@ const CreateCourse = () => {
               />
             ) : (
               <span className="text-black dark:text-white">
-                Drag and drop your video here or click to browse
+                Kéo và thả video của bạn vào đây hoặc nhấp để duyệt
               </span>
             )}
           </label>
         </div>
         <br />
         <div className="w-full flex flex-col gap-2">
-          <label className={`${styles.label} w-[50%]`}>Thumbnail</label>
+          <label className={`${styles.label} w-[50%]`}>Ảnh Khóa học</label>
           <input
             type="file"
             accept="image/*"
@@ -256,7 +256,7 @@ const CreateCourse = () => {
               />
             ) : (
               <span className="text-black dark:text-white">
-                Drag and drop your thumbnail here or click to browse
+                Kéo và thả video của bạn vào đây hoặc nhấp để duyệt
               </span>
             )}
           </label>
@@ -264,7 +264,7 @@ const CreateCourse = () => {
         <br />
         <div>
           <label className={`${styles.label} text-[20px]`} htmlFor="email">
-            What are the benefits for students in this course?
+          Lợi ích gì đối với sinh viên trong khóa học này?
           </label>
           <br />
           {benefits.map((benefit: string, index: number) => (
@@ -272,7 +272,7 @@ const CreateCourse = () => {
               type="text"
               key={index}
               name="benefit"
-              placeholder="You will be able to build a full stack LMS Platform..."
+              placeholder="Bạn sẽ có khả năng xây dựng một nền tảng LMS toàn diện..."
               required
               className={`${styles.input} my-2`}
               value={benefit}
@@ -286,7 +286,7 @@ const CreateCourse = () => {
         </div>
         <div>
           <label className={`${styles.label} text-[20px]`} htmlFor="email">
-            Lession contents
+            Nội dung từng phân
           </label>
           <br />
           {lessionContents.map((item: string, index: number) => (
@@ -294,7 +294,7 @@ const CreateCourse = () => {
               type="text"
               key={index}
               name="lessionContent"
-              placeholder="Fill lession content here"
+              placeholder="Vui lòng nhập nội dung"
               required
               className={`${styles.input} my-2`}
               value={item}
@@ -311,7 +311,7 @@ const CreateCourse = () => {
         <div className="w-full flex items-center justify-end">
           <input
             type="submit"
-            value="Submit"
+            value="Gửi"
             className="w-full 800px:w-[180px] h-[40px] bg-[#37a39a] text-center text-[#fff] rounded mt-8 cursor-pointer"
           />
         </div>
