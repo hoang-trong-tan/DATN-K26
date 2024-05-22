@@ -1,0 +1,4 @@
+#Mon May 20 23:53:21 ICT 2024
+base.0=D\:\\Bai_Tap\\Nam4\\KL\\DATN-K26\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
