@@ -1,0 +1,14 @@
+com.flutter_webview_plugin-jetified-window-java-1.0.0-beta04-0 C:\Users\Dell\.gradle\caches\transforms-3\234cf6cab2ae0df1de11d520bd41701d\transformed\jetified-window-java-1.0.0-beta04\res
+com.flutter_webview_plugin-jetified-window-1.0.0-beta04-1 C:\Users\Dell\.gradle\caches\transforms-3\2f632d8dec5aedcc344894ac2d746d3d\transformed\jetified-window-1.0.0-beta04\res
+com.flutter_webview_plugin-jetified-annotation-experimental-1.1.0-2 C:\Users\Dell\.gradle\caches\transforms-3\63de43c2f1d406e95d47893f129ee7b9\transformed\jetified-annotation-experimental-1.1.0\res
+com.flutter_webview_plugin-core-1.6.0-3 C:\Users\Dell\.gradle\caches\transforms-3\72d701307b1115688b608c7110be19e8\transformed\core-1.6.0\res
+com.flutter_webview_plugin-jetified-appcompat-resources-1.1.0-4 C:\Users\Dell\.gradle\caches\transforms-3\7ad8b9fe2817dc33e8def3e4e6ddf369\transformed\jetified-appcompat-resources-1.1.0\res
+com.flutter_webview_plugin-appcompat-1.1.0-5 C:\Users\Dell\.gradle\caches\transforms-3\b7274320f512e524720e7fc050547894\transformed\appcompat-1.1.0\res
+com.flutter_webview_plugin-main-6 C:\Users\Dell\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_webview_plugin-0.4.0\android\src\main\res
+com.flutter_webview_plugin-release-7 C:\Users\Dell\AppData\Local\Pub\Cache\hosted\pub.dev\flutter_webview_plugin-0.4.0\android\src\release\res
+com.flutter_webview_plugin-pngs-8 D:\Bai_Tap\Nam4\KL\DATN-K26\build\flutter_webview_plugin\generated\res\pngs\release
+com.flutter_webview_plugin-resValues-9 D:\Bai_Tap\Nam4\KL\DATN-K26\build\flutter_webview_plugin\generated\res\resValues\release
+com.flutter_webview_plugin-rs-10 D:\Bai_Tap\Nam4\KL\DATN-K26\build\flutter_webview_plugin\generated\res\rs\release
+com.flutter_webview_plugin-mergeReleaseResources-11 D:\Bai_Tap\Nam4\KL\DATN-K26\build\flutter_webview_plugin\intermediates\incremental\release\mergeReleaseResources\merged.dir
+com.flutter_webview_plugin-mergeReleaseResources-12 D:\Bai_Tap\Nam4\KL\DATN-K26\build\flutter_webview_plugin\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+com.flutter_webview_plugin-merged_res-13 D:\Bai_Tap\Nam4\KL\DATN-K26\build\flutter_webview_plugin\intermediates\merged_res\release
